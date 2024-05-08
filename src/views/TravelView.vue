@@ -32,16 +32,10 @@ const initMap = () => {
   // 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
   map.value = new kakao.maps.Map(container, options);
 };
-import MapSearchMenu from "@/components/travel/MapSearchMenu.vue";
+import MapSearchMenu from "@/components/travel/search/MapSearchMenu.vue";
 import MapLoginBtn from "@/components/travel/MapLoginBtn.vue";
 import MapNavBar from "@/components/travel/MapNavBar.vue";
 import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
-
-const onSearch = (keyword) => {
-  ps.keywordSearch(keyword, (data, status, pagination) => {
-    console.log(data);
-  });
-};
 </script>
 
 <template>
