@@ -19,22 +19,17 @@ const router = createRouter({
       component: TravelView,
       children: [
         {
-          path: "search/heritage",
-          name: "search-heritage",
-          component: TravelView,
-        },
-        {
-          path: "search/place",
-          name: "search-place",
+          path: "search",
+          name: "search",
           component: TravelView,
         },
       ],
     },
     {
-      path:"/mypage",
-      name:"mypage",
-      component: MyPage
-    }
+      path: "/mypage",
+      name: "mypage",
+      component: MyPage,
+    },
   ],
 });
 

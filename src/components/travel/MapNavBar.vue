@@ -1,10 +1,13 @@
 <script setup>
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 const router = useRouter();
+const props = defineProps(["menu"]);
 
-const changeMenu = (routeName) => {
-  router.push({ name: routeName });
+const changeMenu = (clickedMenu) => {
+  menu.value = clickedMenu;
 };
+const emit = defineEmits(["setMenu"]);
 </script>
 
 <template>
@@ -13,7 +16,7 @@ const changeMenu = (routeName) => {
       class="nav-menu"
       @click="
         () => {
-          changeMenu('index');
+          router.push({ name: 'index' });
         }
       "
     >
@@ -23,14 +26,11 @@ const changeMenu = (routeName) => {
         style="width: 80%; height: auto"
       />
     </div>
-    <v-divider></v-divider>
+    <v-divider />
     <div
       class="nav-menu"
-      @click="
-        () => {
-          changeMenu('search-heritage');
-        }
-      "
+      :class="props.menu === 'heritage' ? 'nav-menu-selected' : ''"
+      @click="emit('setMenu', 'heritage')"
     >
       <img
         src="/src/assets/heritage_icon.png"
@@ -39,14 +39,11 @@ const changeMenu = (routeName) => {
       />
       <p>문화제</p>
     </div>
-    <v-divider></v-divider>
+    <v-divider />
     <div
-      class="nav-menu nav-menu-selected"
-      @click="
-        () => {
-          changeMenu('search-place');
-        }
-      "
+      class="nav-menu"
+      :class="props.menu === 'place' ? 'nav-menu-selected' : ''"
+      @click="emit('setMenu', 'place')"
     >
       <img
         src="/src/assets/spot_icon.png"
@@ -55,9 +52,9 @@ const changeMenu = (routeName) => {
       />
       <p>경유지</p>
     </div>
-    <v-divider></v-divider>
+    <v-divider />
     <div class="nav-menu">경로 설정</div>
-    <v-divider></v-divider>
+    <v-divider />
   </v-card>
 </template>
 
@@ -75,12 +72,15 @@ const changeMenu = (routeName) => {
   transition-property: background-color;
   transition-duration: 0.5s;
 }
+
 .nav-menu:hover {
-  background-color: #b0bec5;
-}
-.nav-menu-selected {
   background-color: #cfd8dc;
 }
+
+.nav-menu-selected {
+  background-color: #b0bec5;
+}
+
 #map-nav-bar {
   position: fixed;
   left: 40px;

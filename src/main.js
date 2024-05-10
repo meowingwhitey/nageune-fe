@@ -36,6 +36,11 @@ const vuetify = createVuetify({
       mdi,
     },
   },
+  defaults: {
+    VCard: {
+      style: "border-radius:15px",
+    },
+  },
 });
 
 app.use(vuetify);
