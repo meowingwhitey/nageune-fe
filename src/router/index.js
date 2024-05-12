@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import IndexView from "@/views/IndexView.vue";
 import TravelView from "@/views/TravelView.vue";
+import TravelSearchView from "@/views/TravelSearchView.vue";
+import TravelRouteView from "@/views/TravelRouteView.vue";
 import MyPage from "@/views/MyPage.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,9 +21,18 @@ const router = createRouter({
       component: TravelView,
       children: [
         {
-          path: "search",
-          name: "search",
-          component: TravelView,
+          path: "",
+          name: "travel-search",
+          component: TravelSearchView,
+          props: (route) => ({
+            search: route.query.search, // 검색 메뉴 타입 (문화재:heritage/장소:place)
+            keyword: route.query.keyword, // 검색하는 키워드
+          }),
+        },
+        {
+          path: "route",
+          name: "travel-route",
+          component: TravelRouteView,
         },
       ],
     },

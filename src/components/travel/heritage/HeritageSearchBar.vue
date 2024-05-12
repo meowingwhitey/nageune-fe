@@ -1,7 +1,4 @@
-<script setup>
-import { ref } from "vue";
-import { useHeritageSearchStore } from "@/stores/heritageSearchStore.js";
-</script>
+<script setup></script>
 
 <template>
   <v-card id="map-search-bar">

@@ -1,18 +1,17 @@
 <script setup>
 import { ref } from "vue";
-import { usePlaceSearchStore } from "@/stores/placeSearchStore.js";
-
-const store = usePlaceSearchStore();
+import { useRouter } from "vue-router";
 
 const searchKeyword = ref("");
+const router = useRouter();
 const onSearch = () => {
-  if (store.searchKeyword === searchKeyword.value) {
-    return;
-  }
-  console.log(
-    `store.searchKeyword: ${store.searchKeyword} , searchKeyword.value: ${searchKeyword.value}`,
-  );
-  store.searchKeyword = searchKeyword.value;
+  router.push({
+    name: "travel-search",
+    query: {
+      search: "place",
+      keyword: searchKeyword.value,
+    },
+  });
 };
 </script>
 

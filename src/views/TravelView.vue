@@ -5,11 +5,12 @@
  * 추후에 router 단에서 render 전에 map 객체를 전역 객체로 등록해서 사용
  */
 import { onBeforeMount, ref } from "vue";
-import { usePlaceSearchStore } from "@/stores/placeSearchStore.js";
-
-const store = usePlaceSearchStore();
+import { RouterView } from "vue-router";
+import { useTravelStore } from "@/stores/travelStore.js";
 const apiKey = "f40808c2f23c76e300a5745587df8caa";
 
+const isKakaoMapLoaded = ref(false); // 카카오맵 등록을 확인하는 ref
+const travelStore = useTravelStore();
 onBeforeMount(() => {
   // Global 객체로 kakao api가 등록되었으면 지도 초기화
   if (window.kakao && window.kakao.maps) {
@@ -34,39 +35,22 @@ const initMap = () => {
 
   // 지도 객체를 등록합니다.
   // 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-  store.kakaoMap = new kakao.maps.Map(container, options);
+  window.kakaoMap = new kakao.maps.Map(container, options);
+  travelStore.kakaoMap = window.kakaoMap;
+  isKakaoMapLoaded.value = true;
 };
 
-import PlaceSearchMenu from "@/components/travel/place/PlaceSearchMenu.vue";
 import MapUserBtn from "@/components/travel/MapUserBtn.vue";
 import MapNavBar from "@/components/travel/MapNavBar.vue";
 import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
-import CategoryChipList from "@/components/travel/place/CategoryChipList.vue";
-
-import HeritageSearchMenu from "@/components/travel/heritage/HeritageSearchMenu.vue";
-import AgeRangeBar from "@/components/travel/heritage/AgeRangeBar.vue";
-
-const menu = ref("heritage");
-const setMenu = (changedMenu) => {
-  menu.value = changedMenu;
-};
 </script>
 
 <template>
-  <MapNavBar
-    @set-menu="
-      (clickedMenu) => {
-        setMenu(clickedMenu);
-      }
-    "
-    :menu="menu"
-  />
-  <HeritageSearchMenu v-if="menu === 'heritage'" />
-  <PlaceSearchMenu v-if="menu === 'place'" />
+  <MapNavBar />
+
+  <RouterView />
   <MapUserBtn />
   <MapSizingBtn />
-  <CategoryChipList class="option-bar" v-if="menu === 'place'" />
-  <AgeRangeBar class="option-bar" v-if="menu === 'heritage'" />
 
   <div id="map"></div>
 </template>
@@ -83,12 +67,5 @@ const setMenu = (changedMenu) => {
 
 #map::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
-}
-
-.option-bar {
-  position: fixed;
-  z-index: 900;
-  top: 40px;
-  left: 380px;
 }
 </style>

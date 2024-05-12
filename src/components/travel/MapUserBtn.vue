@@ -12,7 +12,7 @@ const items = [
   <v-menu>
     <template v-slot:activator="{ props: menu }">
       <v-btn
-        v-bind="mergeProps(menu, tooltip)"
+        v-bind="mergeProps(menu)"
         id="map-overlay-user-btn"
         icon="mdi-account"
       ></v-btn>

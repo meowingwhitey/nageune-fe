@@ -1,7 +1,7 @@
 <script setup>
-import { usePlaceSearchStore } from "@/stores/placeSearchStore.js";
+import { useTravelStore } from "@/stores/travelStore.js";
 
-const store = usePlaceSearchStore();
+const store = useTravelStore();
 
 const isChecked = (name) => {
   const categoryIdx = store.categoryItemList.names.indexOf(name);

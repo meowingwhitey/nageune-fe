@@ -1,13 +1,27 @@
 <script setup>
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { ref } from "vue";
+const route = useRoute();
 const router = useRouter();
-const props = defineProps(["menu"]);
 
-const changeMenu = (clickedMenu) => {
-  menu.value = clickedMenu;
-};
-const emit = defineEmits(["setMenu"]);
+const menuList = [
+  {
+    title: "문화재",
+    image: "/src/assets/logo_test.gif",
+  },
+  {
+    title: "경유지",
+    image: "/src/assets/logo_test.gif",
+  },
+  {
+    title: "경로 설정",
+    image: "/src/assets/logo_test.gif",
+  },
+  {
+    title: "문화재",
+    image: "/src/assets/logo_test.gif",
+  },
+];
 </script>
 
 <template>
@@ -29,8 +43,13 @@ const emit = defineEmits(["setMenu"]);
     <v-divider />
     <div
       class="nav-menu"
-      :class="props.menu === 'heritage' ? 'nav-menu-selected' : ''"
-      @click="emit('setMenu', 'heritage')"
+      :class="route.query.search === 'heritage' && 'nav-menu-selected'"
+      @click="
+        router.push({
+          name: 'travel-search',
+          query: { search: 'heritage' },
+        })
+      "
     >
       <img
         src="/src/assets/heritage_icon.png"
@@ -42,8 +61,15 @@ const emit = defineEmits(["setMenu"]);
     <v-divider />
     <div
       class="nav-menu"
-      :class="props.menu === 'place' ? 'nav-menu-selected' : ''"
-      @click="emit('setMenu', 'place')"
+      :class="route.query.search === 'place' && 'nav-menu-selected'"
+      @click="
+        () => {
+          router.push({
+            name: 'travel-search',
+            query: { search: 'place' },
+          });
+        }
+      "
     >
       <img
         src="/src/assets/spot_icon.png"
@@ -53,7 +79,16 @@ const emit = defineEmits(["setMenu"]);
       <p>경유지</p>
     </div>
     <v-divider />
-    <div class="nav-menu">경로 설정</div>
+    <div
+      class="nav-menu"
+      @click="
+        () => {
+          router.push({ name: 'route' });
+        }
+      "
+    >
+      경로 설정
+    </div>
     <v-divider />
   </v-card>
 </template>
