@@ -47,7 +47,6 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
 
 <template>
   <MapNavBar />
-
   <RouterView />
   <MapUserBtn />
   <MapSizingBtn />

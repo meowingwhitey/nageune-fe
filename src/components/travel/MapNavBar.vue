@@ -1,9 +1,7 @@
 <script setup>
 import { useRouter, useRoute } from "vue-router";
-import { ref } from "vue";
 const route = useRoute();
 const router = useRouter();
-
 const menuList = [
   {
     title: "문화재",
@@ -81,9 +79,10 @@ const menuList = [
     <v-divider />
     <div
       class="nav-menu"
+      :class="route.name === 'travel-route' && 'nav-menu-selected'"
       @click="
         () => {
-          router.push({ name: 'route' });
+          router.push({ name: 'travel-route' });
         }
       "
     >
