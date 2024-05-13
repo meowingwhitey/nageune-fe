@@ -6,8 +6,9 @@ const routeStore = useRouteStore();
 
 <template>
   <TravelRouteList
-    v-for="route of routeStore.routeList"
+    v-for="(route, index) in routeStore.routeList"
     :route-list="route"
+    :route-idx="index"
     class="travel-route-list"
   />
 </template>

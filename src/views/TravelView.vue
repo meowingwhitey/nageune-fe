@@ -29,7 +29,7 @@ onBeforeMount(() => {
 const initMap = () => {
   const container = document.getElementById("map");
   const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    center: new kakao.maps.LatLng(37.52834688582605, 126.9605281055505),
     level: 5,
   };
 

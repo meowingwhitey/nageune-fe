@@ -3,7 +3,7 @@ const props = defineProps(["index", "element"]);
 </script>
 
 <template>
-  <v-card class="travel-route-list-item">
+  <v-card class="travel-route-list-item" elevation="4">
     <div class="d-flex ga-4" style="padding: 10px">
       <img
         src="/src/assets/spot_image_test.gif"

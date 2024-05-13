@@ -20,7 +20,7 @@ import TravelRouteMenu from "@/components/travel/route/TravelRouteMenu.vue";
   flex-direction: row;
   left: 110px;
   top: 40px;
-  max-width: calc(100vw - 250px);
+  max-width: calc(100vw - 60vw);
   height: calc(100vh - 80px);
 }
 </style>

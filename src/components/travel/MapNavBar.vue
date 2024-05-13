@@ -43,10 +43,19 @@ const menuList = [
       class="nav-menu"
       :class="route.query.search === 'heritage' && 'nav-menu-selected'"
       @click="
-        router.push({
-          name: 'travel-search',
-          query: { search: 'heritage' },
-        })
+        () => {
+          if (
+            route.name === 'travel-search' &&
+            route.query.search === 'heritage'
+          ) {
+            router.push({ name: 'travel' });
+          } else {
+            router.push({
+              name: 'travel-search',
+              query: { search: 'heritage' },
+            });
+          }
+        }
       "
     >
       <img
@@ -62,10 +71,17 @@ const menuList = [
       :class="route.query.search === 'place' && 'nav-menu-selected'"
       @click="
         () => {
-          router.push({
-            name: 'travel-search',
-            query: { search: 'place' },
-          });
+          if (
+            route.name === 'travel-search' &&
+            route.query.search === 'place'
+          ) {
+            router.push({ name: 'travel' });
+          } else {
+            router.push({
+              name: 'travel-search',
+              query: { search: 'place' },
+            });
+          }
         }
       "
     >
@@ -82,7 +98,9 @@ const menuList = [
       :class="route.name === 'travel-route' && 'nav-menu-selected'"
       @click="
         () => {
-          router.push({ name: 'travel-route' });
+          if (route.name === 'travel-route') {
+            router.push({ name: 'travel' });
+          } else router.push({ name: 'travel-route' });
         }
       "
     >
