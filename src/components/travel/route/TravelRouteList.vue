@@ -12,9 +12,9 @@ const props = defineProps(["routeList", "routeIdx"]);
 //     name: el.name + " cloned",
 //   };
 // };
-const log = (evt) => {
-  window.console.log(evt);
-};
+
+const currentMarker = ref([]);
+const currentPolyline = ref(null);
 
 const dragOptions = computed(() => {
   return {
@@ -28,11 +28,36 @@ const dragOptions = computed(() => {
 const onRouteMapping = () => {
   const route = props.routeList.route;
   const bounds = new window.kakao.maps.LatLngBounds();
+  const linePath = [];
+
+  // 마커 및 라인 삭제
+  for (const marker of currentMarker.value) {
+    marker.setMap(null);
+  }
+  currentMarker.value = [];
+  if (currentPolyline.value !== null) {
+    currentPolyline.value.setMap(null);
+  }
+  currentPolyline.value = null;
+
   for (const place of route) {
     displayMarker(place);
     console.log(place);
     bounds.extend(new window.kakao.maps.LatLng(place.lat, place.lng));
+    linePath.push(new kakao.maps.LatLng(place.lat, place.lng));
   }
+
+  // 지도에 표시할 선을 생성합니다
+  const polyline = new kakao.maps.Polyline({
+    path: linePath, // 선을 구성하는 좌표배열 입니다
+    strokeWeight: 5, // 선의 두께 입니다
+    strokeColor: "#FFAE00", // 선의 색깔입니다
+    strokeOpacity: 0.9, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+    strokeStyle: "solid", // 선의 스타일입니다
+  });
+  currentPolyline.value = polyline;
+  // 지도에 선을 표시합니다
+  polyline.setMap(window.kakaoMap);
   window.kakaoMap.setBounds(bounds);
 };
 
@@ -43,6 +68,7 @@ const displayMarker = (place) => {
     map: window.kakaoMap,
     position: new kakao.maps.LatLng(place.lat, place.lng),
   });
+  currentMarker.value.push(marker);
 
   // 마커에 클릭이벤트를 등록합니다
   kakao.maps.event.addListener(marker, "click", function () {
@@ -60,10 +86,15 @@ const displayMarker = (place) => {
     place.isInfoWindowOpen = true;
   });
 };
+
+const log = (evt) => {
+  window.console.log(evt);
+  onRouteMapping();
+};
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column">
+  <div style="display: flex; flex-direction: column; height: 100%">
     <div class="d-flex flex-row ga-2" style="align-items: center">
       <h3>{{ props.routeList.date }}</h3>
       <v-btn size="small" rounded="xl" color="#26A69A" @click="onRouteMapping"
@@ -73,7 +104,7 @@ const displayMarker = (place) => {
 
     <draggable
       class="list-group"
-      style="min-height: 100%; min-width: 220px"
+      style="height: 100%; min-width: 220px"
       :list="props.routeList.route"
       group="people"
       v-bind="dragOptions"
