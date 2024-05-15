@@ -1,19 +1,26 @@
 <script setup></script>
 
 <template>
-  <div>
-    <v-card class="d-flex" variant="text" id="profile" min-height="180">
-      <v-card-item>
-        <img src="/src/assets/profile.png" />
-      </v-card-item>
-      <div>
-        <v-card-title>이름</v-card-title>
-        <v-card-text class="pt-1 pb-0">가입날짜</v-card-text>
-        <v-card-text class="pt-1 pb-0">이메일</v-card-text>
-        <v-card-item>
-          <v-chip class="mr-1">카드</v-chip>
-          <v-chip class="mr-1">카드</v-chip>
-        </v-card-item>
+  <div id="profile">
+    <v-card
+      class="d-flex align-center"
+      variant="text"
+      min-height="180"
+      min-width="500px"
+      width="100%"
+    >
+      <div class="d-flex ml-2">
+        <img src="/src/assets/profile.png" width="150px" height="150px" />
+
+        <div class="d-flex flex-column justify-center">
+          <v-card-title class="pb-1">닉네임</v-card-title>
+          <v-card-text class="pb-0">0000.00.00부터 여행 중</v-card-text>
+          <v-card-text class="pt-1 pb-0">이메일</v-card-text>
+          <v-card-item>
+            <v-chip class="mr-1">카드</v-chip>
+            <v-chip class="mr-1">카드</v-chip>
+          </v-card-item>
+        </div>
       </div>
     </v-card>
   </div>
@@ -21,7 +28,9 @@
 
 <style scoped>
 #profile {
-  min-width: 500px;
-  width: 100%;
+  border: 2px solid rgb(245, 245, 245);
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 15px;
 }
 </style>

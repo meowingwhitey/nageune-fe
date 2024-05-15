@@ -3,9 +3,8 @@ import RouteTimeline from "@/components/mypage/RouteTimeline.vue";
 </script>
 
 <template>
-  <div>
-    <v-card class="route-item mr-5 position-relative">
-      <!-- 여행 제목 -->
+  <div class="py-3 px-2">
+    <v-card class="route-item mr-5" position="relative" elevation="5">
       <v-card-title class="text-center font-weight-black mt-3">
         신라 여행
       </v-card-title>
@@ -37,6 +36,6 @@ import RouteTimeline from "@/components/mypage/RouteTimeline.vue";
 <style scoped>
 .route-item {
   width: 270px;
-  height: 520px;
+  height: 500px;
 }
 </style>
