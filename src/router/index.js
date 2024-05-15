@@ -3,7 +3,14 @@ import IndexView from "@/views/IndexView.vue";
 import TravelView from "@/views/TravelView.vue";
 import TravelSearchView from "@/views/TravelSearchView.vue";
 import TravelRouteView from "@/views/TravelRouteView.vue";
-import MyPage from "@/views/MyPage.vue";
+import MyPageView from "@/views/MyPageView.vue";
+import LoginView from "@/views/LoginView.vue";
+import SignupView from "@/views/SignupView.vue";
+import MobileView from "@/views/MobileView.vue";
+import MobileMain from "@/components/mobile/MobileMain.vue";
+import MobileMyPage from "@/components/mobile/mypage/MobileMyPage.vue";
+import MobileLogin from "@/components/mobile/MobileLogin.vue";
+import SpotDetail from "@/components/mobile/spot/SpotDetail.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -39,7 +46,44 @@ const router = createRouter({
     {
       path: "/mypage",
       name: "mypage",
-      component: MyPage,
+      component: MyPageView,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginView,
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: SignupView,
+    },
+    {
+      path: "/m",
+      name: "mobile",
+      component: MobileView,
+      children: [
+        {
+          path: "",
+          name: "mobileMain",
+          component: MobileMain,
+        },
+        {
+          path: "spotDetail/:id",
+          name: "SpotDetail",
+          component: SpotDetail,
+        },
+        {
+          path: "mypage",
+          name: "mobileMypage",
+          component: MobileMyPage,
+        },
+        {
+          path: "login",
+          name: "mobileLogin",
+          component: MobileLogin,
+        },
+      ],
     },
   ],
 });
