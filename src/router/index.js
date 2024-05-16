@@ -11,6 +11,8 @@ import MobileMain from "@/components/mobile/MobileMain.vue";
 import MobileMyPage from "@/components/mobile/mypage/MobileMyPage.vue";
 import MobileLogin from "@/components/mobile/MobileLogin.vue";
 import SpotDetail from "@/components/mobile/spot/SpotDetail.vue";
+import { useUserStore } from "@/stores/userStore";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -47,6 +49,14 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MyPageView,
+      beforeEnter: (to, from) => {
+        //로그인 했을 때만 접근 가능
+        const userStore = useUserStore();
+        if (!userStore.isLogin) {
+          console.log("로그인 후 접근 가능한 페이지");
+          return { name: "login" };
+        } else return true;
+      },
     },
     {
       path: "/login",
@@ -86,6 +96,14 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from) => {
+  const userStore = useUserStore();
+  //route 변경 시간 기록
+  // console.log(userStore.lastAccess);
+  userStore.lastAccess = Date.now();
+  console.log("route 변경 시간: ", userStore.lastAccess);
 });
 
 export default router;
