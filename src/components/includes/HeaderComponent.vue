@@ -1,9 +1,21 @@
 <script setup>
 import { RouterLink, useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
+import { onMounted } from "vue";
 const router = useRouter();
+const userStore = useUserStore();
+
+const logout = () => {
+  userStore.userLogout();
+};
+
 const goToMainPage = () => {
   router.push({ name: "index" });
 };
+
+// onMounted(() => {
+//   console.log(userStore.isLogin);
+// });
 </script>
 
 <!-- 로고,  -->
@@ -13,9 +25,21 @@ const goToMainPage = () => {
       <div class="d-flex justify-space-between align-end pt-5 pb-2 bg-white">
         <div class="pl-4 pb-2" @click="goToMainPage"><h3>로고</h3></div>
         <div>
-          <RouterLink :to="{ name: 'login' }"
-            ><v-btn variant="plain">로그인</v-btn></RouterLink
-          >
+          <!-- 로그인 했을 때 -->
+          <template v-if="!userStore.isLogin">
+            <RouterLink :to="{ name: 'login' }"
+              ><v-btn variant="plain">로그인</v-btn></RouterLink
+            >
+          </template>
+
+          <!-- 로그인 안 되어 있을 때 -->
+          <template v-else>
+            <v-btn variant="plain" @click="logout">로그아웃</v-btn>
+            <RouterLink :to="{ name: 'mypage' }">
+              <v-btn variant="plain">마이페이지</v-btn>
+            </RouterLink>
+          </template>
+
           <v-btn variant="plain" icon="mdi-menu"></v-btn>
         </div>
       </div>
