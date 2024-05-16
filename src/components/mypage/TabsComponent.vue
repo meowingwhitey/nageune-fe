@@ -3,7 +3,7 @@ import RouteList from "@/components/mypage/RouteList.vue";
 import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
 import { ref } from "vue";
 
-const tab = ref("profile");
+const tab = ref("plan");
 </script>
 
 <template>

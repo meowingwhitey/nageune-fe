@@ -30,7 +30,7 @@ const visible = ref(true);
   <div>
     <v-container class="d-flex flex-column">
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="10" lg="8" class="mx-auto">
           <!-- 수정하기 버튼 -->
           <v-row justify="center" class="mt-1 mb-5">
             <div class="position-relative" @click="changeProfileImg">
@@ -79,8 +79,6 @@ const visible = ref(true);
             density="comfortable"
             prepend-icon="mdi-account"
           ></v-text-field>
-        </v-col>
-        <v-col cols="12" md="6">
           <v-text-field
             label="이메일"
             v-model="userInfo.userEmail"
@@ -123,7 +121,6 @@ const visible = ref(true);
           ></v-text-field>
 
           <v-btn
-            class="ml-auto"
             variant="outlined"
             color="rgb(120, 120, 120)"
             @click="updateProfile"

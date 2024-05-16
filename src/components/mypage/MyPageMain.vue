@@ -5,8 +5,12 @@ import TabsComponent from "@/components/mypage/TabsComponent.vue";
 
 <template>
   <v-container>
-    <ProfileMain />
-    <TabsComponent />
+    <v-row>
+      <v-col class="mx-auto" cols="12" lg="11">
+        <ProfileMain />
+        <TabsComponent />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
