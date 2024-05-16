@@ -1,16 +1,16 @@
 <script setup>
-const seasons = {
-  0: "A",
-  1: "B",
-  2: "C",
-  3: "E",
-  4: "F",
-  5: "G",
-  6: "H",
-  7: "I",
-  8: "J",
-  9: "K",
-  10: "L",
+const eras = {
+  0: "선사시대",
+  1: "석기시대",
+  2: "청동기시대",
+  3: "철기시대",
+  4: "삼한시대",
+  5: "삼국시대",
+  6: "발해/통일신라",
+  7: "고려시대",
+  8: "조선시대",
+  9: "대한제국시대",
+  10: "일제강점기",
 };
 </script>
 
@@ -19,7 +19,7 @@ const seasons = {
     <v-range-slider
       :model-value="[0, 1]"
       :step="1"
-      :ticks="seasons"
+      :ticks="eras"
       thumb-label
       max="10"
       min="0"
