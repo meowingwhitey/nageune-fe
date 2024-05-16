@@ -1,7 +1,16 @@
 <script setup>
 import { ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 
 const visible = ref(false);
+const email = ref("");
+const password = ref("");
+
+const login = () => {
+  userStore.userLogin(email.value, password.value);
+};
 </script>
 
 <template>
@@ -15,14 +24,15 @@ const visible = ref(false);
     </div>
 
     <div class="d-flex flex-column" id="login-box">
-      <div class="text-subtitle-1 text-medium-emphasis">아이디</div>
+      <div class="text-subtitle-1 text-medium-emphasis">이메일</div>
 
       <v-card variant="text">
         <v-text-field
           density="compact"
-          placeholder="아이디"
+          placeholder="이메일"
           prepend-inner-icon="mdi-email-outline"
           variant="outlined"
+          v-model="email"
         ></v-text-field>
 
         <div
@@ -32,7 +42,6 @@ const visible = ref(false);
 
           <a
             class="text-caption text-decoration-none text-green-darken-4"
-            href="#"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -48,16 +57,22 @@ const visible = ref(false);
           prepend-inner-icon="mdi-lock-outline"
           variant="outlined"
           @click:append-inner="visible = !visible"
+          v-model="password"
         ></v-text-field>
 
-        <v-btn class="mb-8" color="green-darken-4" size="large" block>
+        <v-btn
+          class="mb-8"
+          color="green-darken-4"
+          size="large"
+          block
+          @click="login"
+        >
           로그인
         </v-btn>
 
         <v-card-text class="text-center">
           <a
             class="text-grey-darken-2 text-decoration-none"
-            href="#"
             rel="noopener noreferrer"
             target="_blank"
           >

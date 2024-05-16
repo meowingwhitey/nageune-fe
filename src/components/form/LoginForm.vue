@@ -1,12 +1,23 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 
 const router = useRouter();
 const visible = ref(true);
 
+const email = ref("");
+const password = ref("");
+
 const goToSignUp = () => {
   router.push({ name: "signup" });
+};
+
+const login = () => {
+  console.log(email.value, password.value);
+  userStore.userLogin(email.value, password.value);
 };
 </script>
 
@@ -33,6 +44,7 @@ const goToSignUp = () => {
             placeholder="이메일"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
+            v-model="email"
           ></v-text-field>
 
           <div
@@ -56,10 +68,17 @@ const goToSignUp = () => {
             placeholder="비밀번호를 입력해주세요."
             prepend-inner-icon="mdi-lock-outline"
             variant="outlined"
+            v-model="password"
             @click:append-inner="visible = !visible"
           ></v-text-field>
 
-          <v-btn class="mb-8" color="green-darken-4" size="large" block>
+          <v-btn
+            class="mb-8"
+            color="green-darken-4"
+            size="large"
+            block
+            @click="login"
+          >
             로그인
           </v-btn>
 
