@@ -1,8 +1,10 @@
 <script setup>
 import { RouterLink, useRouter } from "vue-router";
 import { ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
 
 const router = useRouter();
+const userStore = useUserStore();
 
 const drawer = ref(false);
 
@@ -53,6 +55,7 @@ const goMypage = () => {
         block
         variant="flat"
         size="large"
+        @click="userStore.userLogout()"
         >로그아웃</v-btn
       >
     </v-navigation-drawer>

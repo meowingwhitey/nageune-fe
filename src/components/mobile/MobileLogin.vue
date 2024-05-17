@@ -40,13 +40,13 @@ const login = () => {
         >
           비밀번호
 
-          <a
+          <!-- <a
             class="text-caption text-decoration-none text-green-darken-4"
             rel="noopener noreferrer"
             target="_blank"
           >
             비밀번호 찾기</a
-          >
+          > -->
         </div>
 
         <v-text-field
