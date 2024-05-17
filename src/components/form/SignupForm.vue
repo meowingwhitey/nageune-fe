@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 
 const userInfo = ref({
-  userEmail: "",
+  email: "",
   password: "",
-  userName: "",
-  userNickName: "",
+  name: "",
+  nickname: "",
 });
 const checkPwd = ref("");
 const visible = ref(true);
@@ -16,17 +19,19 @@ const visibleMsg = ref(false);
 const singup = () => {
   // 빈칸이 있는 경우
   if (
-    userInfo.value.userEmail === "" ||
+    userInfo.value.email === "" ||
     userInfo.value.password === "" ||
-    userInfo.value.userName === "" ||
-    userInfo.value.userNickName === ""
+    userInfo.value.name === "" ||
+    userInfo.value.nickname === ""
   ) {
+    console.log(userInfo.value);
     window.alert("입력하신 내용을 확인해주세요.");
   } else if (visibleMsg.value) {
     window.alert("비밀번호를 확인해주세요.");
   } else {
     //회원가입
     console.log(userInfo.value);
+    userStore.userSignup(userInfo.value);
   }
 };
 
@@ -60,7 +65,7 @@ const checkPwdSame = () => {
               placeholder="이메일"
               prepend-inner-icon="mdi-email-outline"
               rounded="0"
-              v-model="userInfo.userEmail"
+              v-model="userInfo.email"
               hide-details="auto"
               :variant="variant"
             ></v-text-field>
@@ -103,7 +108,7 @@ const checkPwdSame = () => {
               hide-details="auto"
               class="mt-0"
               :variant="variant"
-              v-model="userInfo.userName"
+              v-model="userInfo.name"
             ></v-text-field>
           </div>
 
@@ -117,7 +122,7 @@ const checkPwdSame = () => {
               hide-details="auto"
               class="mt-0"
               :variant="variant"
-              v-model="userInfo.userNickName"
+              v-model="userInfo.nickname"
             ></v-text-field>
           </div>
 
