@@ -28,10 +28,9 @@ export const useTokenStore = defineStore("token", () => {
         //refresh token이 유효
         if (response.status === httpStatusCode.OK) {
           //access token 재발급
-          sessionStorage.setItem(
-            "authorization",
-            response.headers.authorization,
-          );
+          authorization.value = response.headers.authorization;
+
+          userStore.isLogin = true;
           console.log("access token 재발급 완료");
         }
       })

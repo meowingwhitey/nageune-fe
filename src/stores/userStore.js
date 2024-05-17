@@ -4,12 +4,14 @@ import axios from "axios";
 import { useRouter } from "vue-router";
 import { httpStatusCode } from "@/util/http-status";
 import { useTokenStore } from "@/stores/tokenStore.js";
+import { localAxios } from "@/util/axios_interceptor";
 
-const REST_USER_API = `/api/v1/auth`;
+const REST_USER_API = `/auth`;
 
 export const useUserStore = defineStore("user", () => {
   const router = useRouter();
   const tokenStore = useTokenStore();
+  const local = localAxios();
 
   const isLogin = ref(false); //로그인 여부
   const userInfo = ref(null);
@@ -17,11 +19,11 @@ export const useUserStore = defineStore("user", () => {
 
   //로그인
   const userLogin = (email, password) => {
-    axios({
-      method: "POST",
-      url: `${REST_USER_API}/login`,
-      data: { email: email, password: password },
-    })
+    local
+      .post(`${REST_USER_API}/login`, {
+        email: email,
+        password: password,
+      })
       //로그인에 성공했을 경우
       .then((response) => {
         if (response.status === httpStatusCode.OK) {
@@ -50,18 +52,16 @@ export const useUserStore = defineStore("user", () => {
 
   //로그아웃
   const userLogout = () => {
-    axios({
-      method: "POST",
-      url: `${REST_USER_API}/logout`,
-      headers: {
-        Authorization: tokenStore.getAccessToken(),
-      },
-      withCredentials: true,
-    })
+    local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
+    console.log(tokenStore.getAccessToken());
+    local
+      .post(`${REST_USER_API}/logout`, {
+        // withCredentials: true,
+      })
       .then((response) => {
         if (response.status === httpStatusCode.OK) {
           //로그아웃 처리
-
+          console.log("로그아웃 성공");
           isLogin.value = false;
           userInfo.value = null;
           lastAccess.value = null;
@@ -76,7 +76,23 @@ export const useUserStore = defineStore("user", () => {
   };
 
   //회원가입
-  const userSignup = (info) => {};
+  const userSignup = (info) => {
+    local
+      .post(`${REST_USER_API}/signup`, {
+        email: info.email,
+        password: info.password,
+        name: info.name,
+        nickname: info.nickname,
+      })
+      .then((response) => {
+        console.log(response);
+        console.log("회원가입 성공");
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("회원가입 실패");
+      });
+  };
 
   //로그인 유저 정보 가져오기
   const getUserInfo = () => {
@@ -94,15 +110,21 @@ export const useUserStore = defineStore("user", () => {
 
   //회원정보 수정
   const updateUserInfo = (info) => {
-    axios({
-      method: "POST",
-      url: `${REST_USER_API}/edit`,
-    })
-      .then((response) => {
-        //수정 성공
+    local
+      .post(`${REST_USER_API}/edit`, {
+        email: info.email,
+        password: info.password,
+        name: info.name,
+        nickname: info.nickname,
       })
-      .catch((response) => {
+      .then((response) => {
+        console.log(response); //수정 성공
+        console.log("수정 완료");
+      })
+      .catch((error) => {
         //수정 실패
+        console.log(error);
+        console.log("수정 실패");
       });
   };
 
@@ -112,5 +134,7 @@ export const useUserStore = defineStore("user", () => {
     lastAccess,
     userLogin,
     userLogout,
+    userSignup,
+    updateUserInfo,
   };
 });
