@@ -12,33 +12,33 @@ export const useTokenStore = defineStore("token", () => {
   const authorization = ref(null); //access token
 
   //access token 재발급 요청
-  const accessTokenRegenerate = () => {
-    axios({
-      method: "GET",
-      url: `${REST_USER_API}/refresh`,
-      withCredentials: true, // cookie(refresh token) 전송
-      params: {
-        type: "access",
-      },
-      headers: {
-        Authorization: authorization.value,
-      },
-    })
-      .then((response) => {
-        //refresh token이 유효
-        if (response.status === httpStatusCode.OK) {
-          //access token 재발급
-          authorization.value = response.headers.authorization;
-
-          userStore.isLogin = true;
-          console.log("access token 재발급 완료");
-        }
-      })
-      .catch((err) => {
-        //refresh token이 만료 -> 로그아웃
-        console.log(err);
-        userStore.userLogout();
+  const accessTokenRegenerate = async () => {
+    try {
+      const response = await axios({
+        method: "GET",
+        url: `${REST_USER_API}/refresh`,
+        withCredentials: true, // cookie(refresh token) 전송
+        params: {
+          type: "access",
+        },
+        headers: {
+          Authorization: authorization.value,
+        },
       });
+      const userId = response.data.userId;
+      if (response.status === httpStatusCode.OK) {
+        //access token 재발급
+        authorization.value = response.headers.authorization;
+
+        userStore.isLogin = true;
+        console.log("access token 재발급 완료");
+      }
+    } catch (err) {
+      //refresh token이 만료 -> 로그아웃
+      console.log("리프래시토큰만료");
+      console.log(err);
+      await userStore.userLogout();
+    }
   };
 
   //refresh token 재발급 요청
