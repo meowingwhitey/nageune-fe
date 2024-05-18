@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup>
+import { useUserStore } from "@/stores/userStore";
+import { ref } from "vue";
+
+const userStore = useUserStore();
+</script>
 
 <template>
   <div id="profile">
@@ -10,12 +15,21 @@
       width="100%"
     >
       <div class="d-flex ml-2">
-        <img src="/src/assets/profile.png" width="150px" height="150px" />
+        <template v-if="userStore.userInfo.img === null">
+          <img src="/src/assets/profile.png" width="150px" height="150px" />
+        </template>
+        <template v-else>
+          <img :src="userStore.userInfo.img" width="150px" height="150px" />
+        </template>
 
         <div class="d-flex flex-column justify-center">
-          <v-card-title class="pb-1">닉네임</v-card-title>
+          <v-card-title class="pb-1">
+            {{ userStore.userInfo.nickname }}님
+          </v-card-title>
           <v-card-text class="pb-0">0000.00.00부터 여행 중</v-card-text>
-          <v-card-text class="pt-1 pb-0">이메일</v-card-text>
+          <v-card-text class="pt-1 pb-0">
+            {{ userStore.userInfo.email }}
+          </v-card-text>
           <v-card-item>
             <v-chip class="mr-1">카드</v-chip>
             <v-chip class="mr-1">카드</v-chip>

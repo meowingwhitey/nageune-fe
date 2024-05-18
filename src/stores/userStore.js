@@ -14,6 +14,7 @@ export const useUserStore = defineStore("user", () => {
   const local = localAxios();
 
   const isLogin = ref(false); //로그인 여부
+  const isAdmin = ref(false); //어드민 여부
   const userInfo = ref(null);
   const lastAccess = ref(null); //최근 route 변경 시간 저장
 
@@ -51,10 +52,10 @@ export const useUserStore = defineStore("user", () => {
   };
 
   //로그아웃
-  const userLogout = () => {
+  const userLogout = async () => {
     local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
     console.log(tokenStore.getAccessToken());
-    local
+    await local
       .post(`${REST_USER_API}/logout`, {
         // withCredentials: true,
       })
@@ -71,6 +72,10 @@ export const useUserStore = defineStore("user", () => {
         }
       })
       .catch((err) => {
+        isLogin.value = false;
+        userInfo.value = null;
+        lastAccess.value = null;
+        tokenStore.setAccessToken(null);
         console.log(err);
       });
   };
@@ -96,15 +101,23 @@ export const useUserStore = defineStore("user", () => {
 
   //로그인 유저 정보 가져오기
   const getUserInfo = () => {
-    axios({
-      method: "POST",
-      url: `${REST_USER_API}`,
-    })
+    local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
+    local
+      .get(`${REST_USER_API}/info`)
       .then((response) => {
         //유저정보 가져오기
+        // console.log(response.data);
+        console.log("사용자 정보 가져오기 성공");
+        userInfo.value = {
+          email: response.data.email,
+          name: response.data.name,
+          nickname: response.data.nickname,
+          img: response.data.img,
+        };
       })
       .catch((err) => {
         console.log(err);
+        console.log("사용자 정보 불러오기 실패");
       });
   };
 
@@ -116,6 +129,7 @@ export const useUserStore = defineStore("user", () => {
         password: info.password,
         name: info.name,
         nickname: info.nickname,
+        img: info.img,
       })
       .then((response) => {
         console.log(response); //수정 성공
@@ -136,5 +150,6 @@ export const useUserStore = defineStore("user", () => {
     userLogout,
     userSignup,
     updateUserInfo,
+    getUserInfo,
   };
 });

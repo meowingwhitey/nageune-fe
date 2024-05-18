@@ -1,6 +1,14 @@
 <script setup>
 import ProfileMain from "@/components/mypage/ProfileMain.vue";
 import TabsComponent from "@/components/mypage/TabsComponent.vue";
+import { useUserStore } from "@/stores/userStore";
+import { onMounted } from "vue";
+
+const userStore = useUserStore();
+
+onMounted(() => {
+  userStore.getUserInfo();
+});
 </script>
 
 <template>

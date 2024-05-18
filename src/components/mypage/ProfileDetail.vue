@@ -1,25 +1,48 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
+
+const userStore = useUserStore();
 
 // DB에서 가져오기
 const userInfo = ref({
-  userId: "abc",
   password: "",
-  userEmail: "abc@ssafy.com",
-  userNickname: "닉네임",
-  userName: "이름",
-  joinDate: "2024-05-23",
+  email: userStore.userInfo.email,
+  nickname: userStore.userInfo.nickname,
+  name: userStore.userInfo.name,
+  joinDate: "",
+  img: userStore.userInfo.img,
 });
 
 const pwdCheck = ref("");
 
 const updateProfile = () => {
-  // DB 수정
-  console.log(userInfo.value);
+  //비밀번호 변경
+  if (
+    userInfo.value.password === "" ||
+    userInfo.value.password !== pwdCheck.value
+  ) {
+    window.alert("비밀번호를 확인해주세요.");
+  } else {
+    // DB 수정
+    console.log(userInfo.value);
+    userStore.updateUserInfo(userInfo.value);
+
+    window.alert("수정되었습니다.");
+    userInfo.value.password = "";
+    pwdCheck.value = "";
+  }
 };
 
-const changeProfileImg = () => {
+const changeProfileImg = (event) => {
   console.log("프로필 이미지 변경하기");
+  const file = event.target.files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    userInfo.value.img = e.target.result;
+    // console.log(userInfo.value.img);
+  };
+  reader.readAsDataURL(file);
 };
 
 const visible = ref(true);
@@ -33,40 +56,60 @@ const visible = ref(true);
         <v-col cols="12" md="10" lg="8" class="mx-auto">
           <!-- 수정하기 버튼 -->
           <v-row justify="center" class="mt-1 mb-5">
-            <div class="position-relative" @click="changeProfileImg">
-              <p
-                class="position-absolute font-weight-bold"
-                style="
-                  top: 50%;
-                  left: 50%;
-                  transform: translate(-50%, -50%);
-                  color: white;
-                  z-index: 1;
-                "
-              >
-                변경하기
-              </p>
-              <div
-                class="position-absolute rounded-lg"
-                style="
-                  width: 150px;
-                  height: 150px;
-                  background-color: rgba(0, 0, 0, 0.5);
-                "
-              ></div>
-              <img
-                src="@/assets/profile.png"
-                width="150px"
-                height="150px"
-                class="rounded-lg"
-              />
-              <div></div>
-            </div>
+            <label id="input-file-btn" for="input-file" class="text-center">
+              <div class="position-relative">
+                <p
+                  class="position-absolute font-weight-bold"
+                  style="
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                    z-index: 1;
+                  "
+                >
+                  변경하기
+                </p>
+                <div
+                  class="position-absolute rounded-lg"
+                  style="
+                    width: 150px;
+                    height: 150px;
+                    background-color: rgba(0, 0, 0, 0.5);
+                  "
+                ></div>
+                <!-- 등록된 프로필 이미지가 없는 경우 -->
+                <template v-if="userInfo.img === null">
+                  <img
+                    src="@/assets/profile.png"
+                    width="150px"
+                    height="150px"
+                    class="rounded-lg"
+                  />
+                </template>
+                <!-- 등록된 프로필 이미지가 있는 경우 -->
+                <template v-else>
+                  <img
+                    :src="userInfo.img"
+                    width="150px"
+                    height="150px"
+                    class="rounded-lg"
+                  />
+                </template>
+              </div>
+            </label>
+            <input
+              id="input-file"
+              type="file"
+              accept="image/*"
+              @change="changeProfileImg"
+              v-show="false"
+            />
           </v-row>
 
           <v-text-field
             label="닉네임"
-            v-model="userInfo.userNickname"
+            v-model="userInfo.nickname"
             variant="outlined"
             density="comfortable"
             prepend-icon="mdi-clipboard-account"
@@ -74,14 +117,14 @@ const visible = ref(true);
 
           <v-text-field
             label="이름"
-            v-model="userInfo.Name"
+            v-model="userInfo.name"
             variant="outlined"
             density="comfortable"
             prepend-icon="mdi-account"
           ></v-text-field>
           <v-text-field
             label="이메일"
-            v-model="userInfo.userEmail"
+            v-model="userInfo.email"
             variant="outlined"
             disabled
             density="comfortable"
