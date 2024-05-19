@@ -35,11 +35,6 @@ const api = async (keyword, pageSize = 15) => {
   for (let i = 0; i < data.length; i++) {
     displayMarker(data[i]);
     bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
-    // const categoryIdx = categoryItemList.codes.indexOf(
-    //   data[i].category_group_code,
-    // );
-    // categoryCheckList.value[categoryIdx] = true;
-    // categoryExistList.value[categoryIdx] = true;
   }
   // 현재 검색 결과가 최대인지 확인용
   isEnd.value = json.meta.is_end;
@@ -87,19 +82,15 @@ const displayMarker = (place) => {
   });
 
   // 마커에 클릭이벤트를 등록합니다
-  kakao.maps.event.addListener(marker, "click", function () {
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-    if (place.isInfoWindowOpen) {
-      infowindow.close();
-      place.isInfoWindowOpen = false;
-      return;
-    }
-    // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-    infowindow.setContent(
-      '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>",
-    );
-    infowindow.open(kakaoMap.value, marker);
-    place.isInfoWindowOpen = true;
+  const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+  infowindow.setContent(
+    '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>",
+  );
+  kakao.maps.event.addListener(marker, "mouseover", function () {
+    infowindow.open(window.kakaoMap, marker);
+  });
+  kakao.maps.event.addListener(marker, "mouseout", function () {
+    infowindow.close();
   });
 };
 
@@ -166,15 +157,6 @@ console.log(props);
   >
     <v-icon icon="mdi-magnify"></v-icon>
     <div>장소를 검색해주세요!</div>
-  </v-card>
-
-  <!-- 카카오맵 로딩 전 -->
-  <v-card
-    id="place-search-list"
-    class="overflow-y-auto d-flex justify-center align-center flex-column"
-    v-if="travelStore.kakaoMap === undefined"
-  >
-    <v-progress-circular color="primary" indeterminate></v-progress-circular>
   </v-card>
 </template>
 

@@ -7,10 +7,15 @@
 import { onBeforeMount, ref } from "vue";
 import { RouterView } from "vue-router";
 import { useTravelStore } from "@/stores/travelStore.js";
+import { useSearchStore } from "@/stores/searchStore.js";
+
 const apiKey = "f40808c2f23c76e300a5745587df8caa";
 
 const isKakaoMapLoaded = ref(false); // 카카오맵 등록을 확인하는 ref
+
 const travelStore = useTravelStore();
+const searchStore = useSearchStore();
+
 onBeforeMount(() => {
   // Global 객체로 kakao api가 등록되었으면 지도 초기화
   if (window.kakao && window.kakao.maps) {
@@ -38,6 +43,19 @@ const initMap = () => {
   window.kakaoMap = new kakao.maps.Map(container, options);
   travelStore.kakaoMap = window.kakaoMap;
   isKakaoMapLoaded.value = true;
+
+  // 지도의 현재 영역을 얻어옵니다
+  const bounds = travelStore.kakaoMap.getBounds();
+  // 영역의 남서쪽 좌표를 얻어옵니다
+  const swLatLng = bounds.getSouthWest();
+
+  // 영역의 북동쪽 좌표를 얻어옵니다
+  const neLatLng = bounds.getNorthEast();
+
+  searchStore.locationRangeCoord.latStart = swLatLng.getLat();
+  searchStore.locationRangeCoord.latEnd = neLatLng.getLat();
+  searchStore.locationRangeCoord.lngStart = swLatLng.getLng();
+  searchStore.locationRangeCoord.lngEnd = neLatLng.getLng();
 };
 
 import MapUserBtn from "@/components/travel/MapUserBtn.vue";

@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps(["search", "keyword"]);
 
-import AgeRangeBar from "@/components/travel/heritage/AgeRangeBar.vue";
+import EraRangeBar from "@/components/travel/heritage/EraRangeBar.vue";
 import HeritageSearchMenu from "@/components/travel/heritage/HeritageSearchMenu.vue";
 
 import CategoryChipList from "@/components/travel/place/CategoryChipList.vue";
@@ -15,13 +15,10 @@ watch(props, () => {
 
 <template>
   <!-- 검색 타입은 query 값으로 받음 -->
-  <AgeRangeBar class="option-bar" v-if="props.search === 'heritage'" />
-  <HeritageSearchMenu
-    class="search-menu"
-    v-if="props.search === 'heritage'"
-    :keyword="props.keyword"
-  />
-
+  <template v-if="props.search === 'heritage'">
+    <EraRangeBar class="option-bar" />
+    <HeritageSearchMenu class="search-menu" :keyword="props.keyword" />
+  </template>
   <!-- <CategoryChipList class="option-bar" v-if="route.query.search === 'place'" /> -->
   <PlaceSearchMenu
     class="search-menu"
