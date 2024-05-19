@@ -18,12 +18,19 @@ const goToMainPage = () => {
 // });
 </script>
 
-<!-- 로고,  -->
 <template>
   <div id="header" class="position-sticky top-0">
     <v-container class="pa-0">
-      <div class="d-flex justify-space-between align-end pt-5 pb-2 bg-white">
-        <div class="pl-4 pb-2" @click="goToMainPage"><h3>로고</h3></div>
+      <div class="d-flex justify-end mt-1 bg-white">
+        <RouterLink :to="{ name: 'board', params: { boardType: 'notice' } }">
+          <span class="header-text">공지사항</span>
+        </RouterLink>
+        <RouterLink :to="{ name: 'manual' }">
+          <span class="ml-3 mr-2 header-text">사용방법</span>
+        </RouterLink>
+      </div>
+      <div class="d-flex justify-space-between align-end pb-2 bg-white">
+        <div class="pl-4 pb-2" @click="goToMainPage"><h3>나그네</h3></div>
         <div>
           <!-- 로그인 했을 때 -->
           <template v-if="!userStore.isLogin">
@@ -34,10 +41,10 @@ const goToMainPage = () => {
 
           <!-- 로그인 안 되어 있을 때 -->
           <template v-else>
-            <v-btn variant="plain" @click="logout">로그아웃</v-btn>
             <RouterLink :to="{ name: 'mypage' }">
               <v-btn variant="plain">마이페이지</v-btn>
             </RouterLink>
+            <v-btn variant="plain" @click="logout">로그아웃</v-btn>
           </template>
 
           <v-btn variant="plain" icon="mdi-menu"></v-btn>
@@ -61,5 +68,14 @@ const goToMainPage = () => {
 a {
   text-decoration: none;
   color: #000;
+}
+
+a :hover {
+  text-decoration: underline;
+}
+
+.header-text {
+  font-size: x-small;
+  color: #8a8a8a;
 }
 </style>
