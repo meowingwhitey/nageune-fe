@@ -25,8 +25,8 @@ const eraRange = ref([0, 10]);
 watch(eraRange, () => {
   console.log(eraRange.value);
   //store.resetMarker();
-  store.eraRangeCodes.start = eraRange.value[0];
-  store.eraRangeCodes.end = eraRange.value[1];
+  store.eraRangeCodes.start = eraCodes[eraRange.value[0]];
+  store.eraRangeCodes.end = eraCodes[eraRange.value[1]];
 });
 </script>
 
