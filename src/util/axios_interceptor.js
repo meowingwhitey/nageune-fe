@@ -48,7 +48,7 @@ const localAxios = () => {
       } = error;
 
       //access token 재발급
-      if (status == httpStatusCode.BADREQUEST) {
+      if (status == httpStatusCode.UNAUTHORIZED) {
         // 요청 상태 저장
         const originalRequest = config;
 

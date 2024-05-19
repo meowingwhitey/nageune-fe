@@ -15,7 +15,12 @@ export const useUserStore = defineStore("user", () => {
 
   const isLogin = ref(false); //로그인 여부
   const isAdmin = ref(false); //어드민 여부
-  const userInfo = ref(null);
+  const userInfo = ref({
+    email: "",
+    nickname: "",
+    name: "",
+    img: "",
+  });
   const lastAccess = ref(null); //최근 route 변경 시간 저장
 
   //로그인
@@ -38,6 +43,8 @@ export const useUserStore = defineStore("user", () => {
 
           isLogin.value = true; //로그인 했다고 체크
           lastAccess.value = Date.now(); //시간 체크
+
+          getUserInfo();
 
           router.push({ name: "index" });
         }
@@ -70,6 +77,7 @@ export const useUserStore = defineStore("user", () => {
         } else {
           console.log("유저 정보 없음");
         }
+        router.push({ name: "index" });
       })
       .catch((err) => {
         isLogin.value = false;
@@ -77,6 +85,7 @@ export const useUserStore = defineStore("user", () => {
         lastAccess.value = null;
         tokenStore.setAccessToken(null);
         console.log(err);
+        router.push({ name: "index" });
       });
   };
 
@@ -101,10 +110,9 @@ export const useUserStore = defineStore("user", () => {
 
   //로그인 유저 정보 가져오기
   const getUserInfo = () => {
-    local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
-    local
-      .get(`${REST_USER_API}/info`)
-      .then((response) => {
+    try {
+      local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
+      local.get(`${REST_USER_API}/info`).then((response) => {
         //유저정보 가져오기
         // console.log(response.data);
         console.log("사용자 정보 가져오기 성공");
@@ -112,13 +120,16 @@ export const useUserStore = defineStore("user", () => {
           email: response.data.email,
           name: response.data.name,
           nickname: response.data.nickname,
-          img: response.data.img,
+          img:
+            response.data.img !== null
+              ? response.data.img
+              : "/src/assets/profile.png",
         };
-      })
-      .catch((err) => {
-        console.log(err);
-        console.log("사용자 정보 불러오기 실패");
       });
+    } catch (err) {
+      console.log(err);
+      console.log("사용자 정보 불러오기 실패");
+    }
   };
 
   //회원정보 수정

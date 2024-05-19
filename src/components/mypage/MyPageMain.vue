@@ -2,12 +2,17 @@
 import ProfileMain from "@/components/mypage/ProfileMain.vue";
 import TabsComponent from "@/components/mypage/TabsComponent.vue";
 import { useUserStore } from "@/stores/userStore";
-import { onMounted } from "vue";
+import { onBeforeUpdate, onMounted } from "vue";
 
 const userStore = useUserStore();
 
-onMounted(() => {
-  userStore.getUserInfo();
+onMounted(async () => {
+  console.log("마이페이지접속");
+  await userStore.getUserInfo();
+});
+
+onBeforeUpdate(async () => {
+  await userStore.getUserInfo();
 });
 </script>
 
@@ -15,7 +20,7 @@ onMounted(() => {
   <v-container>
     <v-row>
       <v-col class="mx-auto" cols="12" lg="11">
-        <ProfileMain />
+        <ProfileMain :userInfo="userStore.userInfo" />
         <TabsComponent />
       </v-col>
     </v-row>

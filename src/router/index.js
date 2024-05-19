@@ -12,6 +12,12 @@ import MobileMyPage from "@/components/mobile/mypage/MobileMyPage.vue";
 import MobileLogin from "@/components/mobile/MobileLogin.vue";
 import SpotDetail from "@/components/mobile/spot/SpotDetail.vue";
 import { useUserStore } from "@/stores/userStore";
+import { useTokenStore } from "@/stores/tokenStore";
+import ArticleDetail from "@/components/board/ArticleDetail.vue";
+import BoardView from "@/views/BoardView.vue";
+import ManualView from "@/views/ManualView.vue";
+import ArticleView from "@/views/ArticleView.vue";
+import ArticleEditor from "@/components/board/ArticleEditor.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,13 +55,22 @@ const router = createRouter({
       path: "/mypage",
       name: "mypage",
       component: MyPageView,
-      beforeEnter: (to, from) => {
+      beforeEnter: async (to, from) => {
         //로그인 했을 때만 접근 가능
         const userStore = useUserStore();
+        const tokenStore = useTokenStore();
+
+        // await tokenStore.accessTokenRegenerate();
+
+        // console.log(userStore.isLogin ? "true" : "false");
+
         if (!userStore.isLogin) {
           console.log("로그인 후 접근 가능한 페이지");
           return { name: "login" };
-        } else return true;
+        }
+
+        // userStore.getUserInfo();
+        return true;
       },
     },
     {
@@ -87,6 +102,23 @@ const router = createRouter({
           path: "mypage",
           name: "mobileMypage",
           component: MobileMyPage,
+          beforeEnter: async (to, from) => {
+            //로그인 했을 때만 접근 가능
+            const userStore = useUserStore();
+            const tokenStore = useTokenStore();
+
+            // await tokenStore.accessTokenRegenerate();
+
+            // console.log(userStore.isLogin ? "true" : "false");
+
+            if (!userStore.isLogin) {
+              console.log("로그인 후 접근 가능한 페이지");
+              return { name: "mobileLogin" };
+            }
+
+            // userStore.getUserInfo();
+            return true;
+          },
         },
         {
           path: "login",
@@ -98,12 +130,16 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to, from) => {
+router.beforeEach(async (to, from) => {
   const userStore = useUserStore();
   //route 변경 시간 기록
   // console.log(userStore.lastAccess);
   userStore.lastAccess = Date.now();
   console.log("route 변경 시간: ", userStore.lastAccess);
+
+  //access token이 없는 경우에만 재생성 요청
+  const tokenStore = useTokenStore();
+  if (!tokenStore.getAccessToken()) await tokenStore.accessTokenRegenerate();
 });
 
 export default router;

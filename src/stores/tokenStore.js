@@ -37,7 +37,7 @@ export const useTokenStore = defineStore("token", () => {
       //refresh token이 만료 -> 로그아웃
       console.log("리프래시토큰만료");
       console.log(err);
-      await userStore.userLogout();
+      if (userStore.isLogin) await userStore.userLogout();
     }
   };
 
