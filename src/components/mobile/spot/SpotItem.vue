@@ -3,12 +3,11 @@ import { ref } from "vue";
 import SpotDialog from "@/components/mobile/spot/SpotDialog.vue";
 import VChip from "@/components/mobile/spot/VChip.vue";
 
-const spot = {
-  id: 1,
-  title: "진흥왕 순수비",
-  age: ["신라", "6세기 말"],
-  address: "서울 용산구 서빙고로 137, 국립중앙박물관(용산동6가)",
-};
+defineProps({
+  spot: Object,
+});
+
+const age = ref(["신라", "6세기 말"]);
 
 const dialog = ref(false);
 const closeDialog = () => {
@@ -26,10 +25,10 @@ const closeDialog = () => {
       <div>
         <div>
           <div class="mx-3 mt-3 mb-1 font-weight-bold">
-            {{ spot.title }}
+            {{ spot.name }}
           </div>
           <div>
-            <VChip v-for="text in spot.age" :text="text" class="ml-2" />
+            <VChip v-for="text in age" :text="text" class="ml-2" />
           </div>
         </div>
 
@@ -45,7 +44,7 @@ const closeDialog = () => {
       </div>
     </v-card>
   </v-col>
-  <SpotDialog v-model="dialog" @close-dialog="closeDialog" />
+  <SpotDialog v-model="dialog" @close-dialog="closeDialog" :spot="spot" />
 </template>
 
 <style scoped></style>

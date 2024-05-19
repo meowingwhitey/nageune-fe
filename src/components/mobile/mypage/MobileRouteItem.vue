@@ -5,11 +5,11 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 
 const props = defineProps({
-  routeId: Number,
+  plan: Object,
 });
 
 const goRouteDetail = () => {
-  router.push({ name: "SpotDetail", params: { id: props.routeId } });
+  router.push({ name: "SpotDetail", params: { id: props.plan.id } });
 };
 </script>
 
@@ -22,9 +22,12 @@ const goRouteDetail = () => {
       @click="goRouteDetail"
     >
       <div class="mr-auto ml-5">
-        <div class="route-title">여행 이름</div>
-        <div class="route-duration mb-2">기간</div>
-        <VChip text="태그" />
+        <div class="route-title">{{ plan.title }}</div>
+        <div class="route-duration mb-2">
+          {{ plan.route[0].date }} ~
+          {{ plan.route[plan.route.length - 1].date }}
+        </div>
+        <VChip v-for="chip in plan.chips" :text="chip" class="mr-1" />
       </div>
       <button class="ml-auto mr-5 pa-3">상세보기</button>
     </v-card>

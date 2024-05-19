@@ -2,6 +2,14 @@
 import { ref } from "vue";
 import axios from "axios";
 import ExifReader from "exifreader";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const tripId = ref(route.params.id);
+
+const props = defineProps({
+  spot: Object,
+});
 
 const REST_API_KEY = "583e17c3f8ed87c625a3162d0fdcc29b";
 
@@ -10,9 +18,13 @@ const address = ref(null); //받아올 주소
 const msg = ref(null); //안내 메세지
 const coordinate = ref(null);
 
+const btnDisable = ref(true);
+
 const emit = defineEmits(["closeDialog"]);
 
 const closeDialog = () => {
+  // 서버로 사진 전송
+
   emit("closeDialog");
 };
 
@@ -24,7 +36,7 @@ const handleImageUpload = (event) => {
   const reader = new FileReader();
   reader.onload = (e) => {
     image.value = e.target.result;
-    console.log(image.value);
+    // console.log(image.value);
     //주소 가져오기
     getLocation(file);
   };
@@ -50,6 +62,22 @@ const getLocation = async (file) => {
 
     //좌표->주소 변환
     getAddress(lat, lng);
+    const distance = haversineDistance(
+      lat,
+      lng,
+      props.spot.lat,
+      props.spot.long,
+    );
+
+    console.log(distance + "m");
+
+    //100m 이내에서만 인증 가능
+    if (distance <= 100) {
+      console.log("인증완료");
+      btnDisable.value = false;
+    } else {
+      console.log("인증불가");
+    }
   } catch (error) {
     msg.value = "위치 정보가 존재하지 않습니다.";
     console.log(error);
@@ -64,7 +92,7 @@ const getAddress = (lat, lng) => {
         lng +
         "&y=" +
         lat,
-      { headers: { Authorization: `KakaoAK ${REST_API_KEY}` } }
+      { headers: { Authorization: `KakaoAK ${REST_API_KEY}` } },
     )
     .then((data) => {
       //도로명 주소가 있으면 도로명 주소를 받아옴
@@ -88,6 +116,26 @@ const getAddress = (lat, lng) => {
     .catch(() => {
       console.log("실패");
     });
+};
+
+// 거리구하기
+const haversineDistance = (lat1, lon1, lat2, lon2) => {
+  const toRadians = (degrees) => degrees * (Math.PI / 180);
+
+  const R = 6371000; // 지구의 반지름 (단위: 미터)
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) *
+      Math.cos(toRadians(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const distance = R * c; // 거리 계산
+
+  return distance;
 };
 </script>
 
@@ -133,7 +181,12 @@ const getAddress = (lat, lng) => {
       </v-card-item>
 
       <template v-slot:actions>
-        <v-btn class="ms-auto" text="등록하기" @click="closeDialog"></v-btn>
+        <v-btn
+          class="ms-auto"
+          text="사진 등록하기"
+          @click="closeDialog"
+          :disabled="btnDisable"
+        ></v-btn>
       </template>
     </v-card>
   </v-dialog>
