@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const userStore = useUserStore();
 
 // DB에서 가져오기
@@ -31,6 +33,8 @@ const updateProfile = () => {
     window.alert("수정되었습니다.");
     userInfo.value.password = "";
     pwdCheck.value = "";
+
+    router.go(0);
   }
 };
 

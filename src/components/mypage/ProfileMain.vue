@@ -1,8 +1,9 @@
 <script setup>
 import { useUserStore } from "@/stores/userStore";
-import { ref } from "vue";
 
-const userStore = useUserStore();
+defineProps({
+  userInfo: Object,
+});
 </script>
 
 <template>
@@ -15,20 +16,13 @@ const userStore = useUserStore();
       width="100%"
     >
       <div class="d-flex ml-2">
-        <template v-if="userStore.userInfo.img === null">
-          <img src="/src/assets/profile.png" width="150px" height="150px" />
-        </template>
-        <template v-else>
-          <img :src="userStore.userInfo.img" width="150px" height="150px" />
-        </template>
+        <img :src="userInfo.img" width="150px" height="150px" />
 
         <div class="d-flex flex-column justify-center">
-          <v-card-title class="pb-1">
-            {{ userStore.userInfo.nickname }}님
-          </v-card-title>
+          <v-card-title class="pb-1"> {{ userInfo.nickname }}님 </v-card-title>
           <v-card-text class="pb-0">0000.00.00부터 여행 중</v-card-text>
           <v-card-text class="pt-1 pb-0">
-            {{ userStore.userInfo.email }}
+            {{ userInfo.email }}
           </v-card-text>
           <v-card-item>
             <v-chip class="mr-1">카드</v-chip>

@@ -1,7 +1,22 @@
 <script setup>
 import MobileRouteItem from "@/components/mobile/mypage/MobileRouteItem.vue";
-import MobileMyPageProfileDetail from "@/components/mobile/mypage/MobileMyPageProfileDetail.vue";
+import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
 import { ref } from "vue";
+import { useUserStore } from "@/stores/userStore";
+import { usePlanStore } from "@/stores/planStore";
+import { onBeforeUpdate, onMounted } from "vue";
+
+const userStore = useUserStore();
+const planStore = usePlanStore();
+
+onMounted(async () => {
+  console.log("마이페이지접속");
+  await userStore.getUserInfo();
+});
+
+// onBeforeUpdate(async () => {
+//   await userStore.getUserInfo();
+// });
 
 const tab = ref("plans");
 </script>
@@ -9,11 +24,14 @@ const tab = ref("plans");
 <template>
   <v-card class="d-flex align-end mt-9 mb-6" variant="flat">
     <!-- 프로필 이미지 -->
-    <div id="profile-image" class="ml-5 mr-2"></div>
+    <img :src="userStore.userInfo.img" id="profile-image" class="ml-5 mr-2" />
     <div class="ml-2">
       <!-- 닉네임, 이메일, 가입날짜 출력 -->
-      <div class="mb-1"><span class="font-weight-bold">닉네임</span>님</div>
-      <div class="profile-text">이메일@ssafy.com</div>
+      <div class="mb-1">
+        <span class="font-weight-bold">{{ userStore.userInfo.nickname }}</span
+        >님
+      </div>
+      <div class="profile-text">{{ userStore.userInfo.email }}</div>
       <div class="profile-text mb-1">2024.05.10부터 여행 중</div>
     </div>
   </v-card>
@@ -35,15 +53,17 @@ const tab = ref("plans");
     <v-tabs-window-item value="plans">
       <!-- 조건 검색 필요? -->
       <!-- 경로 아이디 함께 보내기 -->
-      <MobileRouteItem v-for="i in 3" :routeId="i" />
+      <MobileRouteItem
+        v-for="plan in planStore.planList"
+        :key="plan.id"
+        :plan="plan"
+      />
       <div class="text-center mt-10">
         생성 및 수정은 pc버전에서만 가능하다는 메세지
       </div>
     </v-tabs-window-item>
     <v-tabs-window-item value="cards">여행 카드</v-tabs-window-item>
-    <v-tabs-window-item value="profile"
-      ><MobileMyPageProfileDetail
-    /></v-tabs-window-item>
+    <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
   </v-tabs-window>
 </template>
 
@@ -51,7 +71,6 @@ const tab = ref("plans");
 #profile-image {
   width: 100px;
   height: 100px;
-  background-color: #1b5e20;
   border-radius: 10px;
 }
 
