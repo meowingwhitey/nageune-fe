@@ -32,13 +32,13 @@ export const useSearchStore = defineStore("searchStore", () => {
     return data.results;
   };
 
-  const markerList = ref([]);
+  const markerList = [];
 
   const resetMarker = () => {
-    markerList.value.forEach((marker) => {
+    markerList.forEach((marker) => {
       marker.setMap(null);
     });
-    markerList.value = [];
+    markerList = [];
   };
 
   const drawMarker = async () => {
