@@ -1,6 +1,7 @@
 <script setup>
 import RouteList from "@/components/mypage/RouteList.vue";
 import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
+import LastTripList from "@/components/mypage/LastTripList.vue";
 import { ref } from "vue";
 
 const tab = ref("plan");
@@ -11,7 +12,7 @@ const tab = ref("plan");
     <v-tabs v-model="tab">
       <v-tab value="plan"> 여행계획 </v-tab>
       <v-tab value="past-plan"> 지난여행 </v-tab>
-      <v-tab value="card"> 카드 </v-tab>
+      <v-tab value="card"> 여행카드 </v-tab>
       <v-tab value="profile"> 회원정보 </v-tab>
     </v-tabs>
 
@@ -19,8 +20,10 @@ const tab = ref("plan");
       <v-tabs-window-item value="plan">
         <RouteList />
       </v-tabs-window-item>
-      <v-tabs-window-item value="past-plan">지난여행</v-tabs-window-item>
-      <v-tabs-window-item value="card">카드</v-tabs-window-item>
+      <v-tabs-window-item value="past-plan">
+        <LastTripList />
+      </v-tabs-window-item>
+      <v-tabs-window-item value="card">여행카드</v-tabs-window-item>
       <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
     </v-tabs-window>
   </div>

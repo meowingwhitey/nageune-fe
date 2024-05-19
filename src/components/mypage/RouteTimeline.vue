@@ -1,13 +1,29 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 
-const spots = ref([
-  { date: "04.25", spot: "첨성대" },
-  { date: "04.25", spot: "불국사 다보탑" },
-  { date: "04.26", spot: "불국사 삼층석탑" },
-  { date: "04.26", spot: "석굴암" },
-  { date: "04.27", spot: "기타" },
-]);
+const props = defineProps({
+  route: Array,
+});
+
+const spots = ref([]);
+
+onMounted(() => {
+  spots.value = props.route.slice(
+    0,
+    props.route.length > 5 ? 5 : props.route.length,
+  );
+});
+
+watch(
+  () => props.route,
+  (item) => {
+    console.log("아이템 변경");
+    spots.value = props.route.slice(
+      0,
+      props.route.length > 5 ? 5 : props.route.length,
+    );
+  },
+);
 </script>
 
 <template>
@@ -25,9 +41,9 @@ const spots = ref([
       height="35"
     >
       <template v-slot:opposite>
-        <div class="text-body-2 font-weight-thin">{{ s.date }}</div>
+        <div class="text-body-2 font-weight-thin">{{ s.date.slice(-5) }}</div>
       </template>
-      <div class="text-body-1 font-weight-medium">{{ s.spot }}</div>
+      <div class="text-body-1 font-weight-medium">{{ s.name }}</div>
     </v-timeline-item>
   </v-timeline>
 </template>
