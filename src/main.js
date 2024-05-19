@@ -43,8 +43,18 @@ const vuetify = createVuetify({
   },
 });
 
-app.use(vuetify);
+/**
+ *
+ * [Quill]
+ * npm install @vueup/vue-quill
+ * https://vueup.github.io/vue-quill/guide/installation.html
+ *
+ */
+import { QuillEditor } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
+app.component("QuillEditor", QuillEditor);
+app.use(vuetify);
 app.use(createPinia());
 app.use(router);
 

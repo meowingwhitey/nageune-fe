@@ -127,6 +127,40 @@ const router = createRouter({
         },
       ],
     },
+
+    {
+      path: "/board/:boardType",
+      name: "board",
+      component: BoardView,
+    },
+    {
+      path: "/article",
+      name: "article",
+      component: ArticleView,
+      children: [
+        {
+          path: ":id",
+          name: "articleDetail",
+          component: ArticleDetail,
+        },
+        {
+          path: "editor",
+          name: "articleCreate",
+          component: ArticleEditor,
+        },
+        {
+          path: "editor/:id",
+          name: "articleEditor",
+          component: ArticleEditor,
+        },
+      ],
+    },
+
+    {
+      path: "/manual",
+      name: "manual",
+      component: ManualView,
+    },
   ],
 });
 
