@@ -2,6 +2,7 @@
 import RouteList from "@/components/mypage/RouteList.vue";
 import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
 import LastTripList from "@/components/mypage/LastTripList.vue";
+import CardList from "@/components/mypage/CardList.vue";
 import { ref } from "vue";
 
 const tab = ref("plan");
@@ -23,7 +24,7 @@ const tab = ref("plan");
       <v-tabs-window-item value="past-plan">
         <LastTripList />
       </v-tabs-window-item>
-      <v-tabs-window-item value="card">여행카드</v-tabs-window-item>
+      <v-tabs-window-item value="card"><CardList /></v-tabs-window-item>
       <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
     </v-tabs-window>
   </div>
