@@ -8,7 +8,6 @@ const REST_USER_API = `http://localhost:8080/api/v1/heritage`;
 
 export const useSearchStore = defineStore("searchStore", () => {
   const eraRangeCodes = ref({ start: 1, end: 60 });
-
   const locationRangeCoord = ref({
     latStart: 0,
     latEnd: 0,
@@ -18,31 +17,25 @@ export const useSearchStore = defineStore("searchStore", () => {
     lngCenter: 0,
   });
 
-  const getHeritageListByLocation = async () => {
+  const previousKeyword = ref(""); // 중복 검색 방지를 위한 이전에 검색했던 키워드 저장
+
+  const getHeritageListByKeyword = async (searchKeyword) => {
+    console.log("ddd");
+    if (searchKeyword == "" || previousKeyword == searchKeyword) {
+      return null;
+    }
     const params = {
-      latitudeStart: locationRangeCoord.value.latStart,
-      latitudeEnd: locationRangeCoord.value.latEnd,
-      longitudeStart: locationRangeCoord.value.lngStart,
-      longitudeEnd: locationRangeCoord.value.lngEnd,
       startEraCode: eraRangeCodes.value.start,
       endEraCode: eraRangeCodes.value.end,
+      keyword: searchKeyword,
     };
 
-    const response = axios.get(`${REST_USER_API}/condition`, { params });
+    const response = axios.get(`${REST_USER_API}/search`, { params });
     const data = (await response).data;
     return data.results;
   };
 
-  let markerList = [];
-
-  const resetMarker = () => {
-    markerList.forEach((marker) => {
-      marker.setMap(null);
-    });
-    markerList = [];
-  };
-
-  const drawMarker = async () => {
+  const getHeritageListByLocation = async () => {
     // 지도의 현재 영역을 얻어옵니다
     const bounds = window.kakaoMap.getBounds();
     // 영역의 남서쪽 좌표를 얻어옵니다
@@ -62,7 +55,7 @@ export const useSearchStore = defineStore("searchStore", () => {
       Math.abs(centerCoord.getLng() - locationRangeCoord.value.lngCenter) <
         lngDiff
     ) {
-      return;
+      return null;
     }
     locationRangeCoord.value.latCenter = centerCoord.getLat();
     locationRangeCoord.value.lngCenter = centerCoord.getLng();
@@ -72,34 +65,24 @@ export const useSearchStore = defineStore("searchStore", () => {
     locationRangeCoord.value.lngStart = swLatLng.getLng();
     locationRangeCoord.value.lngEnd = neLatLng.getLng();
 
-    const heritageList = await getHeritageListByLocation();
+    const params = {
+      latitudeStart: locationRangeCoord.value.latStart,
+      latitudeEnd: locationRangeCoord.value.latEnd,
+      longitudeStart: locationRangeCoord.value.lngStart,
+      longitudeEnd: locationRangeCoord.value.lngEnd,
+      startEraCode: eraRangeCodes.value.start,
+      endEraCode: eraRangeCodes.value.end,
+    };
 
-    console.log(heritageList);
-    resetMarker();
-    heritageList.forEach((heritage) => {
-      // 마커를 생성하고 지도에 표시합니다
-      const marker = new kakao.maps.Marker({
-        map: window.kakaoMap,
-        position: new kakao.maps.LatLng(heritage.latitude, heritage.longitude),
-      });
-      const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-      infowindow.setContent(
-        `<div style="padding:5px;font-size:12px;">${heritage.title}</div>`,
-      );
-      kakao.maps.event.addListener(marker, "mouseover", function () {
-        infowindow.open(window.kakaoMap, marker);
-      });
-      kakao.maps.event.addListener(marker, "mouseout", function () {
-        infowindow.close();
-      });
-      markerList.push(marker);
-    });
+    const response = axios.get(`${REST_USER_API}/condition`, { params });
+    const data = (await response).data;
+    return data.results;
   };
+
   return {
     eraRangeCodes,
     locationRangeCoord,
     getHeritageListByLocation,
-    drawMarker,
-    resetMarker,
+    getHeritageListByKeyword,
   };
 });

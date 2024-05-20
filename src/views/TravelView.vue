@@ -6,15 +6,10 @@
  */
 import { onBeforeMount, ref } from "vue";
 import { RouterView } from "vue-router";
-import { useTravelStore } from "@/stores/travelStore.js";
-import { useSearchStore } from "@/stores/searchStore.js";
+import { useMapStore } from "@/stores/mapStore.js";
 
+const mapStore = useMapStore();
 const apiKey = "f40808c2f23c76e300a5745587df8caa";
-
-const isKakaoMapLoaded = ref(false); // 카카오맵 등록을 확인하는 ref
-
-const travelStore = useTravelStore();
-const searchStore = useSearchStore();
 
 onBeforeMount(() => {
   // Global 객체로 kakao api가 등록되었으면 지도 초기화
@@ -40,22 +35,20 @@ const initMap = () => {
 
   // 지도 객체를 등록합니다.
   // 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-  window.kakaoMap = new kakao.maps.Map(container, options);
-  travelStore.kakaoMap = window.kakaoMap;
-  isKakaoMapLoaded.value = true;
+  mapStore.kakaoMap = new kakao.maps.Map(container, options);
 
-  // 지도의 현재 영역을 얻어옵니다
-  const bounds = travelStore.kakaoMap.getBounds();
-  // 영역의 남서쪽 좌표를 얻어옵니다
-  const swLatLng = bounds.getSouthWest();
+  // // 지도의 현재 영역을 얻어옵니다
+  // const bounds = window.kakaoMap.getBounds();
+  // // 영역의 남서쪽 좌표를 얻어옵니다
+  // const swLatLng = bounds.getSouthWest();
 
-  // 영역의 북동쪽 좌표를 얻어옵니다
-  const neLatLng = bounds.getNorthEast();
+  // // 영역의 북동쪽 좌표를 얻어옵니다
+  // const neLatLng = bounds.getNorthEast();
 
-  searchStore.locationRangeCoord.latStart = swLatLng.getLat();
-  searchStore.locationRangeCoord.latEnd = neLatLng.getLat();
-  searchStore.locationRangeCoord.lngStart = swLatLng.getLng();
-  searchStore.locationRangeCoord.lngEnd = neLatLng.getLng();
+  // searchStore.locationRangeCoord.latStart = swLatLng.getLat();
+  // searchStore.locationRangeCoord.latEnd = neLatLng.getLat();
+  // searchStore.locationRangeCoord.lngStart = swLatLng.getLng();
+  // searchStore.locationRangeCoord.lngEnd = neLatLng.getLng();
 };
 
 import MapUserBtn from "@/components/travel/MapUserBtn.vue";
@@ -65,7 +58,10 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
 
 <template>
   <MapNavBar />
-  <RouterView />
+
+  <Transition name="slide-fade">
+    <RouterView />
+  </Transition>
   <MapUserBtn />
   <MapSizingBtn />
 
@@ -82,6 +78,19 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
   scrollbar-width: none; /* Firefox */
 }
 
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
 #map::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }

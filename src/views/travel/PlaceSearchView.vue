@@ -7,24 +7,12 @@ import HeritageSearchMenu from "@/components/travel/heritage/HeritageSearchMenu.
 import CategoryChipList from "@/components/travel/place/CategoryChipList.vue";
 import PlaceSearchMenu from "@/components/travel/place/PlaceSearchMenu.vue";
 
-import { watch } from "vue";
-watch(props, () => {
-  console.log(props.keyword);
-});
+import { ref, watch } from "vue";
+import { useRoute } from "vue-router";
 </script>
 
 <template>
-  <!-- 검색 타입은 query 값으로 받음 -->
-  <template v-if="props.search === 'heritage'">
-    <EraRangeBar class="option-bar" />
-    <HeritageSearchMenu class="search-menu" :keyword="props.keyword" />
-  </template>
-  <!-- <CategoryChipList class="option-bar" v-if="route.query.search === 'place'" /> -->
-  <PlaceSearchMenu
-    class="search-menu"
-    v-if="props.search === 'place'"
-    :keyword="props.keyword"
-  />
+  <PlaceSearchMenu class="search-menu" />
 </template>
 
 <style scoped>

@@ -3,21 +3,14 @@ import TravelRouteMenu from "@/components/travel/route/TravelRouteMenu.vue";
 </script>
 
 <template>
-  <v-card class="route-list-menu">
-    <div
-      class="d-flex ga-2 row"
-      style="overflow-x: scroll; height: 100%; padding: 15px"
-    >
-      <TravelRouteMenu />
-    </div>
-  </v-card>
+  <TravelRouteMenu class="route-list-menu" />
 </template>
 
 <style scoped>
 .route-list-menu {
   position: fixed;
   z-index: 900;
-  flex-direction: row;
+  flex-direction: column;
   left: 110px;
   top: 40px;
   max-width: calc(100vw - 60vw);

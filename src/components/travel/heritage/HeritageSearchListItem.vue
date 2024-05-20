@@ -33,9 +33,9 @@ const openWindow = (url) => {
             }
           "
         >
-          <v-tooltip>{{ spot.place_name }}</v-tooltip>
+          <v-tooltip>{{ spot.name }}</v-tooltip>
           {{
-            `${spot.place_name.slice(0, 11)}${spot.place_name.length >= 11 ? "..." : ""}`
+            `${spot.name.slice(0, 11)}${spot.name.length >= 11 ? "..." : ""}`
           }}
         </div>
 

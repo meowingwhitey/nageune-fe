@@ -1,25 +1,19 @@
 <script setup>
 import TravelRouteListItem from "./TravelRouteListItem.vue";
 import draggable from "vuedraggable";
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 
 const props = defineProps(["routeList", "routeIdx"]);
-// const add = () => {
-//   this.list.push({ name: "Juan" });
-// };
-// const clone = (el) => {
-//   return {
-//     name: el.name + " cloned",
-//   };
-// };
 
 const currentMarker = ref([]);
 const currentPolyline = ref(null);
 
+watch(props.routeList, () => {
+  console.log(props.routeList);
+});
 const dragOptions = computed(() => {
   return {
     animation: 200,
-    group: "description",
     disabled: false,
     ghostClass: "ghost",
   };
@@ -106,11 +100,9 @@ const log = (evt) => {
       class="list-group"
       style="height: 100%; min-width: 220px"
       :list="props.routeList.route"
-      group="people"
       v-bind="dragOptions"
       @change="log"
       ghost-class="ghost"
-      itemKey="name"
     >
       <template #item="{ element, index }">
         <TravelRouteListItem
@@ -128,12 +120,12 @@ const log = (evt) => {
   opacity: 0.5;
   background: #c8ebfb;
 }
-
+/* 
 .flip-list-move {
   transition: transform 0.5s;
 }
 
 .no-move {
   transition: transform 0s;
-}
+} */
 </style>

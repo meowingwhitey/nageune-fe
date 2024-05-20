@@ -1,4 +1,19 @@
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
+const searchKeyword = ref("");
+const router = useRouter();
+
+const onSearch = () => {
+  router.push({
+    name: "travel-search-heritage",
+    query: {
+      keyword: searchKeyword.value,
+    },
+  });
+};
+</script>
 
 <template>
   <v-card id="map-search-bar">
@@ -9,6 +24,8 @@
       variant="solo"
       hide-details
       single-line
+      v-model="searchKeyword"
+      @keydown.enter="onSearch"
     ></v-text-field>
   </v-card>
 </template>

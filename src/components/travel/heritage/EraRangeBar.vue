@@ -1,8 +1,5 @@
 <script setup>
 import { ref, watch } from "vue";
-import { useSearchStore } from "@/stores/searchStore";
-
-const store = useSearchStore();
 
 // 서버에서 검색시 사용하는 code
 const eraCodes = [1, 3, 5, 7, 9, 10, 20, 30, 40, 45, 50, 60];
@@ -22,13 +19,13 @@ const eras = {
 };
 
 const eraRange = ref([0, 10]);
-watch(eraRange, () => {
-  console.log(eraRange.value);
-  store.resetMarker();
-  store.eraRangeCodes.start = eraCodes[eraRange.value[0]];
-  store.eraRangeCodes.end = eraCodes[eraRange.value[1]];
-  store.drawMarker();
-});
+// watch(eraRange, () => {
+//   console.log(eraRange.value);
+//   store.resetMarker();
+//   store.eraRangeCodes.start = eraCodes[eraRange.value[0]];
+//   store.eraRangeCodes.end = eraCodes[eraRange.value[1]];
+//   store.drawMarker();
+// });
 </script>
 
 <template>
