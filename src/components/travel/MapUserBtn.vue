@@ -1,10 +1,25 @@
 <script setup>
 import { mergeProps } from "vue";
+import { useUserStore } from "@/stores/userStore.js";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+const router = useRouter();
 const items = [
-  { title: "회원 정보" },
-  { title: "로그아웃" },
-  { title: "몰?루" },
-  { title: "아!루" },
+  {
+    text: "마이페이지",
+    onclick: () => {
+      router.push({
+        name: "mypage",
+      });
+    },
+  },
+  {
+    text: "로그아웃",
+    onclick: () => {
+      userStore.userLogout();
+    },
+  },
 ];
 </script>
 
@@ -18,8 +33,8 @@ const items = [
       ></v-btn>
     </template>
     <v-list>
-      <v-list-item v-for="(item, index) in items" :key="index">
-        <v-list-item-title>{{ item.title }}</v-list-item-title>
+      <v-list-item v-for="(item, i) in items" :key="i" @click="item.onclick">
+        <v-list-item-title v-text="item.text"></v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
