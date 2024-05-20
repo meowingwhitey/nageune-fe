@@ -24,9 +24,10 @@ const eras = {
 const eraRange = ref([0, 10]);
 watch(eraRange, () => {
   console.log(eraRange.value);
-  //store.resetMarker();
+  store.resetMarker();
   store.eraRangeCodes.start = eraCodes[eraRange.value[0]];
   store.eraRangeCodes.end = eraCodes[eraRange.value[1]];
+  store.drawMarker();
 });
 </script>
 
@@ -45,7 +46,7 @@ watch(eraRange, () => {
       thumb-color="#607D8B"
       color="#263238"
       style="font-size: 9.5pt"
-      v-model.lazy="eraRange"
+      v-model="eraRange"
     >
     </v-range-slider>
   </v-card>

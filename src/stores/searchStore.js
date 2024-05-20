@@ -28,11 +28,10 @@ export const useSearchStore = defineStore("searchStore", () => {
 
     const response = axios.get(`${REST_USER_API}/condition`, { params });
     const data = (await response).data;
-    console.log(data.results);
     return data.results;
   };
 
-  const markerList = [];
+  let markerList = [];
 
   const resetMarker = () => {
     markerList.forEach((marker) => {
@@ -75,8 +74,7 @@ export const useSearchStore = defineStore("searchStore", () => {
       kakao.maps.event.addListener(marker, "mouseout", function () {
         infowindow.close();
       });
-      console.log("marker created!");
-      markerList.value.push(marker);
+      markerList.push(marker);
     });
   };
   return {

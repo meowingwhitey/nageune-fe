@@ -10,10 +10,9 @@ import { useSearchStore } from "@/stores/searchStore.js";
 const travelStore = useTravelStore();
 const searchStore = useSearchStore();
 onMounted(() => {
-  //searchStore.resetMarker();
   searchStore.drawMarker();
   window.kakao.maps.event.addListener(window.kakaoMap, "mouseup", async () => {
-    //searchStore.resetMarker();
+    searchStore.resetMarker();
     searchStore.drawMarker();
   });
 });

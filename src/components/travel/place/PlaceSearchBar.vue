@@ -1,9 +1,10 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { useSearchStore } from "@/stores/searchStore.js";
 const searchKeyword = ref("");
 const router = useRouter();
+const searchStore = useSearchStore();
 const onSearch = () => {
   router.push({
     name: "travel-search",
