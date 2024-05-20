@@ -2,30 +2,31 @@
 import PlaceSearchBar from "./PlaceSearchBar.vue";
 import PlaceSearchList from "./PlaceSearchList.vue";
 import SearchLoadingList from "@/components/travel/SearchLoadingList.vue";
-import { onMounted } from "vue";
+import NextBtn from "@/components/travel/NextBtn.vue";
+import PreviousBtn from "@/components/travel/PreviousBtn.vue";
+import { useMapStore } from "@/stores/mapStore.js";
+import { useRouter } from "vue-router";
+const mapStore = useMapStore();
+const router = useRouter();
+const onPreviousClick = () => {
+  router.push({ name: "travel-search-heritage" });
+};
 
-import { useTravelStore } from "@/stores/travelStore.js";
-
-const travelStore = useTravelStore();
-const props = defineProps(["keyword"]);
-
-/**
- * 카카오맵 사용시 문화재 검색에 필요한 event가 있음
- * 반대로 경유지 검색에 필요한 event도 있음
- * onMounted 내에서 해당 event를 등록하거나 해제하는 역할
- */
-onMounted(() => {});
+const onNextClick = () => {
+  router.push({ name: "travel-route" });
+};
 </script>
 
 <template>
   <template class="d-flex ga-2">
     <PlaceSearchBar />
+    <PlaceSearchList v-if="mapStore.kakaoMap !== undefined" />
+    <SearchLoadingList v-if="mapStore.kakaoMap === undefined" />
 
-    <PlaceSearchList
-      :keyword="props.keyword"
-      v-if="travelStore.kakaoMap !== undefined"
-    />
-    <SearchLoadingList v-if="travelStore.kakaoMap === undefined" />
+    <template class="d-flex flex-wrap ga-2 flex-row">
+      <PreviousBtn @click="onPreviousClick" />
+      <NextBtn text="경로 설정하기" @click="onNextClick" />
+    </template>
   </template>
 </template>
 

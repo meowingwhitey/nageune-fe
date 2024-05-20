@@ -1,15 +1,17 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-import { useSearchStore } from "@/stores/searchStore.js";
-const searchKeyword = ref("");
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+
 const router = useRouter();
-const searchStore = useSearchStore();
+const route = useRoute();
+const searchKeyword = ref(route.query.keyword);
 const onSearch = () => {
+  if (searchKeyword === "") {
+    return;
+  }
   router.push({
-    name: "travel-search",
+    name: "travel-place-search",
     query: {
-      search: "place",
       keyword: searchKeyword.value,
     },
   });

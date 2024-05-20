@@ -1,24 +1,34 @@
 import { createRouter, createWebHistory } from "vue-router";
+// 사용자 관련 페이지
 import IndexView from "@/views/IndexView.vue";
-import TravelView from "@/views/TravelView.vue";
-import TravelSearchView from "@/views/TravelSearchView.vue";
-import TravelRouteView from "@/views/TravelRouteView.vue";
 import MyPageView from "@/views/MyPageView.vue";
 import LoginView from "@/views/LoginView.vue";
 import SignupView from "@/views/SignupView.vue";
+
+// 모바일 관련 페이지
 import MobileView from "@/views/MobileView.vue";
 import MobileMain from "@/components/mobile/MobileMain.vue";
 import MobileMyPage from "@/components/mobile/mypage/MobileMyPage.vue";
 import MobileLogin from "@/components/mobile/MobileLogin.vue";
 import SpotDetail from "@/components/mobile/spot/SpotDetail.vue";
-import { useUserStore } from "@/stores/userStore";
-import { useTokenStore } from "@/stores/tokenStore";
+
+// 게시판 관련 페이지
 import ArticleDetail from "@/components/board/ArticleDetail.vue";
 import BoardView from "@/views/BoardView.vue";
 import ManualView from "@/views/ManualView.vue";
 import ArticleView from "@/views/ArticleView.vue";
 import ArticleEditor from "@/components/board/ArticleEditor.vue";
 
+// 경로 생성 관련 페이지
+import TravelView from "@/views/TravelView.vue";
+import HeritageSearchView from "@/views/travel/HeritageSearchView.vue";
+import PlaceSearchView from "@/views/travel/PlaceSearchView.vue";
+import RouteView from "@/views/travel/RouteView.vue";
+import ScheduleView from "@/views/travel/ScheduleView.vue";
+import SummaryView from "@/views/travel/SummaryView.vue";
+
+import { useUserStore } from "@/stores/userStore";
+import { useTokenStore } from "@/stores/tokenStore";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -36,18 +46,38 @@ const router = createRouter({
       component: TravelView,
       children: [
         {
-          path: "",
-          name: "travel-search",
-          component: TravelSearchView,
+          path: "schedule",
+          name: "travel-schedule",
+          component: ScheduleView,
           props: (route) => ({
-            search: route.query.search, // 검색 메뉴 타입 (문화재:heritage/장소:place)
+            keyword: route.query.keyword, // 검색하는 키워드
+          }),
+        },
+        {
+          path: "heritage",
+          name: "travel-search-heritage",
+          component: HeritageSearchView,
+          props: (route) => ({
+            keyword: route.query.keyword, // 검색하는 키워드
+          }),
+        },
+        {
+          path: "place",
+          name: "travel-search-place",
+          component: PlaceSearchView,
+          props: (route) => ({
             keyword: route.query.keyword, // 검색하는 키워드
           }),
         },
         {
           path: "route",
           name: "travel-route",
-          component: TravelRouteView,
+          component: RouteView,
+        },
+        {
+          path: "summary",
+          name: "travel-summary",
+          component: SummaryView,
         },
       ],
     },

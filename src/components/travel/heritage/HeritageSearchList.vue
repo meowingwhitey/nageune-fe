@@ -1,27 +1,32 @@
 <script setup>
-import { onMounted } from "vue";
-import { useTravelStore } from "@/stores/travelStore.js";
-import { useSearchStore } from "@/stores/searchStore.js";
-/**
- * 카카오맵 사용시 문화재 검색에 필요한 event가 있음
- * 반대로 경유지 검색에 필요한 event도 있음
- * onMounted 내에서 해당 event를 등록하거나 해제하는 역할
- */
-const travelStore = useTravelStore();
-const searchStore = useSearchStore();
-onMounted(() => {
-  searchStore.drawMarker();
-  window.kakao.maps.event.addListener(window.kakaoMap, "mouseup", async () => {
-    // 위치가 달라지지 않았다면 무시
-    searchStore.drawMarker();
-  });
+import { onMounted, ref } from "vue";
+import { useRoute, onBeforeRouteUpdate } from "vue-router";
+import { useMapStore } from "@/stores/mapStore.js";
+
+const route = useRoute();
+const searchKeyword = ref(route.query.keyword);
+const mapStore = useMapStore();
+
+onBeforeRouteUpdate((to, from) => {
+  console.log("adasds");
+  currentPageIdx.value = 1;
+  isEnd.value = false;
+  currentItemIdx.value = 0;
+  mapStore.resetMarker();
+  searchKeyword.value = route.query.keyword;
+  items.value = [];
 });
 </script>
 
 <template>
   <v-card
-    id="place-search-list"
-    class="overflow-y-auto d-flex justify-center align-center flex-column"
+    class="search-list overflow-y-auto"
+    v-if="searchKeyword !== undefined && mapStore.kakaoMap !== undefined"
+  >
+  </v-card>
+  <v-card
+    class="search-list overflow-y-auto d-flex justify-center align-center flex-column"
+    v-if="searchKeyword === undefined || mapStore.kakaoMap === undefined"
   >
     <v-icon icon="mdi-magnify"></v-icon>
     <div>장소를 검색해주세요!</div>
@@ -29,13 +34,13 @@ onMounted(() => {
 </template>
 
 <style scoped>
-#place-search-list {
+.search-list {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   width: 100%;
   height: 100%;
 }
-#place-search-list::-webkit-scrollbar {
+.search-list::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
   width: 100%;
 }

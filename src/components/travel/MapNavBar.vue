@@ -41,70 +41,42 @@ const menuList = [
     <v-divider />
     <div
       class="nav-menu"
-      :class="route.query.search === 'heritage' && 'nav-menu-selected'"
-      @click="
-        () => {
-          if (
-            route.name === 'travel-search' &&
-            route.query.search === 'heritage'
-          ) {
-            router.push({ name: 'travel' });
-          } else {
-            router.push({
-              name: 'travel-search',
-              query: { search: 'heritage' },
-            });
-          }
-        }
-      "
+      :class="route.name === 'travel-schedule' && 'nav-menu-selected'"
     >
-      <img
-        src="/src/assets/heritage_icon.png"
-        alt="App Logo"
-        style="width: 65%; height: auto"
-      />
+      <v-icon icon="mdi-calendar-multiselect" size="x-large"></v-icon>
+      <p>일정 설정</p>
+    </div>
+    <v-divider />
+    <div
+      class="nav-menu"
+      :class="route.name === 'travel-search-heritage' && 'nav-menu-selected'"
+    >
+      <v-icon icon="mdi-bank" size="x-large"></v-icon>
       <p>문화제</p>
     </div>
     <v-divider />
     <div
       class="nav-menu"
-      :class="route.query.search === 'place' && 'nav-menu-selected'"
-      @click="
-        () => {
-          if (
-            route.name === 'travel-search' &&
-            route.query.search === 'place'
-          ) {
-            router.push({ name: 'travel' });
-          } else {
-            router.push({
-              name: 'travel-search',
-              query: { search: 'place' },
-            });
-          }
-        }
-      "
+      :class="route.name === 'travel-search-place' && 'nav-menu-selected'"
     >
-      <img
-        src="/src/assets/spot_icon.png"
-        alt="App Logo"
-        style="width: 65%; height: auto"
-      />
+      <v-icon icon="mdi-store-outline" size="x-large"></v-icon>
       <p>경유지</p>
     </div>
     <v-divider />
     <div
       class="nav-menu"
       :class="route.name === 'travel-route' && 'nav-menu-selected'"
-      @click="
-        () => {
-          if (route.name === 'travel-route') {
-            router.push({ name: 'travel' });
-          } else router.push({ name: 'travel-route' });
-        }
-      "
     >
+      <v-icon icon="mdi-map-legend" size="x-large"></v-icon>
       경로 설정
+    </div>
+    <v-divider />
+    <div
+      class="nav-menu"
+      :class="route.name === 'travel-summary' && 'nav-menu-selected'"
+    >
+      <v-icon icon="mdi-pencil-outline" size="x-large"></v-icon>
+      여행 요약
     </div>
     <v-divider />
   </v-card>
@@ -118,7 +90,6 @@ const menuList = [
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  cursor: pointer;
   font-size: 10pt;
   font-weight: bold;
   transition-property: background-color;
