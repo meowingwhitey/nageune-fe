@@ -12,7 +12,7 @@ const searchStore = useSearchStore();
 onMounted(() => {
   searchStore.drawMarker();
   window.kakao.maps.event.addListener(window.kakaoMap, "mouseup", async () => {
-    searchStore.resetMarker();
+    // 위치가 달라지지 않았다면 무시
     searchStore.drawMarker();
   });
 });

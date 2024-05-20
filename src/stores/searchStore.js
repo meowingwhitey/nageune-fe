@@ -14,6 +14,8 @@ export const useSearchStore = defineStore("searchStore", () => {
     latEnd: 0,
     lngStart: 0,
     lngEnd: 0,
+    latCenter: 0,
+    lngCenter: 0,
   });
 
   const getHeritageListByLocation = async () => {
@@ -49,6 +51,22 @@ export const useSearchStore = defineStore("searchStore", () => {
     // 영역의 북동쪽 좌표를 얻어옵니다
     const neLatLng = bounds.getNorthEast();
 
+    // 좌표 비교로 무시할 만한 이동인지 확인
+    const centerCoord = window.kakaoMap.getCenter();
+
+    const latDiff = 0.001;
+    const lngDiff = 0.01;
+    if (
+      Math.abs(centerCoord.getLat() - locationRangeCoord.value.latCenter) <
+        latDiff &&
+      Math.abs(centerCoord.getLng() - locationRangeCoord.value.lngCenter) <
+        lngDiff
+    ) {
+      return;
+    }
+    locationRangeCoord.value.latCenter = centerCoord.getLat();
+    locationRangeCoord.value.lngCenter = centerCoord.getLng();
+
     locationRangeCoord.value.latStart = swLatLng.getLat();
     locationRangeCoord.value.latEnd = neLatLng.getLat();
     locationRangeCoord.value.lngStart = swLatLng.getLng();
@@ -57,7 +75,7 @@ export const useSearchStore = defineStore("searchStore", () => {
     const heritageList = await getHeritageListByLocation();
 
     console.log(heritageList);
-
+    resetMarker();
     heritageList.forEach((heritage) => {
       // 마커를 생성하고 지도에 표시합니다
       const marker = new kakao.maps.Marker({
