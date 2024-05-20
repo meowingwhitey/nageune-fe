@@ -12,7 +12,7 @@ const userInfo = ref({
   email: userStore.userInfo.email,
   nickname: userStore.userInfo.nickname,
   name: userStore.userInfo.name,
-  joinDate: "",
+  createdAt: userStore.userInfo.createdAt,
   img: userStore.userInfo.img,
 });
 
@@ -50,6 +50,10 @@ const changeProfileImg = (event) => {
 };
 
 const visible = ref(true);
+
+const deleteUser = () => {
+  userStore.deleteUser();
+};
 </script>
 
 <template>
@@ -159,7 +163,7 @@ const visible = ref(true);
 
           <v-text-field
             label="가입한 날짜"
-            v-model="userInfo.joinDate"
+            v-model="userInfo.createdAt"
             variant="outlined"
             density="comfortable"
             prepend-icon="mdi-calendar-blank-outline"
@@ -176,7 +180,12 @@ const visible = ref(true);
         </v-col>
       </v-row>
 
-      <v-btn variant="flat" block class="py-6 mt-5" color="rgb(240, 240, 240)"
+      <v-btn
+        variant="flat"
+        block
+        class="py-6 mt-5"
+        color="rgb(240, 240, 240)"
+        @click="deleteUser"
         >탈퇴하기</v-btn
       >
     </v-container>
