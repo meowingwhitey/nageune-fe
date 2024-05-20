@@ -43,21 +43,40 @@ console.log(props.card);
   <div class="flip ma-4">
     <div class="card" @click="test">
       <!-- 앞면 -->
-      <div class="front d-flex flex-column align-center position-relative">
-        <div class="card-img-box position-absolute top-0 mt-2">
-          <img :src="heritage.imageurl" />
+      <div
+        class="front"
+        :class="{ correct: card.correct === 0 ? true : false }"
+      >
+        <div>
+          <div class="card-img-box">
+            <img :src="heritage.imageurl" />
+          </div>
+          <h1>{{ heritage.title }}</h1>
         </div>
-        <h1>{{ heritage.title }}</h1>
       </div>
       <!-- 뒷면 -->
       <div class="back">
-        <h1>뒷면</h1>
+        <div>
+          <template v-if="card.correct === 1">
+            <p>{{ card.problem }}</p>
+            <p>{{ card.answer }}</p>
+          </template>
+
+          <template v-else>
+            <h1>퀴즈 풀기</h1>
+            <!-- 모달창 퀴즈 풀기 -->
+          </template>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.correct {
+  filter: grayscale(100%);
+}
+
 .card-img-box {
   width: 230px;
   height: 150px;
@@ -102,12 +121,12 @@ console.log(props.card);
 }
 
 .back {
-  background: rgb(255, 255, 255);
+  background: rgb(77, 77, 77);
   transform: rotateY(180deg);
 }
 
 .flip:hover .card {
   transform: rotateY(180deg);
-  box-shadow: 0 0 15px rgba(238, 238, 238, 0.9);
+  box-shadow: 0 0 15px rgba(189, 189, 189, 0.9);
 }
 </style>
