@@ -2,7 +2,8 @@
 import TravelRouteListItem from "./TravelRouteListItem.vue";
 import draggable from "vuedraggable";
 import { ref, computed, watch } from "vue";
-
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 const props = defineProps(["routeList", "routeIdx"]);
 
 const currentMarker = ref([]);
@@ -16,12 +17,13 @@ const dragOptions = computed(() => {
     animation: 200,
     disabled: false,
     ghostClass: "ghost",
+    group: "location",
   };
 });
 
 const onRouteMapping = () => {
   const route = props.routeList.route;
-  const bounds = new window.kakao.maps.LatLngBounds();
+  const bounds = new kakao.maps.LatLngBounds();
   const linePath = [];
 
   // 마커 및 라인 삭제
@@ -37,8 +39,8 @@ const onRouteMapping = () => {
   for (const place of route) {
     displayMarker(place);
     console.log(place);
-    bounds.extend(new window.kakao.maps.LatLng(place.lat, place.lng));
-    linePath.push(new kakao.maps.LatLng(place.lat, place.lng));
+    bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
+    linePath.push(new kakao.maps.LatLng(place.latitude, place.longitude));
   }
 
   // 지도에 표시할 선을 생성합니다
@@ -51,15 +53,15 @@ const onRouteMapping = () => {
   });
   currentPolyline.value = polyline;
   // 지도에 선을 표시합니다
-  polyline.setMap(window.kakaoMap);
-  window.kakaoMap.setBounds(bounds);
+  polyline.setMap(mapStore.kakaoMap);
+  mapStore.kakaoMap.setBounds(bounds);
 };
 
 // 지도에 마커를 표시하는 함수입니다
 const displayMarker = (place) => {
   // 마커를 생성하고 지도에 표시합니다
   const marker = new kakao.maps.Marker({
-    map: window.kakaoMap,
+    map: mapStore.kakaoMap,
     position: new kakao.maps.LatLng(place.lat, place.lng),
   });
   currentMarker.value.push(marker);
@@ -82,18 +84,31 @@ const displayMarker = (place) => {
 };
 
 const log = (evt) => {
-  window.console.log(evt);
+  console.log(evt);
   onRouteMapping();
 };
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: column; height: 100%">
-    <div class="d-flex flex-row ga-2" style="align-items: center">
-      <h3>{{ props.routeList.date }}</h3>
-      <v-btn size="small" rounded="xl" color="#26A69A" @click="onRouteMapping"
-        >경로 보기</v-btn
-      >
+  <div
+    style="
+      min-width: 300px;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    "
+  >
+    <div
+      class="d-flex flex-row ga-2"
+      style="align-items: end; justify-content: start"
+    >
+      <h3>{{ `${props.routeIdx + 1}일차` }}</h3>
+      <p class="text-subtitle-2 text-medium-emphasis">
+        {{ props.routeList.date }}
+      </p>
+      <v-btn color="#26A69A" density="compact" @click="onRouteMapping">
+        경로보기
+      </v-btn>
     </div>
 
     <draggable

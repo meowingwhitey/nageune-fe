@@ -3,14 +3,23 @@ import SummaryRouteListItem from "./SummaryRouteListItem.vue";
 import draggable from "vuedraggable";
 import { ref, computed, watch } from "vue";
 import { useTravelStore } from "@/stores/travelStore.js";
-const props = defineProps(["routeList"]);
+const props = defineProps(["routeList", "day"]);
 const travelStore = useTravelStore();
 const dragOptions = computed(() => {
   return {
     disabled: true,
   };
 });
-const weekDay = ["일", "월", "화", "수", "목", "긍", "토"];
+const weekDay = ["일", "월", "화", "수", "목", "금", "토"];
+const colorPreset = [
+  "#FFA000",
+  "#FFB300",
+  "#FFCA28",
+  "#FFD54F",
+  "#FFE082",
+  "#FFECB3",
+  "#FFF8E1",
+];
 </script>
 
 <template>

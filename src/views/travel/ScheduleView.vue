@@ -16,8 +16,8 @@ const allowedEndDate = ref({
   max: "9999-12-31",
 });
 const today = new Date();
-const startDate = ref(new Date());
-const endDate = ref(addDays(new Date(), 7));
+const startDate = ref(new Date(today));
+const endDate = ref(addDays(today, 6));
 const travelStore = useTravelStore();
 const isEndDateSet = ref(false);
 const isStartDateSet = ref(false);
@@ -25,18 +25,18 @@ const isStartDateSet = ref(false);
 // 시작 날짜에 따른 선택 가능 일자 설정
 watch(startDate, () => {
   if (
-    differenceInDays(endDate.value, startDate.value) > 7 ||
+    differenceInDays(endDate.value, startDate.value) > 6 ||
     differenceInDays(endDate.value, startDate.value) < 0
   ) {
-    endDate.value = addDays(startDate.value, 7);
+    endDate.value = addDays(startDate.value, 6);
   }
   allowedEndDate.value.min = startDate.value;
-  allowedEndDate.value.max = addDays(startDate.value, 7);
+  allowedEndDate.value.max = addDays(startDate.value, 6);
 });
 
 // 선택한 날짜 옵션이 유효할 경우 nextbtn 활성화를 위한 computed
 const isDateValid = computed(() => {
-  return differenceInDays(endDate.value, startDate.value) <= 7;
+  return differenceInDays(endDate.value, startDate.value) < 7;
 });
 
 onMounted(() => {
@@ -46,11 +46,10 @@ onMounted(() => {
 
 const onNextClick = () => {
   // 출발, 도착일자 store에 저장
-  travelStore.startDate = format(startDate.value, "yyyy-MM-dd");
-  travelStore.endDate = format(endDate.value, "yyyy-MM-dd");
-
+  travelStore.startDate = startDate.value;
+  travelStore.endDate = endDate.value;
   // store에 여행 경로 생성
-  travelStore.createRouteList(startDate.value, endDate.value);
+  travelStore.createRouteList();
 
   // 다음 단계로!
   router.push({
