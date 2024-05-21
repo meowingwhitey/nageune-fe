@@ -20,7 +20,9 @@ defineProps({
 
         <div class="d-flex flex-column justify-center">
           <v-card-title class="pb-1"> {{ userInfo.nickname }}님 </v-card-title>
-          <v-card-text class="pb-0">0000.00.00부터 여행 중</v-card-text>
+          <v-card-text class="pb-0"
+            >{{ userInfo.createdAt }}부터 여행 중</v-card-text
+          >
           <v-card-text class="pt-1 pb-0">
             {{ userInfo.email }}
           </v-card-text>

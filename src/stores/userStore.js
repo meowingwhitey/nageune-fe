@@ -20,6 +20,7 @@ export const useUserStore = defineStore("user", () => {
     nickname: "",
     name: "",
     img: "",
+    createdAt: "",
   });
   const lastAccess = ref(null); //최근 route 변경 시간 저장
 
@@ -101,6 +102,7 @@ export const useUserStore = defineStore("user", () => {
       .then((response) => {
         console.log(response);
         console.log("회원가입 성공");
+        router.push({ name: "index" });
       })
       .catch((err) => {
         console.log(err);
@@ -114,7 +116,7 @@ export const useUserStore = defineStore("user", () => {
       local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
       local.get(`${REST_USER_API}/info`).then((response) => {
         //유저정보 가져오기
-        // console.log(response.data);
+        console.log(response.data);
         console.log("사용자 정보 가져오기 성공");
         userInfo.value = {
           email: response.data.email,
@@ -124,6 +126,7 @@ export const useUserStore = defineStore("user", () => {
             response.data.img !== null
               ? response.data.img
               : "/src/assets/profile.png",
+          createdAt: response.data.createdAt,
         };
       });
     } catch (err) {
@@ -153,6 +156,20 @@ export const useUserStore = defineStore("user", () => {
       });
   };
 
+  //회원 탈퇴
+  const deleteUser = async () => {
+    local.defaults.headers["Authorization"] = tokenStore.getAccessToken();
+    await local
+      .post(`${REST_USER_API}/delete`)
+      .then((res) => {
+        console.log("탈퇴 완료");
+
+        //로그아웃 처리
+        userLogout();
+      })
+      .catch((err) => console.log(err));
+  };
+
   return {
     isLogin,
     userInfo,
@@ -162,5 +179,6 @@ export const useUserStore = defineStore("user", () => {
     userSignup,
     updateUserInfo,
     getUserInfo,
+    deleteUser,
   };
 });

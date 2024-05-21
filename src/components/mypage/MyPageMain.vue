@@ -19,7 +19,7 @@ onBeforeUpdate(async () => {
 <template>
   <v-container>
     <v-row>
-      <v-col class="mx-auto" cols="12" lg="11">
+      <v-col class="mx-auto" cols="12" lg="12">
         <ProfileMain :userInfo="userStore.userInfo" />
         <TabsComponent />
       </v-col>
