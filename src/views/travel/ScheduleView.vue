@@ -1,36 +1,58 @@
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useTravelStore } from "@/stores/travelStore.js";
+
 /**
  * [date-fns]
  * https://date-fns.org/
  */
-import { addDays, differenceInDays } from "date-fns";
+import { addDays, differenceInDays, format } from "date-fns";
 
 const router = useRouter();
 const dialog = ref(true);
-const allowdEndDate = ref({
+const allowedEndDate = ref({
   min: "0000-01-01",
   max: "9999-12-31",
 });
 const today = new Date();
 const startDate = ref(new Date());
 const endDate = ref(addDays(new Date(), 7));
+const travelStore = useTravelStore();
+const isEndDateSet = ref(false);
+const isStartDateSet = ref(false);
 
+// 시작 날짜에 따른 선택 가능 일자 설정
 watch(startDate, () => {
-  if (differenceInDays(startDate.value, endDate.value) > 7) {
+  if (
+    differenceInDays(endDate.value, startDate.value) > 7 ||
+    differenceInDays(endDate.value, startDate.value) < 0
+  ) {
     endDate.value = addDays(startDate.value, 7);
   }
-  allowdEndDate.value.min = startDate.value;
-  allowdEndDate.value.max = addDays(startDate.value, 7);
+  allowedEndDate.value.min = startDate.value;
+  allowedEndDate.value.max = addDays(startDate.value, 7);
+});
+
+// 선택한 날짜 옵션이 유효할 경우 nextbtn 활성화를 위한 computed
+const isDateValid = computed(() => {
+  return differenceInDays(endDate.value, startDate.value) <= 7;
 });
 
 onMounted(() => {
-  allowdEndDate.value.min = startDate.value;
-  allowdEndDate.value.max = endDate.value;
+  allowedEndDate.value.min = startDate.value;
+  allowedEndDate.value.max = endDate.value;
 });
 
 const onNextClick = () => {
+  // 출발, 도착일자 store에 저장
+  travelStore.startDate = format(startDate.value, "yyyy-MM-dd");
+  travelStore.endDate = format(endDate.value, "yyyy-MM-dd");
+
+  // store에 여행 경로 생성
+  travelStore.createRouteList(startDate.value, endDate.value);
+
+  // 다음 단계로!
   router.push({
     name: "travel-search-heritage",
   });
@@ -38,59 +60,63 @@ const onNextClick = () => {
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="730px" persistent>
-    <v-card class="schedule-dialog-card">
-      <v-card-title class="text-h6 text-md-h5 text-lg-h4">
-        <v-icon icon="mdi-calendar-edit-outline" />
-        여행 기간이 어떻게 되사나요?
-      </v-card-title>
-      <div>
-        <u>* 여행 일자는 <strong>최대 7일</strong>까지 설정 가능합니다.</u>
-      </div>
-      <div>
-        <u>
-          여행 경로는 가까운 장소 순으로 자동 정렬 후 직접 수정하실 수 있어요 😉
-        </u>
-      </div>
-      <div style="height: 20px"></div>
-
-      <div class="d-flex flex-row">
+  <div>
+    <v-dialog v-model="dialog" max-width="730px" persistent>
+      <v-card class="schedule-dialog-card">
+        <v-card-title class="text-h6 text-md-h5 text-lg-h4">
+          <v-icon icon="mdi-calendar-edit-outline" />
+          여행 기간이 어떻게 되시나요?
+        </v-card-title>
         <div>
-          <v-chip color="#E57373" variant="flat"> 출발일 </v-chip>
-          <v-locale-provider locale="ko">
-            <v-date-picker
-              show-adjacent-months
-              hide-header="true"
-              v-model="startDate"
-            ></v-date-picker>
-          </v-locale-provider>
+          <u>* 여행 일자는 <strong>최대 7일</strong>까지 설정 가능합니다.</u>
+        </div>
+        <div>
+          <u>
+            여행 경로는 가까운 장소 순으로 자동 정렬 후 직접 수정하실 수 있어요
+            😉
+          </u>
+        </div>
+        <div style="height: 20px"></div>
+
+        <div class="d-flex flex-row">
+          <div>
+            <v-chip color="#E57373" variant="flat"> 출발일 </v-chip>
+            <v-locale-provider locale="ko">
+              <v-date-picker
+                show-adjacent-months
+                :hide-header="true"
+                v-model="startDate"
+              ></v-date-picker>
+            </v-locale-provider>
+          </div>
+
+          <div>
+            <v-chip color="#E57373" variant="flat"> 도착일 </v-chip>
+            <v-locale-provider locale="ko">
+              <v-date-picker
+                show-adjacent-months
+                :hide-header="true"
+                :max="allowedEndDate.max"
+                :min="allowedEndDate.min"
+                v-model="endDate"
+              ></v-date-picker>
+            </v-locale-provider>
+          </div>
         </div>
 
-        <div>
-          <v-chip color="#E57373" variant="flat"> 도착일 </v-chip>
-          <v-locale-provider locale="ko">
-            <v-date-picker
-              show-adjacent-months
-              hide-header="true"
-              :max="allowdEndDate.max"
-              :min="allowdEndDate.min"
-              v-model="endDate"
-            ></v-date-picker>
-          </v-locale-provider>
-        </div>
-      </div>
-
-      <v-spacer />
-      <v-btn
-        @click="onNextClick"
-        rounded="xl"
-        color="#26A69A"
-        append-icon="mdi-arrow-right"
-      >
-        방문 장소 설정
-      </v-btn>
-    </v-card>
-  </v-dialog>
+        <v-spacer />
+        <v-btn
+          @click="onNextClick"
+          rounded="xl"
+          color="#26A69A"
+          append-icon="mdi-arrow-right"
+          :disabled="!isDateValid"
+        >
+          {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
+        </v-btn>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <style scoped>
