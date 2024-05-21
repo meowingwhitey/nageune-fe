@@ -1,22 +1,21 @@
 <script setup>
 import SpotItem from "@/components/mobile/spot/SpotItem.vue";
 import TimelineDot from "@/components/mobile/spot/TimelineDot.vue";
-
-const props = defineProps({
-  plan: Object,
+import { onMounted, ref, onBeforeUpdate } from "vue";
+defineProps({
+  plan: Array,
 });
 
-console.log(props.plan);
+const planList = ref();
 </script>
 
 <template>
   <!-- 스크롤 필요 -->
   <div>
-    <template v-for="tripDay in plan.route" :key="tripDay.date">
-      <template v-for="spot in tripDay.spots" :key="spot.id">
+    <template v-for="(spot, index) in plan" :key="index">
+      <template v-if="spot.type === 'heritage'">
         <div class="d-flex">
-          <!-- 여행 계획 표시(순서 등) -->
-          <TimelineDot :spotcnt="spot.id" />
+          <TimelineDot :spotcnt="index + 1" />
           <SpotItem :spot="spot" />
         </div>
       </template>

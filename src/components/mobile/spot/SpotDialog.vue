@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { localAxios } from "@/util/axios_interceptor";
 import ExifReader from "exifreader";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
-const tripId = ref(route.params.id);
+const local = localAxios();
+const REST_TRAVELHISTORY_API = `/travelHistroy`;
 
 const props = defineProps({
   spot: Object,
@@ -22,8 +24,21 @@ const btnDisable = ref(true);
 
 const emit = defineEmits(["closeDialog"]);
 
-const closeDialog = () => {
+const closeDialog = async () => {
   // 서버로 사진 전송
+  await local
+    .post(`${REST_TRAVELHISTORY_API}/upload`, {
+      image: image.value, //이미지
+      travelId: route.params.id, //여행 아이디
+      heritageId: props.spot.heritageId, //문화재아이디
+    })
+    .then((res) => {
+      console.log(res);
+      console.log("사진전송완료");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 
   emit("closeDialog");
 };
@@ -72,12 +87,13 @@ const getLocation = async (file) => {
     console.log(distance + "m");
 
     //100m 이내에서만 인증 가능
-    if (distance <= 100) {
-      console.log("인증완료");
-      btnDisable.value = false;
-    } else {
-      console.log("인증불가");
-    }
+    // if (distance <= 100) {
+    //   console.log("인증완료");
+    //   btnDisable.value = false;
+    // } else {
+    //   console.log("인증불가");
+    // }
+    btnDisable.value = false;
   } catch (error) {
     msg.value = "위치 정보가 존재하지 않습니다.";
     console.log(error);

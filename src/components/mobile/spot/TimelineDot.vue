@@ -1,7 +1,7 @@
 <script setup>
 //특정 날짜에 방문할 여행지가 몇개인지
 defineProps({
-  spotcnt: String,
+  spotcnt: Number,
 });
 </script>
 
