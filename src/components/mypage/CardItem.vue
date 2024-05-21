@@ -4,6 +4,8 @@
 // 뒷면: 맞춘경우 -> stamp_time 문제+답변
 //      틀린 경우 -> 퀴즈 풀기 클릭버튼
 
+import QuizDialog from "./QuizDialog.vue";
+
 import { localAxios } from "@/util/axios_interceptor";
 import { ref, onMounted } from "vue";
 const REST_HERITAGE_API = `/heritage`;
@@ -36,7 +38,10 @@ onMounted(async () => {
   console.log(heritage.value);
 });
 
-console.log(props.card);
+const dialog = ref(false);
+const closeDialog = () => {
+  dialog.value = false;
+};
 </script>
 
 <template>
@@ -63,12 +68,19 @@ console.log(props.card);
           </template>
 
           <template v-else>
-            <h1>퀴즈 풀기</h1>
-            <!-- 모달창 퀴즈 풀기 -->
+            <div @click="dialog = true">
+              <h1>퀴즈 풀기</h1>
+            </div>
           </template>
         </div>
       </div>
     </div>
+    <!-- 모달창 퀴즈 풀기 -->
+    <QuizDialog
+      v-model="dialog"
+      @close-dialog="closeDialog"
+      :heritage-id="card.heritageId"
+    />
   </div>
 </template>
 
