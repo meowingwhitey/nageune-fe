@@ -41,8 +41,8 @@ const getSpotList = async () => {
       },
     })
     .then((res) => {
-      console.log("데이터가져옴", res);
       plans.value = res.data;
+      console.log(plans.value);
       startDay.value = plans.value[0].visitDate.slice(0, 10);
       endDay.value = plans.value[plans.value.length - 1].visitDate.slice(0, 10);
     })
@@ -114,8 +114,11 @@ const clickBtn = (id, tripTitle, isLast) => {
       </v-card-text>
 
       <!-- 타임라인 -->
-      <v-card-item class="pa-0">
-        <RouteTimeline class="mt-5 mb-10" :plans="plans" />
+      <v-card-item class="pa-0 position-relative">
+        <RouteTimeline
+          class="mt-5 mb-10 timeline position-absolute"
+          :plans="plans"
+        />
       </v-card-item>
 
       <!-- 버튼 -->
@@ -132,22 +135,15 @@ const clickBtn = (id, tripTitle, isLast) => {
       </v-card-item>
     </v-card>
   </div>
-
-  <!-- 상세보기 모달창 -->
-  <!-- <template v-if="isLast">
-    <LastTripDetail
-      v-model="dialog"
-      @close-dialog="closeDialog"
-      :id="id"
-      :trip-title="tripTitle"
-      :plans="plans"
-    />
-  </template> -->
 </template>
 
 <style scoped>
 .route-item {
   width: 270px;
   height: 500px;
+}
+
+.timeline {
+  left: 15%;
 }
 </style>
