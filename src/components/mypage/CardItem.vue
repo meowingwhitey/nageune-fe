@@ -21,12 +21,12 @@ const heritage = ref({
 
 const getHeritageById = async (id) => {
   await local
-    .get(`${REST_HERITAGE_API}/id`, { params: { heritageId: id } })
+    .get(`${REST_HERITAGE_API}/detail`, { params: { heritageId: id } })
     .then((res) => {
       heritage.value = res.data;
       if (!heritage.value.imageurl)
         //   디폴트이미지설정
-        heritage.value.imageurl = "/src/assets/profile.png";
+        heritage.value.imageurl = "/src/assets/not_found_img.jpg";
     })
     .catch((err) => {
       console.log(err);
@@ -126,11 +126,11 @@ const closeDialog = () => {
   align-items: center;
   color: #000;
   border: 2px solid rgb(238, 238, 238);
-  border-radius: 15px;
 }
 
 .front {
   background: rgb(255, 255, 255);
+  border-radius: 15px;
 }
 
 .back {
