@@ -3,7 +3,7 @@ import CardItem from "@/components/mypage/CardItem.vue";
 import { localAxios } from "@/util/axios_interceptor";
 import { useTokenStore } from "@/stores/tokenStore";
 import { ref, onMounted } from "vue";
-const REST_TRAVELHISTORY_API = `/travelHistroy`;
+const REST_TRAVELHISTORY_API = `/travelHistory`;
 const local = localAxios();
 const tokenStore = useTokenStore();
 
@@ -29,7 +29,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>카드리스트</div>
   <v-container class="d-flex">
     <v-row>
       <CardItem v-for="card in cards" :card="card" />

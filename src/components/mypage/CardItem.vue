@@ -126,6 +126,7 @@ const closeDialog = () => {
   align-items: center;
   color: #000;
   border: 2px solid rgb(238, 238, 238);
+  border-radius: 15px;
 }
 
 .front {
