@@ -1,5 +1,5 @@
 <script setup>
-import MobileRouteItem from "@/components/mobile/mypage/MobileRouteItem.vue";
+import MobileRouteList from "@/components/mobile/mypage/MobileRouteList.vue";
 import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
@@ -32,16 +32,12 @@ const tab = ref("plans");
         >님
       </div>
       <div class="profile-text">{{ userStore.userInfo.email }}</div>
-      <div class="profile-text mb-1">2024.05.10부터 여행 중</div>
+      <div class="profile-text mb-1">
+        {{ userStore.userInfo.createdAt }}부터 여행 중
+      </div>
     </div>
   </v-card>
   <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider>
-  <!-- <div id="m-tabs" class="d-flex justify-space-between px-5 py-3"> -->
-  <!-- <button>여행계획</button>
-    <button>여행카드</button>
-    <button>회원정보</button>
-  </div>
-  <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider> -->
 
   <v-tabs align-tabs="center" v-model="tab">
     <v-tab value="plans">여행계획</v-tab>
@@ -51,16 +47,7 @@ const tab = ref("plans");
 
   <v-tabs-window v-model="tab">
     <v-tabs-window-item value="plans">
-      <!-- 조건 검색 필요? -->
-      <!-- 경로 아이디 함께 보내기 -->
-      <MobileRouteItem
-        v-for="plan in planStore.planList"
-        :key="plan.id"
-        :plan="plan"
-      />
-      <div class="text-center mt-10">
-        생성 및 수정은 pc버전에서만 가능하다는 메세지
-      </div>
+      <MobileRouteList />
     </v-tabs-window-item>
     <v-tabs-window-item value="cards">여행 카드</v-tabs-window-item>
     <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
