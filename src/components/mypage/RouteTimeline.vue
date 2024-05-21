@@ -1,29 +1,33 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, onBeforeUpdate } from "vue";
 
 const props = defineProps({
-  route: Array,
+  plans: Array,
 });
 
 const spots = ref([]);
 
-onMounted(() => {
-  spots.value = props.route.slice(
-    0,
-    props.route.length > 5 ? 5 : props.route.length,
-  );
-});
+const makeSpotList = () => {
+  let cnt = 0; //최대 5개만 표시
 
-watch(
-  () => props.route,
-  (item) => {
-    console.log("아이템 변경");
-    spots.value = props.route.slice(
-      0,
-      props.route.length > 5 ? 5 : props.route.length,
-    );
-  },
-);
+  props.plans.forEach((day) => {
+    let json = JSON.parse(day.route);
+
+    json.route.forEach((spot) => {
+      spots.value.push({ date: day.visitDate, name: spot.name });
+      cnt++;
+    });
+  });
+
+  spots.value = spots.value.slice(0, 5);
+};
+
+onMounted(async () => {});
+
+onBeforeUpdate(async () => {
+  await makeSpotList();
+  console.log(spots.value);
+});
 </script>
 
 <template>
@@ -41,7 +45,9 @@ watch(
       height="35"
     >
       <template v-slot:opposite>
-        <div class="text-body-2 font-weight-thin">{{ s.date.slice(-5) }}</div>
+        <div class="text-body-2 font-weight-thin">
+          {{ s.date.slice(5, 10) }}
+        </div>
       </template>
       <div class="text-body-1 font-weight-medium">{{ s.name }}</div>
     </v-timeline-item>
