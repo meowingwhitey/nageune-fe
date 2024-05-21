@@ -1,5 +1,8 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+
+const route = useRoute();
 
 // 서버에서 검색시 사용하는 code
 const eraCodes = [1, 3, 5, 7, 9, 10, 20, 30, 40, 45, 50, 60];
@@ -19,13 +22,35 @@ const eras = {
 };
 
 const eraRange = ref([0, 10]);
-// watch(eraRange, () => {
-//   console.log(eraRange.value);
-//   store.resetMarker();
-//   store.eraRangeCodes.start = eraCodes[eraRange.value[0]];
-//   store.eraRangeCodes.end = eraCodes[eraRange.value[1]];
-//   store.drawMarker();
-// });
+const router = useRouter();
+watch(eraRange, () => {
+  router.push({
+    name: "travel-search-heritage",
+    query: {
+      startEraCode: eraCodes[eraRange.value[0]],
+      endEraCode: eraCodes[eraRange.value[1]],
+    },
+  });
+});
+
+// 리렌더링시 슬러이더 값도 같이 수정
+onMounted(() => {
+  if (
+    route.query.startEraCode == undefined ||
+    route.query.endEraCode == undefined
+  ) {
+    return;
+  }
+  eraRange.value[0] =
+    eraCodes.indexOf(Number(route.query.startEraCode)) == -1
+      ? 0
+      : eraCodes.indexOf(Number(route.query.startEraCode));
+
+  eraRange.value[1] =
+    eraCodes.indexOf(Number(route.query.endEraCode)) == -1
+      ? 10
+      : eraCodes.indexOf(Number(route.query.endEraCode));
+});
 </script>
 
 <template>

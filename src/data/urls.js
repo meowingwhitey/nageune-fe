@@ -1,4 +1,5 @@
-export const API_SERVER_URL = "http://localhost:8080";
+export const API_SERVER_URL = "http://localhost:8080/api/v1";
+export const HERITAGE_API_SERVER_URL = `${API_SERVER_URL}/heritage`;
 export const API_PAGE_URL = `${API_SERVER_URL}/page`;
 export const API_RANGE_URL = `${API_SERVER_URL}/range`;
 export const API_CURRENT_URL = `${API_SERVER_URL}/current`;

@@ -2,10 +2,12 @@
 import HeritageSearchBar from "./HeritageSearchBar.vue";
 import HeritageSearchOption from "./HeritageSearchOption.vue";
 import HeritageSearchList from "./HeritageSearchList.vue";
+import SearchLoadingList from "@/components/travel/SearchLoadingList.vue";
 import NextBtn from "@/components/travel/NextBtn.vue";
 import PreviousBtn from "@/components/travel/PreviousBtn.vue";
 import { useMapStore } from "@/stores/mapStore.js";
 import { useRouter } from "vue-router";
+
 const mapStore = useMapStore();
 const router = useRouter();
 const onPreviousClick = () => {

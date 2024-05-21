@@ -27,8 +27,7 @@ const props = defineProps(["index", "element"]);
           class="d-flex flex-row"
           style="width: 100%; justify-content: space-between"
         >
-          <v-chip size="small">테스트 분류</v-chip>
-          <v-btn density="compact" icon="mdi-plus"></v-btn>
+          <v-chip size="small">{{ props.element.description }}</v-chip>
         </div>
       </div>
     </div>

@@ -6,11 +6,11 @@ const router = useRouter();
 const route = useRoute();
 const searchKeyword = ref(route.query.keyword);
 const onSearch = () => {
-  if (searchKeyword === "") {
+  if (searchKeyword === undefined) {
     return;
   }
   router.push({
-    name: "travel-place-search",
+    name: "travel-search-place",
     query: {
       keyword: searchKeyword.value,
     },

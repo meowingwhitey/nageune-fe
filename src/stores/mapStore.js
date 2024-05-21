@@ -1,7 +1,7 @@
 /**
  * 카카오맵 사용시 필요한 공통적인 함수 및 변수 저장
  */
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 
 export const useMapStore = defineStore("mapStore", () => {
@@ -14,10 +14,16 @@ export const useMapStore = defineStore("mapStore", () => {
     latCenter: 0,
     lngCenter: 0,
   });
+
   const kakaoMap = ref(undefined);
+
   const markerList = ref([]); // 생성된 마커 저장
+  let clusterer = undefined;
 
   const resetMarker = () => {
+    if (clusterer !== undefined) {
+      clusterer.clear();
+    }
     markerList.value.forEach((marker) => {
       marker.setMap(null);
     });
@@ -44,9 +50,23 @@ export const useMapStore = defineStore("mapStore", () => {
     kakao.maps.event.addListener(marker, "mouseout", function () {
       infowindow.close();
     });
-
     markerList.value.push(marker);
+    return marker;
   };
 
-  return { kakaoMap, resetMarker, drawMarker };
+  // 카카오맵 객체가 등록될 경우 클러스터 생성
+  const drawClusterer = () => {
+    if (clusterer !== undefined) {
+      clusterer.clear();
+    }
+    console.log(markerList.value);
+    clusterer = new kakao.maps.MarkerClusterer({
+      map: kakaoMap.value, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+      averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
+      minLevel: 10, // 클러스터 할 최소 지도 레벨
+    });
+    clusterer.addMarkers(markerList.value);
+    console.log(clusterer);
+  };
+  return { kakaoMap, resetMarker, drawMarker, drawClusterer };
 });

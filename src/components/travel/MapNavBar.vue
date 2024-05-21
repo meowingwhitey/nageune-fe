@@ -2,24 +2,6 @@
 import { useRouter, useRoute } from "vue-router";
 const route = useRoute();
 const router = useRouter();
-const menuList = [
-  {
-    title: "문화재",
-    image: "/src/assets/logo_test.gif",
-  },
-  {
-    title: "경유지",
-    image: "/src/assets/logo_test.gif",
-  },
-  {
-    title: "경로 설정",
-    image: "/src/assets/logo_test.gif",
-  },
-  {
-    title: "문화재",
-    image: "/src/assets/logo_test.gif",
-  },
-];
 </script>
 
 <template>
@@ -52,7 +34,7 @@ const menuList = [
       :class="route.name === 'travel-search-heritage' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-bank" size="x-large"></v-icon>
-      <p>문화제</p>
+      <p>문화재</p>
     </div>
     <v-divider />
     <div

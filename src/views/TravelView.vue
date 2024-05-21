@@ -16,13 +16,12 @@ onBeforeMount(() => {
   if (window.kakao && window.kakao.maps) {
     initMap();
   } else {
-    // 등록되지 않았으면 동적으로 script를 head에 append 후 로드
-    const script = document.createElement("script");
+    const scripts = document.createElement("script");
     /* global kakao */
     // api가 모두 로드되었으면 initmap 메서드 실행
-    script.onload = () => kakao.maps.load(initMap);
-    script.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services`;
-    document.head.appendChild(script);
+    scripts.onload = () => kakao.maps.load(initMap);
+    scripts.src = `http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${apiKey}&libraries=services,clusterer,drawing`;
+    document.head.appendChild(scripts);
   }
 });
 
@@ -36,7 +35,7 @@ const initMap = () => {
   // 지도 객체를 등록합니다.
   // 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
   mapStore.kakaoMap = new kakao.maps.Map(container, options);
-
+  window.map = mapStore.kakaoMap;
   // // 지도의 현재 영역을 얻어옵니다
   // const bounds = window.kakaoMap.getBounds();
   // // 영역의 남서쪽 좌표를 얻어옵니다
