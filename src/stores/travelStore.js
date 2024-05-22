@@ -1,6 +1,7 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import { format, differenceInDays, addDays } from "date-fns";
+import { localAxios } from "@/util/axios_interceptor";
 
 /**
  * [skmeans]
@@ -12,11 +13,13 @@ import skmeans from "skmeans";
  * 여행 생성 관련 스토어
  */
 export const useTravelStore = defineStore("travelStore", () => {
+  const axios = localAxios();
   const startDate = ref(new Date());
   const endDate = ref(addDays(new Date(), 6));
   const getDays = () => {
     return differenceInDays(endDate.value, startDate.value) + 1;
   };
+  const travelTitle = ref("");
   const routeList = ref([]);
 
   // 방문할 문화재, 장소 리스트
@@ -113,7 +116,17 @@ export const useTravelStore = defineStore("travelStore", () => {
   /**
    * 현재 여행 정보를 서버에 저장하기 위한 json 형태로 변환 후 반환
    */
-  const getTravelInfo = () => {};
+  const sendTravelInfo = async () => {
+    const travelData = {};
+
+    // 제목 설정
+    travelData.title = travelTitle.value;
+    travelData.routes = routeList.value;
+
+    console.log(travelData);
+
+    await axios.post("/travel/create", travelData);
+  };
 
   /**
    * 여행 루트를 일자별로 생성하여 routeList에 저장
@@ -125,7 +138,6 @@ export const useTravelStore = defineStore("travelStore", () => {
     routeList.value = [];
     for (let dayIdx = 0; dayIdx < days; dayIdx++) {
       const day = addDays(startDate.value, dayIdx);
-      console.log(routeList.value);
       routeList.value.push({
         date: format(day, "yyyy-MM-dd"),
         route: [],
@@ -147,9 +159,10 @@ export const useTravelStore = defineStore("travelStore", () => {
     endDate,
     routeList,
     locationList,
-    getTravelInfo,
     createRouteList,
     setRouteCluster,
+    travelTitle,
     initStore,
+    sendTravelInfo,
   };
 });
