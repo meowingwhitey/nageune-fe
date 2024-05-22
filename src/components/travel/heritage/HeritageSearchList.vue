@@ -45,7 +45,7 @@ onMounted(() => {
   resetAndFetch();
 });
 
-const api = async (keyword, pageSize = 15) => {
+const api = async (keyword, pageSize = 9999999) => {
   if (isEnd.value || !keyword || isLoading.value) {
     return [];
   }

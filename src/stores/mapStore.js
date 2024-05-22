@@ -27,7 +27,6 @@ export const useMapStore = defineStore("mapStore", () => {
   };
 
   const drawMarker = (name, lat, lng) => {
-    console.log(window.kakaoMap, isKakaoMapLoaded);
     // 마커를 생성하고 지도에 표시합니다
     const marker = new kakao.maps.Marker({
       map: window.kakaoMap,
@@ -62,7 +61,7 @@ export const useMapStore = defineStore("mapStore", () => {
       clusterer = new kakao.maps.MarkerClusterer({
         map: window.kakaoMap, // 마커들을 클러스터로 관리하고 표시할 지도 객체
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-        minLevel: 10, // 클러스터 할 최소 지도 레벨
+        minLevel: 5, // 클러스터 할 최소 지도 레벨
       });
     }
     console.log(markerList.value);

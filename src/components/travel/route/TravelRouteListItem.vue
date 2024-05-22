@@ -17,9 +17,12 @@ const props = defineProps(["index", "element"]);
             text-decoration: none;
             color: #101010;
             cursor: pointer;
+            text-wrap: wrap;
           "
         >
-          {{ props.element.name }}
+          {{
+            `${props.element.name.slice(0, 11)}${props.element.name.length >= 11 ? "..." : ""}`
+          }}
         </div>
 
         <div style="font-size: 8pt">{{ props.element.address }}</div>
@@ -27,7 +30,7 @@ const props = defineProps(["index", "element"]);
           class="d-flex flex-row"
           style="width: 100%; justify-content: space-between"
         >
-          <v-chip size="small">{{ props.element.description }}</v-chip>
+          <v-chip size="x-small">{{ props.element.description }}</v-chip>
         </div>
       </div>
     </div>

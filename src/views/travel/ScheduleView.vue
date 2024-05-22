@@ -16,12 +16,9 @@ const allowedEndDate = ref({
   min: "0000-01-01",
   max: "9999-12-31",
 });
-const today = new Date();
-const startDate = ref(new Date(today));
-const endDate = ref(addDays(today, 6));
+const startDate = ref(new Date());
+const endDate = ref(addDays(startDate.value, 6));
 const travelStore = useTravelStore();
-const isEndDateSet = ref(false);
-const isStartDateSet = ref(false);
 
 // 시작 날짜에 따른 선택 가능 일자 설정
 watch(startDate, () => {
@@ -41,7 +38,7 @@ const isDateValid = computed(() => {
 });
 
 onMounted(() => {
-  allowedEndDate.value.min = startDate.value;
+  allowedEndDate.value.min = new Date();
   allowedEndDate.value.max = endDate.value;
 });
 

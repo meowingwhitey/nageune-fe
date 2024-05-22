@@ -1,13 +1,14 @@
 import { ref, watch } from "vue";
 import { defineStore } from "pinia";
+import { useMapStore } from "./mapStore";
 import axios from "axios";
 /**
  * 여행 경유지 or 문화재 검색시 사용하는 Store
  */
 const REST_USER_API = `http://localhost:8080/api/v1/heritage`;
 
-export const useSearchStore = defineStore("searchStore", () => {
-  const eraRangeCodes = ref({ start: 1, end: 60 });
+export const useHeritageSearchStore = defineStore("heritageSearch", () => {
+  const eraRangeCodes = { start: 1, end: 60 };
   const locationRangeCoord = ref({
     latStart: 0,
     latEnd: 0,
@@ -15,18 +16,18 @@ export const useSearchStore = defineStore("searchStore", () => {
     lngEnd: 0,
     latCenter: 0,
     lngCenter: 0,
+    level: 0,
   });
 
   const previousKeyword = ref(""); // 중복 검색 방지를 위한 이전에 검색했던 키워드 저장
 
   const getHeritageListByKeyword = async (searchKeyword) => {
-    console.log("ddd");
     if (searchKeyword == "" || previousKeyword == searchKeyword) {
       return null;
     }
     const params = {
-      startEraCode: eraRangeCodes.value.start,
-      endEraCode: eraRangeCodes.value.end,
+      startEraCode: eraRangeCodes.start,
+      endEraCode: eraRangeCodes.end,
       keyword: searchKeyword,
     };
 
@@ -53,9 +54,10 @@ export const useSearchStore = defineStore("searchStore", () => {
       Math.abs(centerCoord.getLat() - locationRangeCoord.value.latCenter) <
         latDiff &&
       Math.abs(centerCoord.getLng() - locationRangeCoord.value.lngCenter) <
-        lngDiff
+        lngDiff &&
+      locationRangeCoord.value.level == kakaoMap.getLevel()
     ) {
-      return null;
+      return [];
     }
     locationRangeCoord.value.latCenter = centerCoord.getLat();
     locationRangeCoord.value.lngCenter = centerCoord.getLng();
@@ -65,13 +67,14 @@ export const useSearchStore = defineStore("searchStore", () => {
     locationRangeCoord.value.lngStart = swLatLng.getLng();
     locationRangeCoord.value.lngEnd = neLatLng.getLng();
 
+    locationRangeCoord.value.level = kakaoMap.getLevel();
     const params = {
       latitudeStart: locationRangeCoord.value.latStart,
       latitudeEnd: locationRangeCoord.value.latEnd,
       longitudeStart: locationRangeCoord.value.lngStart,
       longitudeEnd: locationRangeCoord.value.lngEnd,
-      startEraCode: eraRangeCodes.value.start,
-      endEraCode: eraRangeCodes.value.end,
+      startEraCode: eraRangeCodes.start,
+      endEraCode: eraRangeCodes.end,
     };
 
     const response = axios.get(`${REST_USER_API}/condition`, { params });
