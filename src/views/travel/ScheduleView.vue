@@ -42,6 +42,10 @@ onMounted(() => {
   allowedEndDate.value.max = endDate.value;
 });
 
+const onPreviousClick = () => {
+  router.push({ name: "travel-departure" });
+};
+
 const onNextClick = () => {
   // 출발, 도착일자 store에 저장
   travelStore.startDate = startDate.value;
@@ -107,15 +111,25 @@ const onNextClick = () => {
         </div>
 
         <v-spacer />
-        <v-btn
-          @click="onNextClick"
-          rounded="xl"
-          color="#26A69A"
-          append-icon="mdi-arrow-right"
-          :disabled="!isDateValid"
-        >
-          {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
-        </v-btn>
+        <div class="d-flex ga-2 row">
+          <v-btn
+            @click="onPreviousClick"
+            rounded="xl"
+            color="#90A4AE"
+            append-icon="mdi-arrow-u-left-top"
+          >
+            우리집이 어디더라?
+          </v-btn>
+          <v-btn
+            @click="onNextClick"
+            rounded="xl"
+            color="#26A69A"
+            append-icon="mdi-arrow-right"
+            :disabled="!isDateValid"
+          >
+            {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
+          </v-btn>
+        </div>
       </v-card>
     </v-dialog>
   </div>
