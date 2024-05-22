@@ -26,39 +26,43 @@ const goMypage = () => {
     >
       <v-app-bar-title>
         <!-- <img src="@/assets/logo.png" width="30px" /> -->
-        <span class="pa-3" @click="goMain">title</span>
+        <span class="pa-3" @click="goMain">나그네</span>
       </v-app-bar-title>
-      <v-app-bar-nav-icon
-        variant="text"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
+      <template v-if="userStore.isLogin">
+        <v-app-bar-nav-icon
+          variant="text"
+          @click.stop="drawer = !drawer"
+        ></v-app-bar-nav-icon>
+      </template>
     </v-app-bar>
 
     <!-- 로그인 했을시에만 활성화 -->
-    <v-navigation-drawer v-model="drawer" location="right" temporary>
-      <!-- 마이페이지, 로그아웃, 일정 리스트보기 (+지난 일정?) -->
-      <div id="mypage-box" class="ma-5" @click="goMypage">
-        <v-avatar color="surface-variant"></v-avatar>
-        <div class="ml-3">
-          <div class="text-decoration-none">
-            <span class="font-weight-bold">닉네임</span> 님
+    <template v-if="userStore.isLogin">
+      <v-navigation-drawer v-model="drawer" location="right" temporary>
+        <!-- 마이페이지, 로그아웃, 일정 리스트보기 (+지난 일정?) -->
+        <div id="mypage-box" class="ma-5" @click="goMypage">
+          <v-avatar color="surface-variant"></v-avatar>
+          <div class="ml-3">
+            <div class="text-decoration-none">
+              <span class="font-weight-bold">닉네임</span> 님
+            </div>
+            <div class="text-decoration-none">마이페이지</div>
           </div>
-          <div class="text-decoration-none">마이페이지</div>
         </div>
-      </div>
 
-      <!-- 게시판? -->
+        <!-- 게시판? -->
 
-      <!-- 로그아웃 -->
-      <v-btn
-        class="position-fixed bottom-0 right-0"
-        block
-        variant="flat"
-        size="large"
-        @click="userStore.userLogout()"
-        >로그아웃</v-btn
-      >
-    </v-navigation-drawer>
+        <!-- 로그아웃 -->
+        <v-btn
+          class="position-fixed bottom-0 right-0"
+          block
+          variant="flat"
+          size="large"
+          @click="userStore.userLogout()"
+          >로그아웃</v-btn
+        >
+      </v-navigation-drawer>
+    </template>
   </v-layout>
 </template>
 
