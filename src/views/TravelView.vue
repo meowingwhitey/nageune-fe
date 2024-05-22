@@ -45,7 +45,7 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
 
 <template>
   <MapNavBar />
-  <Transition name="slide-fade">
+  <Transition>
     <RouterView v-if="mapStore.isKakaoMapLoaded" />
   </Transition>
   <MapUserBtn />
@@ -64,17 +64,13 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
   scrollbar-width: none; /* Firefox */
 }
 
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
 }
 
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
+.v-enter-from,
+.v-leave-to {
   opacity: 0;
 }
 #map::-webkit-scrollbar {
