@@ -13,7 +13,7 @@ const makeSpotList = () => {
   props.plans.forEach((day) => {
     let json = JSON.parse(day.route);
 
-    json.route.forEach((spot) => {
+    json.forEach((spot) => {
       spots.value.push({ date: day.visitDate, name: spot.name });
       cnt++;
     });

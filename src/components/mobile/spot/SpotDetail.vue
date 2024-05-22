@@ -85,7 +85,7 @@ const changeDate = (day) => {
   console.log(planOfOneDay.value);
   const json = JSON.parse(planOfOneDay.value);
   planOfOneDay.value = json;
-  console.log(planOfOneDay.value.route);
+  console.log(planOfOneDay.value);
 };
 
 onMounted(async () => {
@@ -116,7 +116,7 @@ onMounted(async () => {
     <DateList class="mb-2" :date-cnt="tripLen" @change-date="changeDate" />
 
     <!-- 아이템박스 -->
-    <SpotItemList class="mt-4" :plan="planOfOneDay.route" />
+    <SpotItemList class="mt-4" :plan="planOfOneDay" />
     <!-- 임시 박스 -->
     <div style="height: 80px"></div>
   </div>

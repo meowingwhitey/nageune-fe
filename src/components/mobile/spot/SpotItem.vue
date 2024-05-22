@@ -27,7 +27,7 @@ const closeDialog = () => {
 const getImgUrl = () => {
   local
     .get(`${REST_HERITAGE_API}/img`, {
-      params: { heritageId: props.spot.heritageId },
+      params: { heritageId: props.spot.id },
     })
     .then((res) => {
       // console.log(res);
@@ -56,12 +56,12 @@ const getHeritageById = (id) => {
 onMounted(() => {
   getImgUrl();
 
-  getHeritageById(props.spot.heritageId);
+  getHeritageById(props.spot.id);
 });
 
 onBeforeUpdate(() => {
   getImgUrl();
-  getHeritageById(props.spot.heritageId);
+  getHeritageById(props.spot.id);
 });
 </script>
 <template>
