@@ -7,7 +7,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const local = localAxios();
-const REST_TRAVELHISTORY_API = `/travelHistroy`;
+const REST_TRAVELHISTORY_API = `/travelHistory`;
 
 const props = defineProps({
   spot: Object,
@@ -26,16 +26,18 @@ const btnDisable = ref(true);
 const emit = defineEmits(["closeDialog"]);
 
 const closeDialog = async () => {
+  console.log("사진업로드", route.params.id, props.spot.id);
   // 서버로 사진 전송
   await local
     .post(`${REST_TRAVELHISTORY_API}/upload`, {
       image: image.value, //이미지
       travelId: route.params.id, //여행 아이디
-      heritageId: props.spot.heritageId, //문화재아이디
+      heritageId: props.spot.id, //문화재아이디
     })
     .then((res) => {
-      console.log(res);
       console.log("사진전송완료");
+      image.value = null;
+      address.value = null;
     })
     .catch((err) => {
       console.log(err);
@@ -84,8 +86,8 @@ const getLocation = async (file) => {
     const distance = haversineDistance(
       lat,
       lng,
-      props.spot.lat,
-      props.spot.long,
+      props.spot.latitude,
+      props.spot.longitude,
     );
 
     console.log(distance + "m");

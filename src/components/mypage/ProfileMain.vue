@@ -1,6 +1,4 @@
 <script setup>
-import { useUserStore } from "@/stores/userStore";
-
 defineProps({
   userInfo: Object,
 });
@@ -18,18 +16,14 @@ defineProps({
       <div class="d-flex ml-2">
         <img :src="userInfo.img" width="150px" height="150px" />
 
-        <div class="d-flex flex-column justify-center">
-          <v-card-title class="pb-1"> {{ userInfo.nickname }}님 </v-card-title>
-          <v-card-text class="pb-0"
-            >{{ userInfo.createdAt }}부터 여행 중</v-card-text
-          >
-          <v-card-text class="pt-1 pb-0">
-            {{ userInfo.email }}
-          </v-card-text>
-          <v-card-item>
-            <v-chip class="mr-1">카드</v-chip>
-            <v-chip class="mr-1">카드</v-chip>
-          </v-card-item>
+        <div class="d-flex flex-column justify-end mb-2">
+          <v-card-title class="pb-1 profile-main-id">
+            {{ userInfo.nickname }}님
+          </v-card-title>
+          <div class="ml-4">
+            <p>{{ userInfo.createdAt }}부터 여행 중</p>
+            <p>{{ userInfo.email }}</p>
+          </div>
         </div>
       </div>
     </v-card>
@@ -42,5 +36,9 @@ defineProps({
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 15px;
+}
+
+.profile-main-id {
+  font-size: x-large;
 }
 </style>

@@ -14,8 +14,10 @@ const makeSpotList = () => {
     let json = JSON.parse(day.route);
 
     json.forEach((spot) => {
-      spots.value.push({ date: day.visitDate, name: spot.name });
-      cnt++;
+      if (spot.type === "heritage") {
+        spots.value.push({ date: day.visitDate, name: spot.name });
+        cnt++;
+      }
     });
   });
 

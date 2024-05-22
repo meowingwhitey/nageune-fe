@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onBeforeUpdate } from "vue";
+import { ref, onMounted, onBeforeUpdate, watch } from "vue";
 import { useRoute } from "vue-router";
 import SpotDialog from "@/components/mobile/spot/SpotDialog.vue";
 import VChip from "@/components/mobile/spot/VChip.vue";
@@ -14,7 +14,6 @@ const props = defineProps({
   spot: Object,
 });
 
-const age = ref(["신라", "6세기 말"]);
 const imgUrl = ref("/src/assets/not_found_img.jpg");
 
 const tripId = ref(route.params.id);
@@ -30,7 +29,7 @@ const getImgUrl = () => {
       params: { heritageId: props.spot.id },
     })
     .then((res) => {
-      // console.log(res);
+      console.log(res);
       imgUrl.value =
         res.data !== "" ? res.data : "/src/assets/not_found_img.jpg";
     })
@@ -39,6 +38,14 @@ const getImgUrl = () => {
     });
 };
 
+watch(
+  () => props.spot,
+  () => {
+    getImgUrl();
+    getHeritageById(props.spot.id);
+  },
+);
+
 const heritage = ref({});
 
 const getHeritageById = (id) => {
@@ -46,7 +53,7 @@ const getHeritageById = (id) => {
     .get(`${REST_HERITAGE_API}/detail`, { params: { heritageId: id } })
     .then((res) => {
       heritage.value = res.data;
-      // console.log(heritage.value);
+      // console.log("이미지업로드", props.spot, heritage.value);
     })
     .catch((err) => {
       console.log(err);
@@ -59,10 +66,10 @@ onMounted(() => {
   getHeritageById(props.spot.id);
 });
 
-onBeforeUpdate(() => {
-  getImgUrl();
-  getHeritageById(props.spot.id);
-});
+// onBeforeUpdate(() => {
+//   getImgUrl();
+//   getHeritageById(props.spot.id);
+// });
 </script>
 <template>
   <v-col cols="10">

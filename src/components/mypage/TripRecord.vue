@@ -11,7 +11,7 @@ const props = defineProps({
 const spots = ref({});
 const getJson = () => {
   spots.value = JSON.parse(props.plan);
-  // console.log(spots.value);
+  console.log("TripRecord", spots.value);
 };
 
 onBeforeMount(() => {
@@ -22,7 +22,7 @@ onBeforeMount(() => {
 <template>
   <div class="text-center">
     <div class="travel-date mb-4">{{ index + 1 }}일차</div>
-    <TripRecordDetail v-for="spot in spots" :spot="spot" :travelId="travelId" />
+    <TripRecordDetail :spot="spots" :travelId="travelId" />
   </div>
 </template>
 

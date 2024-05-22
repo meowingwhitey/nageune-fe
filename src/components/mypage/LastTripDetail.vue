@@ -1,9 +1,10 @@
 <script setup>
 import TripRecord from "@/components/mypage/TripRecord.vue";
-import { ref, onMounted, onBeforeUpdate } from "vue";
+import { ref, onMounted, onBeforeUpdate, watch } from "vue";
+// import LastTripMap from "@/components/mypage/LastTripMap.vue";
 import { localAxios } from "@/util/axios_interceptor";
+
 import { compareAsc, format } from "date-fns";
-import { useGoTo } from "vuetify";
 
 const local = localAxios();
 const REST_TRAVELHISTORY_API = `/travelHistory`;
@@ -23,7 +24,7 @@ const endDay = ref("0000-00-00");
 const plans = ref([
   {
     visitDate: "",
-    routes: [
+    route: [
       {
         name: "", //문화재 이름
         heritageId: 0, //문화재 아이디,
@@ -44,7 +45,7 @@ const getSpotList = async () => {
     })
     .then((res) => {
       plans.value = res.data;
-      // console.log(res);
+      console.log("json", res.data);
       startDay.value = format(
         new Date(plans.value[0].visitDate),
         "yyyy년 MM월 dd일",
@@ -59,25 +60,22 @@ const getSpotList = async () => {
     });
 };
 
-onBeforeUpdate(() => {
-  getSpotList();
+const onboarding = ref(1);
+
+const route = ref("");
+watch(onboarding, (idx) => {
+  // console.log("확인", idx, plans.value[idx - 1]);
+  route.value = plans.value[idx - 1].route;
 });
 
-// const goTo = useGoTo();
-// const moveIndex = (index) => {
-//   console.log(index, "로이동");
-//   goTo(`#day${index}`);
-// };
+watch(plans, (newPlans) => {
+  route.value = newPlans[onboarding.value].route;
+});
 
-const onboarding = ref(0);
-const next = () => {
-  onboarding.value =
-    onboarding.value + 1 > plans.value.length - 1 ? 0 : onboarding.value + 1;
-};
-const prev = () => {
-  onboarding.value =
-    onboarding.value - 1 < 0 ? plans.value.length - 1 : onboarding.value - 1;
-};
+onBeforeUpdate(async () => {
+  await getSpotList();
+  onboarding.value = 0;
+});
 </script>
 
 <template>
@@ -135,7 +133,7 @@ const prev = () => {
         class="my-5"
       ></v-divider>
       <v-card-item>
-        <div id="map">지도 다녀온 곳 마커</div>
+        <!-- <LastTripMap :route="route" /> -->
       </v-card-item>
       <template v-slot:actions>
         <button @click="closeDialog">닫기</button>
@@ -149,7 +147,6 @@ const prev = () => {
   min-width: 500px;
   width: 80vw;
   height: 300px;
-  background-color: aliceblue;
   margin: auto;
 }
 .btn-box {

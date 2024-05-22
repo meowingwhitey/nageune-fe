@@ -25,7 +25,7 @@ const getUserImg = () => {
   let heritageIdList = [];
   props.spot.forEach((s) => {
     if (s.type === "heritage") {
-      heritageIdList.push(s.heritageId);
+      heritageIdList.push(s.id);
     }
   });
 
@@ -39,10 +39,16 @@ const getUserImg = () => {
     .then((res) => {
       console.log(res); //
       imgList.value = res.data;
-      visitTime.value = format(
-        new Date(imgList.value[0].stampTime),
-        "yyyy년 MM월 dd일 H시 m분 방문",
-      );
+      if (imgList.value.length > 0) {
+        selectImg.value = imgList.value[0].image;
+        visitTime.value = format(
+          new Date(imgList.value[0].stampTime),
+          "yyyy년 MM월 dd일 H시 m분 방문",
+        );
+      } else {
+        selectImg.value = "/src/assets/not_found_img.jpg";
+        visitTime.value = "방문한 곳 없음";
+      }
       getHeritageDetail(res.data[0].heritageId);
     })
     .catch((err) => {
@@ -95,7 +101,7 @@ onMounted(() => {
             class="temp-img-box mb-2"
             @click="showDetail(img.heritageId, img.stampTime, img.image)"
           >
-            <p>{{ img.image }}</p>
+            <img :src="img.image" class="select-img-btn" />
           </div>
         </div>
       </template>
@@ -104,7 +110,7 @@ onMounted(() => {
     <!-- 임시용 -->
     <div class="d-flex justify-center mr-2 mb-7 position-relative">
       <div class="temp-img-box-detail">
-        <p>{{ selectImg }}</p>
+        <img :src="selectImg" class="uploaded-img" />
         <!-- <img :src="selectImg"/> -->
 
         <div class="visitied-time position-absolute top-0 mt-3 mr-3">
@@ -153,14 +159,18 @@ onMounted(() => {
 
 .temp-img-box-detail {
   min-width: 500px;
-  min-height: 400px;
+  height: 400px;
   width: 65vw;
   border-radius: 5px;
-  background-image:
-   /* linear-gradient(rgba(101, 148, 109, 0), rgba(0, 0, 0, 0.7)), */ url("http://www.cha.go.kr/unisearch/images/national_treasure/2021062917265902.jpg");
-  background-size: cover;
-  background-position: 0% 50%;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
+
+.uploaded-img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+}
+
 .heritage-era,
 .heritage-address,
 .heritage-title,
@@ -188,7 +198,7 @@ onMounted(() => {
 }
 
 .visitied-time {
-  right: 0;
+  right: 2%;
   transform: translateX(-50%);
 }
 
@@ -232,5 +242,11 @@ onMounted(() => {
 .slide-fade-leave-to {
   transform: translateY(-20px);
   opacity: 0;
+}
+
+.select-img-btn {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }
 </style>

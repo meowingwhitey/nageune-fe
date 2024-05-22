@@ -82,7 +82,7 @@ const getTripName = () => {
 const changeDate = (day) => {
   //day번째 날의 방문지 배열
   planOfOneDay.value = plans.value[day - 1].route;
-  console.log(planOfOneDay.value);
+  // console.log(planOfOneDay.value);
   const json = JSON.parse(planOfOneDay.value);
   planOfOneDay.value = json;
   console.log(planOfOneDay.value);

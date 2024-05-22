@@ -148,6 +148,6 @@ const clickBtn = (id, tripTitle, isLast) => {
 }
 
 .timeline {
-  left: 15%;
+  left: 10%;
 }
 </style>
