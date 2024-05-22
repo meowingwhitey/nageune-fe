@@ -36,6 +36,13 @@ const router = createRouter({
       path: "/",
       name: "index",
       component: IndexView,
+      beforeEnter: (to, from) => {
+        console.log(to, from);
+
+        if (from.path.slice(0, 3) === "/m/") {
+          return { name: "mobileMain" };
+        } else return true;
+      },
     },
     {
       path: "/travel",
