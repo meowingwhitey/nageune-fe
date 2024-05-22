@@ -37,6 +37,9 @@ const goToMainPage = () => {
             <RouterLink :to="{ name: 'login' }"
               ><v-btn variant="plain">로그인</v-btn></RouterLink
             >
+            <RouterLink :to="{ name: 'signup' }"
+              ><v-btn variant="plain">회원가입</v-btn></RouterLink
+            >
           </template>
 
           <!-- 로그인 안 되어 있을 때 -->
