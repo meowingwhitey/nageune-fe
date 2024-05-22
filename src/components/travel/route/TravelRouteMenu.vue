@@ -10,10 +10,12 @@ import { onMounted } from "vue";
 const mapStore = useMapStore();
 const router = useRouter();
 const onPreviousClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-search-place" });
 };
 
 const onNextClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-summary" });
 };
 const travelStore = useTravelStore();

@@ -9,10 +9,12 @@ import PlaceSearchMenu from "@/components/travel/place/PlaceSearchMenu.vue";
 
 import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 </script>
 
 <template>
-  <PlaceSearchMenu class="search-menu" />
+  <PlaceSearchMenu v-if="mapStore.isKakaoMapLoaded" class="search-menu" />
 </template>
 
 <style scoped>

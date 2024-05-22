@@ -1,13 +1,11 @@
 <script setup>
 import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
-import NextBtn from "@/components/travel/NextBtn.vue";
-import PreviousBtn from "@/components/travel/PreviousBtn.vue";
 import { useMapStore } from "@/stores/mapStore.js";
 import { useTravelStore } from "@/stores/travelStore.js";
 import SummaryRouteList from "@/components/travel/summary/SummaryRouteList.vue";
 import { format, addDays, differenceInDays } from "date-fns";
-
+const mapStore = useMapStore();
 const travelStore = useTravelStore();
 
 const router = useRouter();
@@ -23,7 +21,12 @@ const dialog = ref(true);
 </script>
 
 <template>
-  <v-dialog v-model="dialog" max-width="fit-content" persistent>
+  <v-dialog
+    v-if="mapStore.isKakaoMapLoaded"
+    v-model="dialog"
+    max-width="fit-content"
+    persistent
+  >
     <v-card class="summary-dialog-card">
       <v-card-title class="text-h6 text-md-h5 text-lg-h4">
         <v-icon icon="mdi-calendar-check-outline" />
@@ -54,7 +57,7 @@ const dialog = ref(true);
           >를 방문해요
         </u>
       </div>
-      <div style="height: 10px"></div>
+      <div style="min-height: 15px"></div>
       <div class="d-flex ga-5 row">
         <SummaryRouteList
           v-for="(route, index) in travelStore.routeList"
@@ -62,7 +65,7 @@ const dialog = ref(true);
           :day="index"
         />
       </div>
-      <div style="height: 20px"></div>
+      <div style="min-height: 20px"></div>
       <div class="d-flex ga-2 row">
         <v-btn
           @click="onPreviousClick"

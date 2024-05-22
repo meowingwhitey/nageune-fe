@@ -4,7 +4,7 @@ const props = defineProps(["index", "element"]);
 
 <template>
   <v-card class="travel-route-list-item" elevation="4">
-    <div class="d-flex ga-4" style="padding: 10px">
+    <div class="d-flex ga-4" style="padding: 10px; min-width: 240px">
       <img
         src="/src/assets/spot_image_test.gif"
         style="width: 60px; height: 60px"

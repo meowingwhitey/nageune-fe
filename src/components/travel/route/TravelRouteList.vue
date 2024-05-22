@@ -27,9 +27,7 @@ const onRouteMapping = () => {
   const linePath = [];
 
   // 마커 및 라인 삭제
-  for (const marker of currentMarker.value) {
-    marker.setMap(null);
-  }
+  mapStore.resetMarker();
   currentMarker.value = [];
   if (currentPolyline.value !== null) {
     currentPolyline.value.setMap(null);
@@ -53,15 +51,15 @@ const onRouteMapping = () => {
   });
   currentPolyline.value = polyline;
   // 지도에 선을 표시합니다
-  polyline.setMap(mapStore.kakaoMap);
-  mapStore.kakaoMap.setBounds(bounds);
+  polyline.setMap(window.kakaoMap);
+  window.kakaoMap.setBounds(bounds);
 };
 
 // 지도에 마커를 표시하는 함수입니다
 const displayMarker = (place) => {
   // 마커를 생성하고 지도에 표시합니다
   const marker = new kakao.maps.Marker({
-    map: mapStore.kakaoMap,
+    map: window.kakaoMap,
     position: new kakao.maps.LatLng(place.lat, place.lng),
   });
   currentMarker.value.push(marker);
@@ -92,7 +90,7 @@ const log = (evt) => {
 <template>
   <div
     style="
-      min-width: 300px;
+      min-width: 250px;
       display: flex;
       flex-direction: column;
       height: 100%;
@@ -113,7 +111,7 @@ const log = (evt) => {
 
     <draggable
       class="list-group"
-      style="height: 100%; min-width: 220px"
+      style="height: 100%"
       :list="props.routeList.route"
       v-bind="dragOptions"
       @change="log"

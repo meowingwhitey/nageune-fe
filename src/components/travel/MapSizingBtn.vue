@@ -9,18 +9,18 @@ import { useMapStore } from "@/stores/mapStore.js";
 const mapStore = useMapStore();
 const zoomIn = () => {
   // 현재 지도의 레벨을 얻어옵니다
-  const level = mapStore.kakaoMap.getLevel();
+  const level = window.kakaoMap.getLevel();
 
   // 지도를 1레벨 내립니다 (지도가 확대됩니다)
-  mapStore.kakaoMap.setLevel(level - 1);
+  window.kakaoMap.setLevel(level - 1);
 };
 
 const zoomOut = () => {
   // 현재 지도의 레벨을 얻어옵니다
-  const level = mapStore.kakaoMap.getLevel();
+  const level = window.kakaoMap.getLevel();
 
   // 지도를 1레벨 올립니다 (지도가 축소됩니다)
-  mapStore.kakaoMap.setLevel(level + 1);
+  window.kakaoMap.setLevel(level + 1);
 };
 </script>
 

@@ -2,7 +2,8 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "@/stores/travelStore.js";
-
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 /**
  * [date-fns]
  * https://date-fns.org/
@@ -60,7 +61,12 @@ const onNextClick = () => {
 
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="730px" persistent>
+    <v-dialog
+      v-if="mapStore.isKakaoMapLoaded"
+      v-model="dialog"
+      max-width="730px"
+      persistent
+    >
       <v-card class="schedule-dialog-card">
         <v-card-title class="text-h6 text-md-h5 text-lg-h4">
           <v-icon icon="mdi-calendar-edit-outline" />

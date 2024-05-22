@@ -34,8 +34,9 @@ const initMap = () => {
 
   // 지도 객체를 등록합니다.
   // 지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-  mapStore.kakaoMap = new kakao.maps.Map(container, options);
-  window.map = mapStore.kakaoMap;
+  window.kakaoMap = new kakao.maps.Map(container, options);
+  mapStore.setKakaoLoad();
+
   // // 지도의 현재 영역을 얻어옵니다
   // const bounds = window.kakaoMap.getBounds();
   // // 영역의 남서쪽 좌표를 얻어옵니다
@@ -57,7 +58,6 @@ import MapSizingBtn from "@/components/travel/MapSizingBtn.vue";
 
 <template>
   <MapNavBar />
-
   <Transition name="slide-fade">
     <RouterView />
   </Transition>

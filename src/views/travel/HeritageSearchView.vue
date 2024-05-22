@@ -1,7 +1,8 @@
 <script setup>
 import EraRangeBar from "@/components/travel/heritage/EraRangeBar.vue";
 import HeritageSearchMenu from "@/components/travel/heritage/HeritageSearchMenu.vue";
-
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 // onMounted(async () => {
 //   let heritageList = null;
 
