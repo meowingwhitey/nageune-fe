@@ -26,6 +26,8 @@ import PlaceSearchView from "@/views/travel/PlaceSearchView.vue";
 import RouteView from "@/views/travel/RouteView.vue";
 import ScheduleView from "@/views/travel/ScheduleView.vue";
 import SummaryView from "@/views/travel/SummaryView.vue";
+import CreateView from "@/views/travel/CreateView.vue";
+import DepartureView from "@/views/travel/DepartureView.vue";
 
 import { useUserStore } from "@/stores/userStore";
 import { useTokenStore } from "@/stores/tokenStore";
@@ -49,6 +51,16 @@ const router = createRouter({
       name: "travel",
       component: TravelView,
       children: [
+        {
+          path: "create",
+          name: "travel-create",
+          component: CreateView,
+        },
+        {
+          path: "departure",
+          name: "travel-departure",
+          component: DepartureView,
+        },
         {
           path: "schedule",
           name: "travel-schedule",

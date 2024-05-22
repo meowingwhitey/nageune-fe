@@ -2,7 +2,8 @@
 import { ref, onMounted, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTravelStore } from "@/stores/travelStore.js";
-
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 /**
  * [date-fns]
  * https://date-fns.org/
@@ -15,12 +16,9 @@ const allowedEndDate = ref({
   min: "0000-01-01",
   max: "9999-12-31",
 });
-const today = new Date();
-const startDate = ref(new Date(today));
-const endDate = ref(addDays(today, 6));
+const startDate = ref(new Date());
+const endDate = ref(addDays(startDate.value, 6));
 const travelStore = useTravelStore();
-const isEndDateSet = ref(false);
-const isStartDateSet = ref(false);
 
 // 시작 날짜에 따른 선택 가능 일자 설정
 watch(startDate, () => {
@@ -40,9 +38,13 @@ const isDateValid = computed(() => {
 });
 
 onMounted(() => {
-  allowedEndDate.value.min = startDate.value;
+  allowedEndDate.value.min = new Date();
   allowedEndDate.value.max = endDate.value;
 });
+
+const onPreviousClick = () => {
+  router.push({ name: "travel-departure" });
+};
 
 const onNextClick = () => {
   // 출발, 도착일자 store에 저장
@@ -60,7 +62,12 @@ const onNextClick = () => {
 
 <template>
   <div>
-    <v-dialog v-model="dialog" max-width="730px" persistent>
+    <v-dialog
+      v-if="mapStore.isKakaoMapLoaded"
+      v-model="dialog"
+      max-width="730px"
+      persistent
+    >
       <v-card class="schedule-dialog-card">
         <v-card-title class="text-h6 text-md-h5 text-lg-h4">
           <v-icon icon="mdi-calendar-edit-outline" />
@@ -104,15 +111,25 @@ const onNextClick = () => {
         </div>
 
         <v-spacer />
-        <v-btn
-          @click="onNextClick"
-          rounded="xl"
-          color="#26A69A"
-          append-icon="mdi-arrow-right"
-          :disabled="!isDateValid"
-        >
-          {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
-        </v-btn>
+        <div class="d-flex ga-2 row">
+          <v-btn
+            @click="onPreviousClick"
+            rounded="xl"
+            color="#90A4AE"
+            append-icon="mdi-arrow-u-left-top"
+          >
+            우리집이 어디더라?
+          </v-btn>
+          <v-btn
+            @click="onNextClick"
+            rounded="xl"
+            color="#26A69A"
+            append-icon="mdi-arrow-right"
+            :disabled="!isDateValid"
+          >
+            {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
+          </v-btn>
+        </div>
       </v-card>
     </v-dialog>
   </div>

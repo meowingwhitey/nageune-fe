@@ -30,7 +30,7 @@ export const useTravelStore = defineStore("travelStore", () => {
   const placeIdList = ref([]);
 
   /**
-   * 클러스터링을 위한 장소 리스트 생성 및 서버 요청
+   * 클러스터링을 위한 장소 리스트 생성
    */
   const setRouteCluster = async () => {
     locationList = [];
@@ -67,7 +67,30 @@ export const useTravelStore = defineStore("travelStore", () => {
     console.log(JSON.stringify(locationList));
     console.log(JSON.stringify(vectors));
     console.log(days);
-    const clusterResult = skmeans(vectors, days);
+    const clusterResult = skmeans(
+      vectors,
+      days,
+      null,
+      null,
+      ([lat1, lon1], [lat2, lon2]) => {
+        const toRadians = (angle) => angle * (Math.PI / 180);
+        const R = 6371; // 지구의 반지름 (킬로미터 단위)
+
+        const dLat = toRadians(lat2 - lat1);
+        const dLon = toRadians(lon2 - lon1);
+
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRadians(lat1)) *
+            Math.cos(toRadians(lat2)) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
+
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        return R * c; // 거리 반환 (킬로미터 단위)
+      },
+    );
     console.log(skmeans(vectors, days));
 
     // 일자별 route 객체 생성
@@ -97,6 +120,8 @@ export const useTravelStore = defineStore("travelStore", () => {
    */
   const createRouteList = () => {
     const days = getDays();
+    heritageList.value = [];
+    placeList.value = [];
     routeList.value = [];
     for (let dayIdx = 0; dayIdx < days; dayIdx++) {
       const day = addDays(startDate.value, dayIdx);

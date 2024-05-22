@@ -27,6 +27,7 @@ watch(eraRange, () => {
   router.push({
     name: "travel-search-heritage",
     query: {
+      keyword: route.query.keyword,
       startEraCode: eraCodes[eraRange.value[0]],
       endEraCode: eraCodes[eraRange.value[1]],
     },

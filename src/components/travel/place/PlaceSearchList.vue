@@ -70,7 +70,7 @@ const api = async (keyword, pageSize = 15) => {
   if (data.length > 0) {
     currentPageIdx.value++;
     currentItemIdx.value += data.length;
-    mapStore.kakaoMap.setBounds(bounds);
+    window.kakaoMap.setBounds(bounds);
   }
 
   mapStore.drawClusterer();
@@ -94,13 +94,16 @@ const height = ref(window.innerHeight - 80 + 16);
 <template>
   <v-card
     class="search-list overflow-y-auto"
-    v-if="searchKeyword !== undefined && mapStore.kakaoMap !== undefined"
+    v-if="
+      searchKeyword !== undefined && mapStore.isKakaoMapLoaded !== undefined
+    "
   >
     <v-infinite-scroll
       color="primary"
       :height="height"
       :items="items"
       side="end"
+      mode="manual"
       @load="load"
     >
       <PlaceSearchListItem
@@ -140,7 +143,9 @@ const height = ref(window.innerHeight - 80 + 16);
   </v-card>
   <v-card
     class="search-list overflow-y-auto d-flex justify-center align-center flex-column"
-    v-if="searchKeyword === undefined || mapStore.kakaoMap === undefined"
+    v-if="
+      searchKeyword === undefined || mapStore.isKakaoMapLoaded === undefined
+    "
   >
     <v-icon icon="mdi-magnify"></v-icon>
     <div>키워드 입력 후 검색해주세요</div>
