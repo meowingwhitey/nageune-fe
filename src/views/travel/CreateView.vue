@@ -16,7 +16,7 @@ const onPreviousClick = () => {
 };
 
 const onCreateTravel = () => {
-  travelStore.travelTitle = travelTitle;
+  travelStore.travelTitle = travelTitle.value;
   console.log(travelStore.travelTitle);
   router.push({ name: "travel-departure" });
 };
