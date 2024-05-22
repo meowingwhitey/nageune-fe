@@ -4,30 +4,33 @@ const props = defineProps(["index", "element"]);
 
 <template>
   <v-card class="travel-route-list-item" elevation="4">
-    <div class="d-flex ga-4" style="padding: 10px">
-      <img
-        src="/src/assets/spot_image_test.gif"
-        style="width: 60px; height: 60px"
-      />
+    <div class="d-flex ga-4" style="padding: 10px; min-width: 240px">
       <div class="d-flex flex-column ga-1" style="width: 100%">
-        <div
-          style="
-            font-weight: bold;
-            font-size: 10pt;
-            text-decoration: none;
-            color: #101010;
-            cursor: pointer;
-          "
-        >
-          {{ props.element.name }}
+        <div class="d-flex row ga-2 align-center">
+          <div
+            style="
+              font-weight: bold;
+              font-size: 10pt;
+              text-decoration: none;
+              color: #101010;
+              cursor: pointer;
+            "
+          >
+            {{ props.element.name }}
+          </div>
+          <div style="font-size: 8pt">
+            {{
+              `${props.element.address.split(" ")[0]} ${props.element.address.split(" ")[1]}`
+            }}
+          </div>
         </div>
-
-        <div style="font-size: 8pt">{{ props.element.address }}</div>
-        <div
-          class="d-flex flex-row"
-          style="width: 100%; justify-content: space-between"
-        >
-          <v-chip size="small">테스트 분류</v-chip>
+        <div class="d-flex ga-1">
+          <v-chip size="small" style="width: fit-content">
+            {{ props.element.description }}
+          </v-chip>
+          <v-chip size="small" style="width: fit-content">
+            {{ props.element.type === "heritage" ? "문화재" : "경유지" }}
+          </v-chip>
         </div>
       </div>
     </div>

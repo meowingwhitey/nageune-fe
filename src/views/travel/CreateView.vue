@@ -10,11 +10,11 @@ const travelStore = useTravelStore();
 
 const router = useRouter();
 const onPreviousClick = () => {
-  router.push({ name: "travel-route" });
+  router.push({ name: "index" });
 };
 
 const onCreateTravel = () => {
-  router.push({ name: "travel-summary" });
+  router.push({ name: "travel-departure" });
 };
 console.log(travelStore);
 const dialog = ref(true);
@@ -29,43 +29,28 @@ const dialog = ref(true);
   >
     <v-card class="summary-dialog-card">
       <v-card-title class="text-h6 text-md-h5 text-lg-h4">
-        <v-icon icon="mdi-calendar-check-outline" />
-        여행 생성 전 마지막으로 확인하세요!
+        <v-icon icon="mdi-rename-box-outline" />
+        이번에 떠날 여행의 이름을 정해주세요
       </v-card-title>
       <div>
-        <u>
-          * 여행 일자는
-          <strong>{{ format(travelStore.startDate, "yyyy-MM-dd") }}</strong>
-          ~ <strong>{{ format(travelStore.endDate, "yyyy-MM-dd") }}</strong
-          >이에요.
-        </u>
+        <u> </u>
       </div>
-      <div>
-        <u>
-          총
-          <strong
-            >{{ `${travelStore.heritageList.length}` }}개의 문화재<span
-              class="text-md-h5"
-              >🏯</span
-            ></strong
-          >와
-          <strong
-            >{{ `${travelStore.placeList.length}` }}개의 경유지<span
-              class="text-md-h5"
-              >🚏</span
-            ></strong
-          >를 방문해요
-        </u>
+      <div style="min-height: 5px"></div>
+      <div
+        class="d-flex column ga-2 align-center justify-center"
+        style="width: 100%"
+      >
+        <div style="width: 350px">
+          <div class="text-h6">여행 이름</div>
+          <v-text-field
+            prepend-inner-icon="mdi-airplane-edit"
+            density="compact"
+            variant="outlined"
+            placeholder="주식해서 번 돈으로 가는 부산여행"
+          ></v-text-field>
+        </div>
       </div>
-      <div style="min-height: 15px"></div>
-      <div class="d-flex ga-5 row">
-        <SummaryRouteList
-          v-for="(route, index) in travelStore.routeList"
-          :routeList="route"
-          :day="index"
-        />
-      </div>
-      <div style="min-height: 20px"></div>
+      <div style="min-height: 10px"></div>
       <div class="d-flex ga-2 row">
         <v-btn
           @click="onPreviousClick"
@@ -73,15 +58,15 @@ const dialog = ref(true);
           color="#90A4AE"
           append-icon="mdi-arrow-u-left-top"
         >
-          변경할래요
+          그냥 집에 있을래요
         </v-btn>
         <v-btn
           @click="onCreateTravel"
           rounded="xl"
           color="#26A69A"
-          append-icon="mdi-check-circle-outline"
+          append-icon="mdi-arrow-right"
         >
-          자! 여행 드가자!
+          출발!
         </v-btn>
       </div>
     </v-card>
@@ -90,7 +75,7 @@ const dialog = ref(true);
 
 <style scoped>
 .summary-dialog-card {
-  min-width: 730px;
+  min-width: 530px;
   width: fit-content;
   padding: 30px;
   display: flex;

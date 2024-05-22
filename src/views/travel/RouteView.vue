@@ -1,9 +1,12 @@
 <script setup>
 import TravelRouteMenu from "@/components/travel/route/TravelRouteMenu.vue";
+
+import { useMapStore } from "@/stores/mapStore";
+const mapStore = useMapStore();
 </script>
 
 <template>
-  <TravelRouteMenu class="route-list-menu" />
+  <TravelRouteMenu v-if="mapStore.isKakaoMapLoaded" class="route-list-menu" />
 </template>
 
 <style scoped>

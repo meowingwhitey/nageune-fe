@@ -11,10 +11,12 @@ import { useRouter } from "vue-router";
 const mapStore = useMapStore();
 const router = useRouter();
 const onPreviousClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-schedule" });
 };
 
 const onNextClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-search-place" });
 };
 </script>
@@ -23,8 +25,8 @@ const onNextClick = () => {
   <template class="d-flex ga-2">
     <!-- <HeritageSearchOption /> -->
     <HeritageSearchBar />
-    <HeritageSearchList v-if="mapStore.kakaoMap !== undefined" />
-    <SearchLoadingList v-if="mapStore.kakaoMap === undefined" />
+    <HeritageSearchList v-if="mapStore.isKakaoMapLoaded" />
+    <SearchLoadingList v-if="!mapStore.isKakaoMapLoaded" />
     <template class="d-flex flex-wrap ga-2 flex-row">
       <PreviousBtn @click="onPreviousClick" />
       <NextBtn text="경유지 설정하기" @click="onNextClick" />

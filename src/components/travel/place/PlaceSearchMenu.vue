@@ -9,10 +9,12 @@ import { useRouter } from "vue-router";
 const mapStore = useMapStore();
 const router = useRouter();
 const onPreviousClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-search-heritage" });
 };
 
 const onNextClick = () => {
+  mapStore.resetMarker();
   router.push({ name: "travel-route" });
 };
 </script>
@@ -20,8 +22,8 @@ const onNextClick = () => {
 <template>
   <template class="d-flex ga-2">
     <PlaceSearchBar />
-    <PlaceSearchList v-if="mapStore.kakaoMap !== undefined" />
-    <SearchLoadingList v-if="mapStore.kakaoMap === undefined" />
+    <PlaceSearchList v-if="mapStore.isKakaoMapLoaded !== undefined" />
+    <SearchLoadingList v-if="mapStore.isKakaoMapLoaded === undefined" />
 
     <template class="d-flex flex-wrap ga-2 flex-row">
       <PreviousBtn @click="onPreviousClick" />

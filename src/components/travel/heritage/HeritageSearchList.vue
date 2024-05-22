@@ -45,7 +45,7 @@ onMounted(() => {
   resetAndFetch();
 });
 
-const api = async (keyword, pageSize = 15) => {
+const api = async (keyword, pageSize = 9999999) => {
   if (isEnd.value || !keyword || isLoading.value) {
     return [];
   }
@@ -80,7 +80,7 @@ const api = async (keyword, pageSize = 15) => {
   if (data.length > 0) {
     currentPageIdx.value++;
     currentItemIdx.value += data.length;
-    mapStore.kakaoMap.setBounds(bounds);
+    window.kakaoMap.setBounds(bounds);
   }
 
   mapStore.drawClusterer();
@@ -104,13 +104,16 @@ const height = ref(window.innerHeight - 80 + 16);
 <template>
   <v-card
     class="search-list overflow-y-auto"
-    v-if="searchKeyword !== undefined && mapStore.kakaoMap !== undefined"
+    v-if="
+      searchKeyword !== undefined && mapStore.isKakaoMapLoaded !== undefined
+    "
   >
     <v-infinite-scroll
       color="primary"
       :height="height"
       :items="items"
       side="end"
+      mode="manual"
       @load="load"
     >
       <HeritageSearchListItem
@@ -150,7 +153,9 @@ const height = ref(window.innerHeight - 80 + 16);
   </v-card>
   <v-card
     class="search-list overflow-y-auto d-flex justify-center align-center flex-column"
-    v-if="searchKeyword === undefined || mapStore.kakaoMap === undefined"
+    v-if="
+      searchKeyword === undefined || mapStore.isKakaoMapLoaded === undefined
+    "
   >
     <v-icon icon="mdi-magnify"></v-icon>
     <div>지금 조건으로 검색하기</div>

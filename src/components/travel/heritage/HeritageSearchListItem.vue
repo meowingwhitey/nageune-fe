@@ -9,9 +9,6 @@ const dividerCheck = () => {
   return props.index < props.listSize - 1;
 };
 
-const openWindow = (url) => {
-  window.open(url);
-};
 const isAdded = ref(false);
 const addToHeritageList = () => {
   isAdded.value = true;
@@ -23,18 +20,33 @@ const removeFromHeritageList = () => {
     return item.heritageId !== props.spot.heritageId;
   });
 };
+
+function replaceByDefault(e) {
+  e.target.src = "/src/assets/spot_image_test.gif";
+}
+function openPage() {
+  console.log(props.spot.pageUrl);
+  console.log(window);
+  window.open(props.spot.pageUrl);
+}
 </script>
 
 <template>
   <v-list-item style="width: 100%; margin: 0px">
     <div class="d-flex ga-4" style="padding: 10px">
       <img
-        src="/src/assets/spot_image_test.gif"
-        style="width: 60px; height: 60px"
+        :src="spot.imageUrl"
+        @error="replaceByDefault"
+        style="
+          height: 60px;
+          min-width: 60px;
+          object-fit: cover;
+          border-radius: 10px;
+        "
       />
-      <div class="d-flex flex-column ga-1" style="width: 100%">
+      <div class="d-flex flex-column" style="width: 100%">
         <div
-          :href="spot.place_url"
+          @click="openPage"
           style="
             font-weight: bold;
             font-size: 10pt;
