@@ -22,12 +22,25 @@ const removeFromPlaceList = () => {
     return item.id !== props.spot.id;
   });
 };
+function replaceByDefault(e) {
+  e.target.src = "/src/assets/spot_image_test.gif";
+}
+console.log(props.spot);
 </script>
 
 <template>
   <v-list-item style="width: 100%; margin: 0px">
     <div class="d-flex ga-4" style="padding: 10px">
-      <img src="/src/assets/logo_test.gif" style="width: 60px; height: 60px" />
+      <img
+        :src="spot.imageUrl || '/src/assets/spot_image_test.gif'"
+        @error="replaceByDefault"
+        style="
+          height: 60px;
+          min-width: 60px;
+          object-fit: cover;
+          border-radius: 10px;
+        "
+      />
       <div class="d-flex flex-column ga-1" style="width: 100%">
         <div
           :href="spot.place_url"

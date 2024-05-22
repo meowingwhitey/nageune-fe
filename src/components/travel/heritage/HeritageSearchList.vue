@@ -5,7 +5,10 @@ import { useMapStore } from "@/stores/mapStore";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import { API_SERVER_URL } from "@/data/urls.js";
-import axios from "axios";
+
+import { localAxios } from "@/util/axios_interceptor";
+
+const axios = localAxios();
 
 const route = useRoute();
 const items = ref([]);
@@ -51,7 +54,7 @@ const api = async (keyword, pageSize = 9999999) => {
   }
 
   isLoading.value = true;
-  const url = `${API_SERVER_URL}/heritage/search?`;
+  const url = `/heritage/search?`;
 
   const response = await axios(url, {
     method: "GET",

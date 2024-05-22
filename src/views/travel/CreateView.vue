@@ -9,11 +9,15 @@ const mapStore = useMapStore();
 const travelStore = useTravelStore();
 
 const router = useRouter();
+
+const travelTitle = ref("");
 const onPreviousClick = () => {
   router.push({ name: "index" });
 };
 
 const onCreateTravel = () => {
+  travelStore.travelTitle = travelTitle;
+  console.log(travelStore.travelTitle);
   router.push({ name: "travel-departure" });
 };
 console.log(travelStore);
@@ -47,6 +51,7 @@ const dialog = ref(true);
             density="compact"
             variant="outlined"
             placeholder="주식해서 번 돈으로 가는 부산여행"
+            v-model="travelTitle"
           ></v-text-field>
         </div>
       </div>

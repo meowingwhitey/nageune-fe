@@ -5,7 +5,6 @@ import NextBtn from "@/components/travel/NextBtn.vue";
 import PreviousBtn from "@/components/travel/PreviousBtn.vue";
 import { useMapStore } from "@/stores/mapStore.js";
 import { useRouter } from "vue-router";
-import axios from "axios";
 import { onMounted } from "vue";
 const mapStore = useMapStore();
 const router = useRouter();

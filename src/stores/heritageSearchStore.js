@@ -1,7 +1,10 @@
 import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { useMapStore } from "./mapStore";
-import axios from "axios";
+
+import { localAxios } from "@/util/axios_interceptor";
+
+const axios = localAxios();
 /**
  * 여행 경유지 or 문화재 검색시 사용하는 Store
  */
