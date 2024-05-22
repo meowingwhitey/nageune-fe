@@ -13,6 +13,7 @@ const local = localAxios();
 
 const props = defineProps({
   card: Object,
+  isMobile: Boolean,
 });
 
 const heritage = ref({
@@ -34,8 +35,9 @@ const getHeritageById = async (id) => {
 };
 
 onMounted(async () => {
+  console.log(props.card);
   await getHeritageById(props.card.heritageId);
-  console.log(heritage.value);
+  // console.log(heritage.value);
 });
 
 const dialog = ref(false);
@@ -45,23 +47,26 @@ const closeDialog = () => {
 </script>
 
 <template>
-  <div class="flip ma-4">
+  <div class="flip ma-4" :class="[{ mobile: isMobile }, { pc: !isMobile }]">
     <div class="card" @click="test">
       <!-- 앞면 -->
       <div
         class="front"
         :class="{ correct: card.correct === 0 ? true : false }"
       >
-        <div>
+        <div class="front-content">
           <div class="card-img-box">
             <img :src="heritage.imageurl" />
           </div>
-          <h1>{{ heritage.title }}</h1>
+          <div class="card-content-box">
+            <p class="card-title">{{ heritage.title }}</p>
+            <VChip color="black" :text="heritage.era" />
+          </div>
         </div>
       </div>
       <!-- 뒷면 -->
       <div class="back">
-        <div>
+        <div class="back-content">
           <template v-if="card.correct === 1">
             <p>{{ card.problem }}</p>
             <p>{{ card.answer }}</p>
@@ -100,9 +105,20 @@ const closeDialog = () => {
   object-fit: cover;
 }
 
+@media screen and (max-width: 500px) {
+  .flip {
+    width: 80vw;
+    height: 200px;
+  }
+}
+@media screen and (min-width: 500px) {
+  .flip {
+    width: 250px;
+    height: 320px;
+  }
+}
+
 .flip {
-  width: 250px;
-  height: 320px;
   position: relative;
   perspective: 1100px;
 }
@@ -141,5 +157,19 @@ const closeDialog = () => {
 .flip:hover .card {
   transform: rotateY(180deg);
   box-shadow: 0 0 15px rgba(189, 189, 189, 0.9);
+}
+
+.front-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-content-box {
+  width: 230px;
+  height: 120px;
+}
+
+.card-title {
+  font-size: larger;
 }
 </style>
