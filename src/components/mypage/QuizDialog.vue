@@ -3,7 +3,7 @@ import { ref } from "vue";
 const emit = defineEmits(["closeDialog"]);
 
 const props = defineProps({
-  heritageId: String,
+  heritageId: Number,
 });
 
 const closeDialog = () => {
