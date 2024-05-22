@@ -4,6 +4,7 @@ import ProfileDetail from "@/components/mypage/ProfileDetail.vue";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/userStore";
 import { usePlanStore } from "@/stores/planStore";
+import CardList from "@/components/mypage/CardList.vue";
 import { onBeforeUpdate, onMounted } from "vue";
 
 const userStore = useUserStore();
@@ -19,6 +20,7 @@ onMounted(async () => {
 // });
 
 const tab = ref("plans");
+const isMobile = ref(true);
 </script>
 
 <template>
@@ -49,7 +51,9 @@ const tab = ref("plans");
     <v-tabs-window-item value="plans">
       <MobileRouteList />
     </v-tabs-window-item>
-    <v-tabs-window-item value="cards">여행 카드</v-tabs-window-item>
+    <v-tabs-window-item value="cards">
+      <CardList :isMobile="isMobile" />
+    </v-tabs-window-item>
     <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
   </v-tabs-window>
 </template>

@@ -11,6 +11,7 @@ const REST_TRAVELHISTORY_API = `/travelHistroy`;
 
 const props = defineProps({
   spot: Object,
+  heritage: Object,
 });
 
 const REST_API_KEY = "583e17c3f8ed87c625a3162d0fdcc29b";
@@ -42,6 +43,9 @@ const closeDialog = async () => {
 
   emit("closeDialog");
 };
+
+//상세 정보 보기
+const show = ref(false);
 
 //이미지 업로드
 const handleImageUpload = (event) => {
@@ -196,9 +200,18 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
         </div>
       </v-card-item>
 
+      <v-card-item v-show="show" class="pt-2">
+        <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider>
+        <p class="heritage-title mt-4">{{ heritage.title }}</p>
+        <p class="heritage-content mb-4">{{ heritage.content }}</p>
+        <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider>
+      </v-card-item>
       <template v-slot:actions>
+        <v-btn class="mr-auto" @click="show = !show"
+          >문화재 정보 {{ show ? "접기" : "보기" }}</v-btn
+        >
         <v-btn
-          class="ms-auto"
+          class="ml-auto"
           text="사진 등록하기"
           @click="closeDialog"
           :disabled="btnDisable"
@@ -230,5 +243,15 @@ const haversineDistance = (lat1, lon1, lat2, lon2) => {
 
 #input-file {
   display: none;
+}
+
+.heritage-title {
+  text-align: center;
+  font-weight: 600;
+  font-size: large;
+}
+
+.heritage-content {
+  font-size: smaller;
 }
 </style>

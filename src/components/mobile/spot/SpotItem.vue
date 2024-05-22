@@ -30,7 +30,7 @@ const getImgUrl = () => {
       params: { heritageId: props.spot.heritageId },
     })
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       imgUrl.value =
         res.data !== "" ? res.data : "/src/assets/not_found_img.jpg";
     })
@@ -39,12 +39,29 @@ const getImgUrl = () => {
     });
 };
 
+const heritage = ref({});
+
+const getHeritageById = (id) => {
+  local
+    .get(`${REST_HERITAGE_API}/detail`, { params: { heritageId: id } })
+    .then((res) => {
+      heritage.value = res.data;
+      // console.log(heritage.value);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 onMounted(() => {
   getImgUrl();
+
+  getHeritageById(props.spot.heritageId);
 });
 
 onBeforeUpdate(() => {
   getImgUrl();
+  getHeritageById(props.spot.heritageId);
 });
 </script>
 <template>
@@ -59,7 +76,7 @@ onBeforeUpdate(() => {
             {{ spot.name }}
           </div>
           <div>
-            <VChip v-for="text in age" :text="text" class="ml-2" />
+            <VChip :text="heritage.era" class="ml-2" />
           </div>
         </div>
 
@@ -80,6 +97,7 @@ onBeforeUpdate(() => {
     @close-dialog="closeDialog"
     :spot="spot"
     :travelId="tripId"
+    :heritage="heritage"
   />
 </template>
 

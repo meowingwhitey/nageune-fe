@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import { localAxios } from "@/util/axios_interceptor";
 import { useTokenStore } from "@/stores/tokenStore";
+import { compareAsc, format } from "date-fns";
 
 const local = localAxios();
 const tokenStore = useTokenStore();
@@ -43,8 +44,11 @@ const getSpotList = async () => {
     .then((res) => {
       console.log("데이터가져옴", res);
       plans.value = res.data;
-      startDay.value = plans.value[0].visitDate.slice(0, 10);
-      endDay.value = plans.value[plans.value.length - 1].visitDate.slice(0, 10);
+      startDay.value = format(new Date(plans.value[0].visitDate), "yyyy.MM.dd");
+      endDay.value = format(
+        new Date(plans.value[plans.value.length - 1].visitDate),
+        "yyyy.MM.dd",
+      );
     })
     .catch((err) => {
       console.log(err);
