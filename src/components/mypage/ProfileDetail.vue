@@ -27,7 +27,7 @@ const updateProfile = () => {
     window.alert("비밀번호를 확인해주세요.");
   } else {
     // DB 수정
-    console.log(userInfo.value);
+    // console.log(userInfo.value);
     userStore.updateUserInfo(userInfo.value);
 
     window.alert("수정되었습니다.");
@@ -39,7 +39,7 @@ const updateProfile = () => {
 };
 
 const changeProfileImg = (event) => {
-  console.log("프로필 이미지 변경하기");
+  // console.log("프로필 이미지 변경하기");
   const file = event.target.files[0];
   const reader = new FileReader();
   reader.onload = (e) => {

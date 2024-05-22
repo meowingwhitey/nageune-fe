@@ -19,13 +19,17 @@ const tab = ref("plan");
 
     <v-tabs-window v-model="tab">
       <v-tabs-window-item value="plan">
-        <RouteList />
+        <RouteList v-if="tab === 'plan'" />
       </v-tabs-window-item>
       <v-tabs-window-item value="past-plan">
-        <LastTripList />
+        <LastTripList v-if="tab === 'past-plan'" />
       </v-tabs-window-item>
-      <v-tabs-window-item value="card"><CardList /></v-tabs-window-item>
-      <v-tabs-window-item value="profile"><ProfileDetail /></v-tabs-window-item>
+      <v-tabs-window-item value="card"
+        ><CardList v-if="tab === 'card'"
+      /></v-tabs-window-item>
+      <v-tabs-window-item value="profile"
+        ><ProfileDetail v-if="tab === 'profile'"
+      /></v-tabs-window-item>
     </v-tabs-window>
   </div>
 </template>

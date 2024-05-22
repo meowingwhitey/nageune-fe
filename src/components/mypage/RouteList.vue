@@ -15,7 +15,7 @@ const getSpotList = async () => {
   await local
     .get(`${REST_TRAVELHISTORY_API}/currentTravelList`)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       plansId.value = res.data;
     })
     .catch((err) => {

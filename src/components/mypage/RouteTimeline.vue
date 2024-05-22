@@ -26,7 +26,7 @@ onMounted(async () => {});
 
 onBeforeUpdate(async () => {
   await makeSpotList();
-  console.log(spots.value);
+  // console.log(spots.value);
 });
 </script>
 
