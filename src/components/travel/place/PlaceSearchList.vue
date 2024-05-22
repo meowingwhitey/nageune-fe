@@ -4,6 +4,11 @@ import { useMapStore } from "@/stores/mapStore";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, onBeforeRouteUpdate } from "vue-router";
 import { API_SERVER_URL } from "@/data/urls.js";
+
+// 여기는 서드파티 서버로 보내므로 그냥 axios 사용
+// import { localAxios } from "@/util/axios_interceptor";
+// const axios = localAxios();
+
 import axios from "axios";
 
 const route = useRoute();
@@ -54,6 +59,7 @@ const api = async (keyword, pageSize = 15) => {
     },
   });
 
+  isEnd.value = response.data.meta.is_end;
   const data = response.data.documents;
 
   if (data.length === 0 || data.length < pageSize) {
@@ -67,12 +73,56 @@ const api = async (keyword, pageSize = 15) => {
     mapStore.drawMarker(place.place_name, place.y, place.x);
   });
 
+  for (let dataIdx = 0; dataIdx < data.length; dataIdx++) {
+    await (async () => {
+      const place = data[dataIdx];
+      const imageSearchUrl = `https://dapi.kakao.com/v2/search/image?query=${place.place_name}&page=1&size=1`;
+      const imageSearchResponse = await axios(imageSearchUrl, {
+        method: "GET",
+        headers: {
+          Authorization: "KakaoAK 2eceec41240f771867bfbadce050a69b",
+          KA: "sdk/4.4.15 os/javascript lang/ko-KR device/MacIntel origin/http%3A%2F%2Flocalhost%3A5500",
+        },
+      });
+      const imageUrl =
+        imageSearchResponse.data.documents.length > 0
+          ? imageSearchResponse.data.documents[0].thumbnail_url
+          : "";
+      console.log(imageUrl);
+      data[dataIdx].imageUrl = imageUrl;
+    })();
+  }
+
+  // await data.forEach(async (place, index) => {
+  //   const imageSearchUrl = `https://dapi.kakao.com/v2/search/image?query=${place.place_name}&page=1&size=1`;
+  //   const imageSearchResponse = await axios(imageSearchUrl, {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: "KakaoAK 2eceec41240f771867bfbadce050a69b",
+  //       KA: "sdk/4.4.15 os/javascript lang/ko-KR device/MacIntel origin/http%3A%2F%2Flocalhost%3A5500",
+  //     },
+  //   });
+  //   const imageUrl =
+  //     imageSearchResponse.data.documents.length > 0
+  //       ? imageSearchResponse.data.documents[0].thumbnail_url
+  //       : "";
+  //   console.log(imageUrl);
+  //   data[index].imageUrl = imageUrl;
+  //   // const imageSearchUrl = `https://place.map.kakao.com/main/v/${place.id}`;
+  //   // const imageSearchResponse = await axios(imageSearchUrl, {
+  //   //   method: "GET",
+  //   // });
+  //   // const imageUrl = imageSearchResponse.data.basicInfo.mainphotourl;
+  //   // console.log(imageUrl);
+  //   // data[index].imageUrl = imageUrl;
+  // });
+
   if (data.length > 0) {
-    currentPageIdx.value++;
-    currentItemIdx.value += data.length;
     window.kakaoMap.setBounds(bounds);
   }
 
+  currentPageIdx.value++;
+  currentItemIdx.value += data.length;
   mapStore.drawClusterer();
   isLoading.value = false;
   return data;
