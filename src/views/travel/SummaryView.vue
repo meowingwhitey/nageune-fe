@@ -15,7 +15,7 @@ const onPreviousClick = () => {
 
 const onCreateTravel = () => {
   travelStore.sendTravelInfo();
-  router.push({ name: "travel-summary" });
+  router.push({ name: "mypage" });
 };
 const dialog = ref(true);
 </script>
