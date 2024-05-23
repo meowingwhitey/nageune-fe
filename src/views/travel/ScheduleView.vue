@@ -8,7 +8,7 @@ const mapStore = useMapStore();
  * [date-fns]
  * https://date-fns.org/
  */
-import { addDays, differenceInDays, format } from "date-fns";
+import { addDays, subDays, differenceInDays, format } from "date-fns";
 
 const router = useRouter();
 const dialog = ref(true);
@@ -38,7 +38,7 @@ const isDateValid = computed(() => {
 });
 
 onMounted(() => {
-  allowedEndDate.value.min = new Date();
+  allowedEndDate.value.min = subDays(startDate.value, 1);
   allowedEndDate.value.max = endDate.value;
 });
 
