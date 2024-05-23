@@ -86,7 +86,7 @@ export const useUserStore = defineStore("user", () => {
         lastAccess.value = null;
         tokenStore.setAccessToken(null);
         console.log(err);
-        router.push({ name: "login" });
+        router.push({ name: "index" });
       });
   };
 
