@@ -11,6 +11,7 @@ export const useMapStore = defineStore("mapStore", () => {
   // 따라서, 카카오맵의 로딩 시점을 확인하려면 따로 boolean형 변수 사용
   const isKakaoMapLoaded = ref(false);
   const markerList = ref([]); // 생성된 마커 저장
+  const currentPolyline = ref(null);
   let clusterer = undefined;
 
   const setKakaoLoad = () => {
@@ -70,6 +71,7 @@ export const useMapStore = defineStore("mapStore", () => {
   };
   return {
     isKakaoMapLoaded,
+    currentPolyline,
     setKakaoLoad,
     resetMarker,
     drawMarker,

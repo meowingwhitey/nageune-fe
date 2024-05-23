@@ -39,7 +39,7 @@ const isDateValid = computed(() => {
 });
 
 onMounted(() => {
-  allowedEndDate.value.min = subDays(startDate.value, 1);
+  allowedEndDate.value.min = startDate.value;
   allowedEndDate.value.max = endDate.value;
 });
 
