@@ -12,7 +12,7 @@ const router = useRouter();
 
 const travelTitle = ref("");
 const onPreviousClick = () => {
-  router.push({ name: "index" });
+  router.push({ name: "mypage" });
 };
 
 const onCreateTravel = () => {
