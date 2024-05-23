@@ -38,13 +38,14 @@ const login = () => {
       <div class="d-flex flex-column" id="login-box">
         <div class="text-subtitle-1 text-medium-emphasis">이메일</div>
 
-        <v-card variant="text">
+        <v-card variant="text" style="border-radius: 0">
           <v-text-field
             density="compact"
             placeholder="이메일"
             prepend-inner-icon="mdi-email-outline"
             variant="outlined"
             v-model="email"
+            z-index="1000"
           ></v-text-field>
 
           <div
