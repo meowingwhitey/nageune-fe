@@ -1,4 +1,4 @@
-import { ref, computed } from "vue";
+import { ref, watch } from "vue";
 import { defineStore } from "pinia";
 import { format, differenceInDays, addDays } from "date-fns";
 import { localAxios } from "@/util/axios_interceptor";
@@ -14,9 +14,16 @@ import skmeans from "skmeans";
  */
 export const useTravelStore = defineStore("travelStore", () => {
   const axios = localAxios();
-  const startDate = ref(new Date());
+
+  let isClustered = false; // 지금 경로의 클러스터 생성 여부 체크
+
+  // 00:00:00부터 계산하기 위해 아래처럼 출발일 설정
+  const startDate = ref(new Date(format(new Date(), "MM/dd/yyyy")));
   const endDate = ref(addDays(new Date(), 6));
   const getDays = () => {
+    console.log(endDate.value);
+    console.log(startDate.value);
+    console.log(differenceInDays(endDate.value, startDate.value) + 1);
     return differenceInDays(endDate.value, startDate.value) + 1;
   };
   const travelTitle = ref("");
@@ -32,12 +39,23 @@ export const useTravelStore = defineStore("travelStore", () => {
   const heritageIdList = ref([]);
   const placeIdList = ref([]);
 
+  watch(heritageList, () => {
+    isClustered = false;
+  });
+
+  watch(placeList, () => {
+    isClustered = false;
+  });
+
   /**
-   * 클러스터링을 위한 장소 리스트 생성
+   * 경로 생성 클러스터링을 위한 장소 리스트 생성
    */
   const setRouteCluster = async () => {
+    // 기존 경유지가 변경되지 않았다면 클러스터 제외
+    if (isClustered) {
+      return;
+    }
     locationList = [];
-    routeList.value = [];
     heritageList.value.forEach((item) => {
       locationList.push({
         id: Number(item.heritageId),
@@ -47,6 +65,7 @@ export const useTravelStore = defineStore("travelStore", () => {
         name: item.title,
         address: `${item.location} ${item.locationSub}`,
         description: `${item.era}(${item.type})`,
+        imageUrl,
       });
     });
 
@@ -59,6 +78,7 @@ export const useTravelStore = defineStore("travelStore", () => {
         name: item.place_name,
         address: item.address_name,
         description: item.category_name.split(" > ").pop(),
+        imageUrl: item.imageUrl,
       });
     });
 
@@ -72,9 +92,10 @@ export const useTravelStore = defineStore("travelStore", () => {
     console.log(days);
     const clusterResult = skmeans(
       vectors,
-      days,
+      routeList.value.length,
       null,
       null,
+      // 각 지점 간 거리를 구하는 공식에는 하버사인 적용
       ([lat1, lon1], [lat2, lon2]) => {
         const toRadians = (angle) => angle * (Math.PI / 180);
         const R = 6371; // 지구의 반지름 (킬로미터 단위)
@@ -96,13 +117,6 @@ export const useTravelStore = defineStore("travelStore", () => {
     );
     console.log(skmeans(vectors, days));
 
-    // 일자별 route 객체 생성
-    for (let i = 0; i < days; i++) {
-      routeList.value.push({
-        date: format(addDays(startDate.value, i), "yyyy-MM-dd"),
-        route: [],
-      });
-    }
     for (
       let clusterIdx = 0;
       clusterIdx < clusterResult.idxs.length;
@@ -111,6 +125,7 @@ export const useTravelStore = defineStore("travelStore", () => {
       const day = clusterResult.idxs[clusterIdx];
       routeList.value[day].route.push(locationList[clusterIdx]);
     }
+    isClustered = true;
   };
 
   /**
@@ -132,6 +147,7 @@ export const useTravelStore = defineStore("travelStore", () => {
    * 여행 루트를 일자별로 생성하여 routeList에 저장
    */
   const createRouteList = () => {
+    isClustered = false;
     const days = getDays();
     heritageList.value = [];
     placeList.value = [];

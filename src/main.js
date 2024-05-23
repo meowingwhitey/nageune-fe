@@ -3,7 +3,7 @@ import { createPinia } from "pinia";
 
 import App from "./App.vue";
 import router from "./router";
-
+import VResizable from "v-resizable";
 //import { instance } from "@/api/axios";
 
 const app = createApp(App);
@@ -57,5 +57,5 @@ app.component("QuillEditor", QuillEditor);
 app.use(vuetify);
 app.use(createPinia());
 app.use(router);
-
+app.use(VResizable);
 app.mount("#app");

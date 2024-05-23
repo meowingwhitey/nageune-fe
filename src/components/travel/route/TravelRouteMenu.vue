@@ -25,8 +25,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <template class="d-flex ga-2">
-    <v-card style="height: 100%">
+  <div>
+    <v-card class="route-card-size" v-resizable.r>
+      <v-icon
+        color="blue-grey-darken-2"
+        icon="mdi-menu-right"
+        class="resize-icon"
+      />
       <div
         class="d-flex ga-2 row"
         style="overflow-x: scroll; height: 100%; padding: 15px"
@@ -38,11 +43,30 @@ onMounted(() => {
         />
       </div>
     </v-card>
-    <div class="d-flex flex-wrap ga-2 flex-row" style="width: 265px">
+    <div class="d-flex flex-wrap ga-2 flex-row btn-list" style="width: 265px">
       <PreviousBtn @click="onPreviousClick" />
       <NextBtn text="만든 여행 확인하기" @click="onNextClick" />
     </div>
-  </template>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.btn-list {
+  position: fixed;
+  bottom: 40px;
+}
+.route-card-size {
+  position: fixed;
+  z-index: 900;
+  flex-direction: column;
+  min-width: 275px;
+  max-width: 85vw;
+  height: calc(100vh - 125px);
+  padding-right: 10px;
+}
+.resize-icon {
+  position: absolute;
+  right: 0px;
+  top: calc(50% - 12px);
+}
+</style>
