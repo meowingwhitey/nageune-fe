@@ -41,12 +41,12 @@ const vuetify = createVuetify({
     },
   },
   defaults: {
+    VCard: {
+      style: "border-radius:15px",
+    },
     global: {
       font: {
         family: "Maplestory, sans-serif", // 여기서 폰트를 설정
-      },
-      VCard: {
-        style: "border-radius:15px",
       },
     },
   },

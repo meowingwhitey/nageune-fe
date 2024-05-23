@@ -25,15 +25,15 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <v-card class="route-card-size" v-resizable.r>
+  <div class="box">
+    <v-card class="route-card-size box" v-resizable.r>
       <v-icon
         color="blue-grey-darken-2"
         icon="mdi-menu-right"
         class="resize-icon"
       />
       <div
-        class="d-flex ga-2 row"
+        class="box d-flex ga-2 row"
         style="overflow-x: scroll; height: 100%; padding: 15px"
       >
         <TravelRouteList
@@ -61,12 +61,18 @@ onMounted(() => {
   flex-direction: column;
   min-width: 275px;
   max-width: 85vw;
-  height: calc(100vh - 125px);
+  height: calc(100vh - 140px);
   padding-right: 10px;
 }
 .resize-icon {
   position: absolute;
   right: 0px;
   top: calc(50% - 12px);
+}
+.box {
+  -ms-overflow-style: none;
+}
+.box::-webkit-scrollbar {
+  display: none;
 }
 </style>

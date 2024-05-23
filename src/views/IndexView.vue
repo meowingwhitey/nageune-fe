@@ -1,5 +1,6 @@
 <script setup>
 import HeaderComponent from "@/components/includes/HeaderComponent.vue";
+location.href = "/mypage";
 </script>
 
 <template>
