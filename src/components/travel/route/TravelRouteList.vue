@@ -8,7 +8,7 @@ const props = defineProps(["routeList", "routeIdx"]);
 
 const currentMarker = ref([]);
 const currentPolyline = ref(null);
-
+let prevPloygon = null;
 watch(props.routeList, () => {
   console.log(props.routeList);
 });
@@ -28,6 +28,9 @@ const onRouteMapping = () => {
 
   // 마커 및 라인 삭제
   mapStore.resetMarker();
+  if (prevPloygon != null) {
+    prevPloygon.setMap(null);
+  }
   currentMarker.value = [];
   if (currentPolyline.value !== null) {
     currentPolyline.value.setMap(null);
@@ -35,7 +38,7 @@ const onRouteMapping = () => {
   currentPolyline.value = null;
 
   for (const place of route) {
-    displayMarker(place);
+    mapStore.drawMarker(place.name, place.latitude, place.longitude);
     console.log(place);
     bounds.extend(new kakao.maps.LatLng(place.latitude, place.longitude));
     linePath.push(new kakao.maps.LatLng(place.latitude, place.longitude));
