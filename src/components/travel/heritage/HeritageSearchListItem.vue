@@ -22,7 +22,7 @@ const removeFromHeritageList = () => {
 };
 
 function replaceByDefault(e) {
-  e.target.src = "/src/assets/spot_image_test.gif";
+  e.target.src = "/src/assets/image_not_found.png";
 }
 function openPage() {
   console.log(props.spot.pageUrl);

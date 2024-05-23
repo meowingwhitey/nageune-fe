@@ -1,0 +1,23 @@
+@font-face {
+	font-family: 'Maplestory';
+	font-style: normal;
+	font-weight: light;
+	font-display: swap;
+	src: url('./MaplestoryLight.woff2') format('truetype');
+}
+
+@font-face {
+	font-family: 'Maplestory';
+	font-style: normal;
+	font-weight: bold;
+	font-display: swap;
+	src: url('./MaplestoryBold.woff2') format('truetype');
+}
+
+@font-face {
+	font-family: 'Maplestory';
+	font-style: normal;
+	font-weight: normal;
+	font-display: swap;
+	src: url('./MaplestoryLight.woff2') format('truetype');
+}

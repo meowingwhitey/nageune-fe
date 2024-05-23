@@ -34,18 +34,4 @@ const checkRefreshToken = () => {
   </div>
 </template>
 
-<style scoped>
-#bg-box {
-  margin: auto;
-  width: 100%;
-  min-height: 100vh;
-  background-image: url("/src/assets/1.PNG");
-  background-size: cover;
-  background-repeat: no-repeat;
-  backdrop-filter: blur(5px);
-  background-attachment: fixed;
-  background-position: center;
-  position: sticky;
-  overflow: hidden;
-}
-</style>
+<style scoped></style>

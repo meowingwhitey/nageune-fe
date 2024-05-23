@@ -15,7 +15,7 @@ const router = useRouter();
       "
     >
       <img
-        src="/src/assets/logo_test.gif"
+        src="/src/assets/logo.png"
         alt="App Logo"
         style="width: 80%; height: auto"
       />

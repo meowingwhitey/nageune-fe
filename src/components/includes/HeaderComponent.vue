@@ -27,7 +27,11 @@ const goToMainPage = () => {
         </RouterLink>
       </div>
       <div class="d-flex justify-space-between align-end pb-2 bg-white">
-        <div class="pl-4 pb-2" @click="goToMainPage"><h3>나그네</h3></div>
+        <div class="pl-4 pb-2 row d-flex align-center" @click="goToMainPage">
+          <img src="/src/assets/logo.png" style="width: 40px; height: 40px" />
+          &nbsp;
+          <h3>나그네</h3>
+        </div>
         <div>
           <!-- 로그인 했을 때 -->
           <template v-if="!userStore.isLogin">

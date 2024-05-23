@@ -27,6 +27,10 @@ import { aliases, mdi } from "vuetify/iconsets/mdi";
 import "@mdi/font/css/materialdesignicons.css"; // Ensure you are using css-loader
 
 const vuetify = createVuetify({
+  options: {
+    customProperties: true,
+  },
+
   components,
   directives,
   icons: {
@@ -37,8 +41,13 @@ const vuetify = createVuetify({
     },
   },
   defaults: {
-    VCard: {
-      style: "border-radius:15px",
+    global: {
+      font: {
+        family: "Maplestory, sans-serif", // 여기서 폰트를 설정
+      },
+      VCard: {
+        style: "border-radius:15px",
+      },
     },
   },
 });

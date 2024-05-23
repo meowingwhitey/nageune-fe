@@ -1,7 +1,7 @@
 <script setup>
 const props = defineProps(["index", "element"]);
 function replaceByDefault(e) {
-  e.target.src = "/src/assets/spot_image_test.gif";
+  e.target.src = "/src/assets/image_not_found.png";
 }
 </script>
 
@@ -9,7 +9,7 @@ function replaceByDefault(e) {
   <v-card class="travel-route-list-item" elevation="4">
     <div class="d-flex ga-4" style="padding: 10px; min-width: 240px">
       <img
-        :src="element.imageUrl || '/src/assets/spot_image_test.gif'"
+        :src="element.imageUrl || '/src/assets/image_not_found.png'"
         @error="replaceByDefault"
         style="
           height: 60px;

@@ -23,7 +23,7 @@ const removeFromPlaceList = () => {
   });
 };
 function replaceByDefault(e) {
-  e.target.src = "/src/assets/spot_image_test.gif";
+  e.target.src = "/src/assets/image_not_found.png";
 }
 console.log(props.spot);
 </script>
@@ -32,7 +32,7 @@ console.log(props.spot);
   <v-list-item style="width: 100%; margin: 0px">
     <div class="d-flex ga-4" style="padding: 10px">
       <img
-        :src="spot.imageUrl || '/src/assets/spot_image_test.gif'"
+        :src="spot.imageUrl || '/src/assets/image_not_found.png'"
         @error="replaceByDefault"
         style="
           height: 60px;

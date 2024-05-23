@@ -22,7 +22,7 @@ const login = () => {
       class="d-flex flex-column justify-center align-center ma-3"
       style="width: 100%; min-height: 20vh"
     >
-      <img src="@/assets/heritage_icon.png" width="100px" height="100px" />
+      <img src="@/assets/logo.png" width="100px" height="100px" />
       <div class="mt-3 font-weight-bold text-h5">로그인</div>
     </div>
 

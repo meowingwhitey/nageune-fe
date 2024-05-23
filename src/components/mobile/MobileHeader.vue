@@ -26,7 +26,10 @@ const goMypage = () => {
     >
       <v-app-bar-title>
         <!-- <img src="@/assets/logo.png" width="30px" /> -->
-        <span class="pa-3" @click="goMain">나그네</span>
+        <div class="pa-3 d-flex row align-center" @click="goMain">
+          <img src="/src/assets/logo.png" style="width: 40px; height: 40px" />
+          &nbsp;나그네
+        </div>
       </v-app-bar-title>
       <template v-if="userStore.isLogin">
         <v-app-bar-nav-icon
