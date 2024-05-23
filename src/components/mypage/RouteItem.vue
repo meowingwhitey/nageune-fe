@@ -129,7 +129,7 @@ const clickBtn = (id, tripTitle, isLast) => {
       <v-card-item class="pa-0 position-absolute bottom-0" style="width: 100%">
         <v-btn
           block
-          color="blue-grey-lighten-2"
+          color="teal-lighten-1"
           rounded="0"
           height="50"
           @click="clickBtn(id, tripTitle, isLast)"

@@ -61,6 +61,11 @@ const deleteUser = () => {
   <div>
     <v-container class="d-flex flex-column">
       <v-row>
+        <v-col cols="2" class="ml-auto">
+          <v-btn variant="flat" block @click="deleteUser">탈퇴하기</v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
         <v-col cols="12" md="10" lg="8" class="mx-auto">
           <!-- 수정하기 버튼 -->
           <v-row justify="center" class="mt-1 mb-5">
@@ -170,24 +175,19 @@ const deleteUser = () => {
             readonly
             rounded="0"
           ></v-text-field>
-
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="4" class="mx-auto">
           <v-btn
             variant="outlined"
+            block
             color="rgb(120, 120, 120)"
             @click="updateProfile"
             >저장하기</v-btn
           >
         </v-col>
       </v-row>
-
-      <v-btn
-        variant="flat"
-        block
-        class="py-6 mt-5"
-        color="rgb(240, 240, 240)"
-        @click="deleteUser"
-        >탈퇴하기</v-btn
-      >
     </v-container>
   </div>
 </template>

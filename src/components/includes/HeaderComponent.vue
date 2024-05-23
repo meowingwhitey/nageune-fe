@@ -19,12 +19,9 @@ const goToMainPage = () => {
 </script>
 
 <template>
-  <div id="header" class="position-sticky top-0">
+  <div id="header" class="position-sticky top-0 bg-white">
     <v-container class="pa-0">
-      <div class="d-flex justify-end mt-1 bg-white">
-        <RouterLink :to="{ name: 'board', params: { boardType: 'notice' } }">
-          <span class="header-text">공지사항</span>
-        </RouterLink>
+      <div class="d-flex justify-end bg-white">
         <RouterLink :to="{ name: 'manual' }">
           <span class="ml-3 mr-2 header-text">사용방법</span>
         </RouterLink>
@@ -53,7 +50,7 @@ const goToMainPage = () => {
           <v-btn variant="plain" icon="mdi-menu"></v-btn>
         </div>
       </div>
-      <div id="header-line"></div>
+      <!-- <div id="header-line"></div> -->
     </v-container>
   </div>
 </template>
@@ -66,6 +63,9 @@ const goToMainPage = () => {
 
 #header {
   z-index: 1;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  border-color: #009688;
 }
 
 a {

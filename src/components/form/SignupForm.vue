@@ -42,12 +42,27 @@ const checkPwdSame = () => {
     visibleMsg.value = false;
   }
 };
+
+//이미지 업로드
+const handleImageUpload = (event) => {
+  const file = event.target.files[0];
+
+  console.log(file);
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    userInfo.value.profileImage = e.target.result;
+  };
+
+  reader.readAsDataURL(file);
+
+  // userInfo.value.
+};
 </script>
 
 <template>
   <v-container class="d-flex justify-center">
     <div
-      class="d-flex flex-column justify-center align-center mt-10 pa-10"
+      class="d-flex flex-column bg-white justify-center align-center mt-10 pa-10"
       id="login-outer-box"
     >
       <div
@@ -134,12 +149,13 @@ const checkPwdSame = () => {
               density="compact"
               class="ml-2"
               :variant="variant"
+              @change="handleImageUpload"
             ></v-file-input>
           </div>
 
           <v-btn
             class="mb-8 mt-8"
-            color="green-darken-4"
+            color="teal-darken-1"
             size="large"
             block
             @click="singup"
@@ -160,7 +176,7 @@ const checkPwdSame = () => {
 #login-outer-box {
   width: fit-content;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(50, 50, 50, 0.2);
+  box-shadow: 0 0 10px rgba(10, 10, 10, 0.5);
 }
 
 .input-box {

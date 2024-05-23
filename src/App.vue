@@ -29,7 +29,23 @@ const checkRefreshToken = () => {
 </script>
 
 <template>
-  <RouterView />
+  <div id="bg-box">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#bg-box {
+  margin: auto;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url("/src/assets/1.PNG");
+  background-size: cover;
+  background-repeat: no-repeat;
+  backdrop-filter: blur(5px);
+  background-attachment: fixed;
+  background-position: center;
+  position: sticky;
+  overflow: hidden;
+}
+</style>

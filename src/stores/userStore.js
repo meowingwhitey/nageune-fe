@@ -78,7 +78,7 @@ export const useUserStore = defineStore("user", () => {
         } else {
           console.log("유저 정보 없음");
         }
-        router.push({ name: "index" });
+        router.push({ name: "login" });
       })
       .catch((err) => {
         isLogin.value = false;
@@ -86,27 +86,29 @@ export const useUserStore = defineStore("user", () => {
         lastAccess.value = null;
         tokenStore.setAccessToken(null);
         console.log(err);
-        router.push({ name: "index" });
+        router.push({ name: "login" });
       });
   };
 
   //회원가입
   const userSignup = (info) => {
+    console.log("확인", info);
     local
       .post(`${REST_USER_API}/signup`, {
         email: info.email,
         password: info.password,
         name: info.name,
         nickname: info.nickname,
+        profileImage: info.profileImage,
       })
       .then((response) => {
-        console.log(response);
         console.log("회원가입 성공");
         router.push({ name: "index" });
       })
       .catch((err) => {
         console.log(err);
         console.log("회원가입 실패");
+        router.go(0);
       });
   };
 

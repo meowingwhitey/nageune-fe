@@ -14,7 +14,10 @@ const login = () => {
 </script>
 
 <template>
-  <div class="d-flex flex-column justify-center align-center">
+  <div
+    id="mobile-login"
+    class="d-flex flex-column justify-center align-center bg-white"
+  >
     <div
       class="d-flex flex-column justify-center align-center ma-3"
       style="width: 100%; min-height: 20vh"
@@ -62,7 +65,7 @@ const login = () => {
 
         <v-btn
           class="mb-8"
-          color="green-darken-4"
+          color="teal-darken-1"
           size="large"
           block
           @click="login"
@@ -88,5 +91,9 @@ const login = () => {
 #login-box {
   width: 90vw;
   min-width: 320px;
+}
+
+#mobile-login {
+  margin-top: 10vh;
 }
 </style>
