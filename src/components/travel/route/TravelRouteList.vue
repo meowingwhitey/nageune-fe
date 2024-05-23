@@ -7,7 +7,6 @@ const mapStore = useMapStore();
 const props = defineProps(["routeList", "routeIdx"]);
 
 const currentMarker = ref([]);
-const currentPolyline = ref(null);
 let prevPloygon = null;
 watch(props.routeList, () => {
   console.log(props.routeList);
@@ -28,14 +27,6 @@ const onRouteMapping = () => {
 
   // 마커 및 라인 삭제
   mapStore.resetMarker();
-  if (prevPloygon != null) {
-    prevPloygon.setMap(null);
-  }
-  currentMarker.value = [];
-  if (currentPolyline.value !== null) {
-    currentPolyline.value.setMap(null);
-  }
-  currentPolyline.value = null;
 
   for (const place of route) {
     mapStore.drawMarker(place.name, place.latitude, place.longitude);
@@ -51,37 +42,17 @@ const onRouteMapping = () => {
     strokeColor: "#FFAE00", // 선의 색깔입니다
     strokeOpacity: 0.9, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
     strokeStyle: "solid", // 선의 스타일입니다
+    endArrow: true,
   });
-  currentPolyline.value = polyline;
+
+  if (mapStore.currentPolyline != null) {
+    // 기존 라인 삭제
+    mapStore.currentPolyline.setMap(null);
+  }
+  mapStore.currentPolyline = polyline;
   // 지도에 선을 표시합니다
   polyline.setMap(window.kakaoMap);
   window.kakaoMap.setBounds(bounds);
-};
-
-// 지도에 마커를 표시하는 함수입니다
-const displayMarker = (place) => {
-  // 마커를 생성하고 지도에 표시합니다
-  const marker = new kakao.maps.Marker({
-    map: window.kakaoMap,
-    position: new kakao.maps.LatLng(place.lat, place.lng),
-  });
-  currentMarker.value.push(marker);
-
-  // 마커에 클릭이벤트를 등록합니다
-  kakao.maps.event.addListener(marker, "click", function () {
-    const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
-    if (place.isInfoWindowOpen) {
-      infowindow.close();
-      place.isInfoWindowOpen = false;
-      return;
-    }
-    // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-    infowindow.setContent(
-      '<div style="padding:5px;font-size:12px;">' + place.place_name + "</div>",
-    );
-    infowindow.open(kakaoMap.value, marker);
-    place.isInfoWindowOpen = true;
-  });
 };
 
 const log = (evt) => {
