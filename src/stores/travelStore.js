@@ -121,7 +121,7 @@ export const useTravelStore = defineStore("travelStore", () => {
         name: item.title,
         address: `${item.location} ${item.locationSub}`,
         description: `${item.era}(${item.type})`,
-        imageUrl,
+        imageUrl: item.imageUrl,
       });
     });
 

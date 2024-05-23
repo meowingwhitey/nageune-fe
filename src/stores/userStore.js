@@ -103,7 +103,7 @@ export const useUserStore = defineStore("user", () => {
       })
       .then((response) => {
         console.log("회원가입 성공");
-        router.push({ name: "index" });
+        router.push({ name: "login" });
       })
       .catch((err) => {
         console.log(err);
