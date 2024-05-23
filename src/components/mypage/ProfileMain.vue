@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { watch } from "vue";
+
+const props = defineProps({
   userInfo: Object,
 });
 </script>

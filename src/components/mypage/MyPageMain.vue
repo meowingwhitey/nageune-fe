@@ -3,6 +3,8 @@ import ProfileMain from "@/components/mypage/ProfileMain.vue";
 import TabsComponent from "@/components/mypage/TabsComponent.vue";
 import { useUserStore } from "@/stores/userStore";
 import { onBeforeUpdate, onMounted } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 
 const userStore = useUserStore();
 

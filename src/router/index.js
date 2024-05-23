@@ -42,8 +42,8 @@ const router = createRouter({
         console.log(to, from);
 
         if (from.path.slice(0, 3) === "/m/") {
-          return { name: "mobileMain" };
-        } else return true;
+          return { name: "mobileMypage" };
+        } else return { name: "mypage" };
       },
     },
     {
@@ -123,6 +123,13 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView,
+      beforeEnter: (to, from) => {
+        console.log(to, from);
+
+        if (from.path.slice(0, 3) === "/m/") {
+          return { name: "mobileLogin" };
+        } else return { name: "login" };
+      },
     },
     {
       path: "/signup",
@@ -138,6 +145,9 @@ const router = createRouter({
           path: "",
           name: "mobileMain",
           component: MobileMain,
+          beforeEnter: (to, from) => {
+            return { name: "mobileMypage" };
+          },
         },
         {
           path: "spotDetail/:id",
