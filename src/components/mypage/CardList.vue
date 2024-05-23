@@ -30,12 +30,21 @@ const getCards = async () => {
 onMounted(() => {
   getCards();
 });
+
+const refreshCard = () => {
+  getCards();
+};
 </script>
 
 <template>
   <v-container class="d-flex">
-    <v-row>
-      <CardItem v-for="card in cards" :card="card" :isMobile="isMobile" />
+    <v-row class="justify-center">
+      <CardItem
+        v-for="card in cards"
+        :card="card"
+        :isMobile="isMobile"
+        @refresh-card="refreshCard"
+      />
     </v-row>
   </v-container>
 </template>
