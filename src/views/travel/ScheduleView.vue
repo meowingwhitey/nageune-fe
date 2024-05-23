@@ -8,7 +8,7 @@ const mapStore = useMapStore();
  * [date-fns]
  * https://date-fns.org/
  */
-import { addDays, differenceInDays, format } from "date-fns";
+import { addDays, subDays, differenceInDays, format } from "date-fns";
 
 const router = useRouter();
 const dialog = ref(true);
@@ -16,7 +16,8 @@ const allowedEndDate = ref({
   min: "0000-01-01",
   max: "9999-12-31",
 });
-const startDate = ref(new Date());
+// 00:00:00부터 계산하기 위해 아래처럼 출발일 설정
+const startDate = ref(new Date(format(new Date(), "MM/dd/yyyy")));
 const endDate = ref(addDays(startDate.value, 6));
 const travelStore = useTravelStore();
 
@@ -38,12 +39,12 @@ const isDateValid = computed(() => {
 });
 
 onMounted(() => {
-  allowedEndDate.value.min = new Date();
+  allowedEndDate.value.min = subDays(startDate.value, 1);
   allowedEndDate.value.max = endDate.value;
 });
 
 const onPreviousClick = () => {
-  router.push({ name: "travel-departure" });
+  router.push({ name: "travel-create" });
 };
 
 const onNextClick = () => {
@@ -118,7 +119,7 @@ const onNextClick = () => {
             color="#90A4AE"
             append-icon="mdi-arrow-u-left-top"
           >
-            우리집이 어디더라?
+            여행 닉변권 쓰기
           </v-btn>
           <v-btn
             @click="onNextClick"
