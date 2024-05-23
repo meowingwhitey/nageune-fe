@@ -60,6 +60,9 @@ const router = createRouter({
           path: "departure",
           name: "travel-departure",
           component: DepartureView,
+          props: (route) => ({
+            keyword: route.query.keyword, // 검색하는 키워드
+          }),
         },
         {
           path: "schedule",

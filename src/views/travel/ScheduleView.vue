@@ -56,7 +56,7 @@ const onNextClick = () => {
 
   // 다음 단계로!
   router.push({
-    name: "travel-search-heritage",
+    name: "travel-departure",
   });
 };
 </script>
@@ -128,7 +128,7 @@ const onNextClick = () => {
             append-icon="mdi-arrow-right"
             :disabled="!isDateValid"
           >
-            {{ !isDateValid ? "날짜를 선택해주세요" : "방문 장소 설정하기" }}
+            {{ !isDateValid ? "날짜를 선택해주세요" : "출발지 선택하기" }}
           </v-btn>
         </div>
       </v-card>

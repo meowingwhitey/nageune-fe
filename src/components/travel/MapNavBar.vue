@@ -26,7 +26,15 @@ const router = useRouter();
       :class="route.name === 'travel-schedule' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-calendar-multiselect" size="x-large"></v-icon>
-      <p>일정 설정</p>
+      <div class="title">일정 설정</div>
+    </div>
+    <v-divider />
+    <div
+      class="nav-menu"
+      :class="route.name === 'travel-departure' && 'nav-menu-selected'"
+    >
+      <v-icon icon="mdi-home-search-outline" size="x-large"></v-icon>
+      <div class="title">출발지설정</div>
     </div>
     <v-divider />
     <div
@@ -34,7 +42,7 @@ const router = useRouter();
       :class="route.name === 'travel-search-heritage' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-bank" size="x-large"></v-icon>
-      <p>문화재</p>
+      <div class="title">문화재</div>
     </div>
     <v-divider />
     <div
@@ -42,6 +50,7 @@ const router = useRouter();
       :class="route.name === 'travel-search-place' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-store-outline" size="x-large"></v-icon>
+      <div class="title"></div>
       <p>경유지</p>
     </div>
     <v-divider />
@@ -50,7 +59,7 @@ const router = useRouter();
       :class="route.name === 'travel-route' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-map-legend" size="x-large"></v-icon>
-      경로 설정
+      <div class="title">경로 설정</div>
     </div>
     <v-divider />
     <div
@@ -58,7 +67,7 @@ const router = useRouter();
       :class="route.name === 'travel-summary' && 'nav-menu-selected'"
     >
       <v-icon icon="mdi-pencil-outline" size="x-large"></v-icon>
-      여행 요약
+      <div class="title">여행 요약</div>
     </div>
     <v-divider />
   </v-card>
@@ -96,5 +105,8 @@ const router = useRouter();
   display: flex;
   z-index: 900;
   background-color: white;
+}
+.title {
+  font-size: 9pt;
 }
 </style>
