@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps(["text"]);
+const props = defineProps(["text", "disabled"]);
 </script>
 
 <template>
@@ -8,8 +8,9 @@ const props = defineProps(["text"]);
     color="#26A69A"
     class="next-btn"
     append-icon="mdi-arrow-right"
-    >{{ props.text }}</v-btn
   >
+    {{ props.text }}
+  </v-btn>
 </template>
 
 <style scoped>
