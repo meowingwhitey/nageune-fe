@@ -88,7 +88,7 @@ const goRouteDetail = () => {
     <v-card
       class="d-flex mx-5 my-5 pt-3 pb-3"
       variant="tonal"
-      color="green-darken-4"
+      color="teal-lighten-1"
       @click="goRouteDetail"
     >
       <div class="mr-auto ml-5">

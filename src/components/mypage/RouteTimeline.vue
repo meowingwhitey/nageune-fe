@@ -51,9 +51,15 @@ onBeforeUpdate(async () => {
           {{ s.date.slice(5, 10) }}
         </div>
       </template>
-      <div class="text-body-1 font-weight-medium">{{ s.name }}</div>
+      <div class="timeline-text text-body-1 font-weight-medium">
+        <p style="word-break: keep-all">{{ s.name }}</p>
+      </div>
     </v-timeline-item>
   </v-timeline>
 </template>
 
-<style scoped></style>
+<style scoped>
+.timeline-text {
+  width: 115px;
+}
+</style>

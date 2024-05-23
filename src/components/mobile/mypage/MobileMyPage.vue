@@ -33,10 +33,10 @@ const isMobile = ref(true);
         <span class="font-weight-bold">{{ userStore.userInfo.nickname }}</span
         >님
       </div>
-      <div class="profile-text">{{ userStore.userInfo.email }}</div>
       <div class="profile-text mb-1">
-        {{ userStore.userInfo.createdAt }}부터 여행 중
+        🛫 {{ userStore.userInfo.createdAt }}부터 여행 중
       </div>
+      <div class="profile-text">✉️ {{ userStore.userInfo.email }}</div>
     </div>
   </v-card>
   <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider>

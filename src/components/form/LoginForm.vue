@@ -24,7 +24,7 @@ const login = () => {
 <template>
   <v-container class="d-flex justify-center">
     <div
-      class="d-flex flex-column justify-center align-center mt-10 pa-10"
+      class="d-flex flex-column bg-white justify-center align-center mt-10 pa-10"
       id="login-outer-box"
     >
       <div
@@ -52,14 +52,6 @@ const login = () => {
             class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between"
           >
             비밀번호
-
-            <a
-              class="text-caption text-decoration-none text-green-darken-4"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              비밀번호 찾기</a
-            >
           </div>
 
           <v-text-field
@@ -75,7 +67,7 @@ const login = () => {
 
           <v-btn
             class="mb-8"
-            color="green-darken-4"
+            color="teal-darken-1"
             size="large"
             block
             @click="login"
@@ -83,7 +75,7 @@ const login = () => {
             로그인
           </v-btn>
 
-          <v-card-text class="text-center" @click="goToSignUp">
+          <v-card-text class="signup-btn text-center" @click="goToSignUp">
             <a class="text-grey-darken-2 text-decoration-none">
               회원가입 <v-icon icon="mdi-chevron-right"></v-icon>
             </a>
@@ -102,6 +94,14 @@ const login = () => {
 #login-outer-box {
   width: fit-content;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(50, 50, 50, 0.2);
+  box-shadow: 0 0 10px rgba(10, 10, 10, 0.5);
+}
+
+.signup-btn {
+  cursor: pointer;
+}
+
+.signup-btn :hover {
+  text-decoration: underline !important;
 }
 </style>

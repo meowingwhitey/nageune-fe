@@ -100,12 +100,9 @@ onMounted(async () => {
   <div>
     <div class="mx-5 mt-3 mb-2 d-flex justify-center align-end">
       <div class="font-weight-bold">
-        <p class="text-h5">{{ travelTitle }}</p>
+        <p class="travel-title">{{ travelTitle }}</p>
       </div>
-      <div class="ml-auto">
-        {{ startDay }} ~
-        {{ endDay }}
-      </div>
+      <div class="ml-auto">{{ startDay }} ~ {{ endDay }}📅</div>
     </div>
     <v-divider :thickness="10" color="rgb(220, 220, 220)"></v-divider>
     <!-- 지도에 선택한 날짜의 방문해야할 여행지 마커도 같이 표시 -->
@@ -122,4 +119,10 @@ onMounted(async () => {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.travel-title {
+  font-size: larger;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+</style>

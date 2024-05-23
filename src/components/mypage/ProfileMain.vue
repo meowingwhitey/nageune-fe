@@ -5,7 +5,7 @@ defineProps({
 </script>
 
 <template>
-  <div id="profile">
+  <div id="profile" class="bg-white">
     <v-card
       class="d-flex align-center"
       variant="text"
@@ -21,8 +21,8 @@ defineProps({
             {{ userInfo.nickname }}님
           </v-card-title>
           <div class="ml-4">
-            <p>{{ userInfo.createdAt }}부터 여행 중</p>
-            <p>{{ userInfo.email }}</p>
+            <p>🛫 {{ userInfo.createdAt }}부터 여행 중</p>
+            <p>✉️ {{ userInfo.email }}</p>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@ defineProps({
 
 <style scoped>
 #profile {
-  border: 2px solid rgb(245, 245, 245);
+  box-shadow: 0 0 10px rgba(10, 10, 10, 0.3);
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 15px;
