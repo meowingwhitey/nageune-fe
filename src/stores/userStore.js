@@ -47,7 +47,7 @@ export const useUserStore = defineStore("user", () => {
 
           getUserInfo();
 
-          router.push({ name: "index" });
+          router.push({ name: "mypage" });
         }
       })
       //로그인에 실패했을 경우
